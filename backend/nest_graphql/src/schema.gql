@@ -1,0 +1,32 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Photo {
+  id: Int!
+  name: String!
+  description: String!
+  filename: String!
+  views: Int!
+  isPublished: Boolean!
+}
+
+type Query {
+  helloWorld: String!
+  getPhotos: [Photo!]!
+}
+
+type Mutation {
+  createPhoto(input: CreatePhotoInput!): Photo!
+  updateViews(input: CreatePhotoInput!): Photo!
+  addView(id: Float!): Photo!
+  deletePhoto(id: Float!): String!
+}
+
+input CreatePhotoInput {
+  name: String!
+  description: String!
+  filename: String!
+  views: Int!
+  isPublished: Boolean!
+}
