@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
 import { DatabaseModule } from './database/database.module';
 import { databaseProviders } from './database/database.providers';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -22,8 +23,9 @@ import { databaseProviders } from './database/database.providers';
     PostModule,
     UserModule,
     DatabaseModule,
+    ConfigModule,
   ],
   controllers: [AppController],
-  providers: [AppService, ...databaseProviders],
+  providers: [AppService, ...databaseProviders, ConfigService],
 })
 export class AppModule {}
