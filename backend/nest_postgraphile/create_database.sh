@@ -2,8 +2,8 @@
 
 # Database configuration
 DB_NAME="nest_postgraphile"
-DB_USER="your_username"
-DB_PASSWORD="your_password"
+DB_USER="postgres"
+DB_PASSWORD="postgres"
 
 # Check if psql is available
 if ! command -v psql &> /dev/null; then
