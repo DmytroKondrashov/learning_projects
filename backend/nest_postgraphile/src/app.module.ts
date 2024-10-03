@@ -7,6 +7,7 @@ import { UserModule } from './user/user.module';
 import { DatabaseModule } from './database/database.module';
 import { databaseProviders } from './database/database.providers';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { PostgraphileService } from './postgraphile/postgraphile.service';
 
 @Module({
   imports: [
@@ -26,6 +27,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     ConfigModule,
   ],
   controllers: [AppController],
-  providers: [AppService, ...databaseProviders, ConfigService],
+  providers: [
+    AppService,
+    ...databaseProviders,
+    ConfigService,
+    PostgraphileService,
+  ],
 })
 export class AppModule {}
