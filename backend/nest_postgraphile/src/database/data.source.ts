@@ -9,6 +9,7 @@ const dataSource = new DataSource({
   database: 'nest_postgraphile',
   synchronize: false,
   entities: [`${__dirname}/../**/**.entity{.ts,.js}`],
+  migrations: ['src/migrations/*{.ts,.js}'],
 });
 
 export default dataSource;
