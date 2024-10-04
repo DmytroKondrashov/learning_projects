@@ -5,7 +5,6 @@ import { PostModule } from './post/post.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
 import { DatabaseModule } from './database/database.module';
-import { databaseProviders } from './database/database.providers';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PostgraphileService } from './postgraphile/postgraphile.service';
 
@@ -27,11 +26,6 @@ import { PostgraphileService } from './postgraphile/postgraphile.service';
     ConfigModule,
   ],
   controllers: [AppController],
-  providers: [
-    AppService,
-    ...databaseProviders,
-    ConfigService,
-    PostgraphileService,
-  ],
+  providers: [AppService, ConfigService, PostgraphileService],
 })
 export class AppModule {}
