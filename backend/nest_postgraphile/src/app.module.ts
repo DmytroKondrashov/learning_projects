@@ -6,6 +6,7 @@ import { ConfigService } from '@nestjs/config';
 import { PostgraphileService } from './postgraphile/postgraphile.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -17,7 +18,7 @@ import { UserModule } from './user/user.module';
       password: 'postgres',
       database: 'nest_postgraphile',
       synchronize: false,
-      entities: [`${__dirname}/../**/**.entity{.ts,.js}`],
+      entities: [join(__dirname, '**', '*.entity.{ts,js}')],
       migrations: ['src/migrations/*{.ts,.js}'],
       retryAttempts: 10,
       retryDelay: 3000,
