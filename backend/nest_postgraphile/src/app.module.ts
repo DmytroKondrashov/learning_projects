@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PostModule } from './post/post.module';
-import { UserModule } from './user/user.module';
 import { ConfigService } from '@nestjs/config';
 import { PostgraphileService } from './postgraphile/postgraphile.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -23,7 +22,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       retryDelay: 3000,
     }),
     PostModule,
-    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService, ConfigService, PostgraphileService],
