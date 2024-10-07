@@ -1,4 +1,5 @@
 import { registerAs } from '@nestjs/config';
+import { join } from 'path';
 import { DataSource, DataSourceOptions } from 'typeorm';
 
 const config = {
@@ -8,8 +9,8 @@ const config = {
   username: 'postgres',
   password: 'postgres',
   database: 'nest_postgraphile',
-  entities: [__dirname + '/../**/*.entity{.ts,.js}'],
-  migrations: ['src/migrations/*{.ts,.js}'],
+  entities: [join(__dirname, '**', '*.entity.{ts,js}')],
+  migrations: [join(__dirname, '**', '*.migrations.{ts,js}')],
   synchronize: false,
 };
 
