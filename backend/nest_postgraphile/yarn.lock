@@ -2815,7 +2815,7 @@ graphemer@^1.4.0:
   resolved "https://registry.yarnpkg.com/graphemer/-/graphemer-1.4.0.tgz#fb2f1d55e0e3a1849aeffc90c4fa0dd53a0e66c6"
   integrity sha512-EtKwoO6kxCL9WO5xipiHTZlSzBm7WLT627TqC/uVRd0HKmq8NXyebnNYxDoBi7wt8eTWrUrKXCOVaFq9x1kgag==
 
-graphile-build-pg@4.13.0:
+graphile-build-pg@4.13.0, graphile-build-pg@^4.11.2:
   version "4.13.0"
   resolved "https://registry.yarnpkg.com/graphile-build-pg/-/graphile-build-pg-4.13.0.tgz#1f466916009493f4998c13d02de28bf75faa2add"
   integrity sha512-1FD+3wjCdK1lbICY1QVO26A7s8efSjR522LarL9Bx1M1iBJHNIpCEW2PK+LkulQjY1l5LGQ1A93GQFqi6cZ6bg==
@@ -4365,6 +4365,13 @@ postgraphile-core@4.13.0:
     graphile-build "4.13.0"
     graphile-build-pg "4.13.0"
     tslib "^2.0.1"
+
+postgraphile-plugin-nested-mutations@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/postgraphile-plugin-nested-mutations/-/postgraphile-plugin-nested-mutations-1.1.0.tgz#01a0eca381abba4b88158d3ad8b11be5da173ce4"
+  integrity sha512-zG2OICwWWN6qWeM+9tErE7IjhvaGg+40GU/dgEk/nKE1aG9hoKaSw5q7H51/1XVKwEvSgLo3ERMfUA/agIXzdg==
+  dependencies:
+    graphile-build-pg "^4.11.2"
 
 postgraphile@^4.13.0:
   version "4.13.0"
