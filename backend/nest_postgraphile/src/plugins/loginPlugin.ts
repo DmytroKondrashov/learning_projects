@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
-module.exports = (builder) => {
+const loginPlugin = (builder) => {
   builder.hook(
     'GraphQLObjectType:fields',
     (fields, build, { scope: { isRootMutation } }) => {
@@ -51,3 +51,5 @@ module.exports = (builder) => {
     },
   );
 };
+
+export default loginPlugin;
