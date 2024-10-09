@@ -1,4 +1,7 @@
-export default (builder) => {
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+
+module.exports = (builder) => {
   builder.hook(
     'GraphQLObjectType:fields',
     (fields, build, { scope: { isRootMutation } }) => {
@@ -25,11 +28,22 @@ export default (builder) => {
             );
 
             const user = result.rows[0];
-            if (!user || user.password !== password) {
+            if (!user) {
               throw new Error('Invalid credentials');
             }
 
-            const token = 'test-jwt-token';
+            const isPasswordValid = await bcrypt.compare(
+              password,
+              user.password,
+            );
+            if (!isPasswordValid) {
+              throw new Error('Invalid credentials');
+            }
+
+            const token = jwt.sign({ id: user.id }, 'your-secret-key', {
+              expiresIn: '1h',
+            });
+
             return token;
           },
         },
