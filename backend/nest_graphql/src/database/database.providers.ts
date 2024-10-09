@@ -1,12 +1,12 @@
 import { DataSource } from 'typeorm';
 
 export const AppDataSource = new DataSource({
-  type: 'mysql',
+  type: 'postgres',
   host: '127.0.0.1',
-  port: 3306,
-  username: 'root',
+  port: 5432,
+  username: 'postgres',
   password: 'root',
-  database: 'nest-graphql',
+  database: 'nest_postgraphile',
   entities: [__dirname + '/../**/*.entity{.ts,.js}'],
   migrations: ['src/migrations/*{.ts,.js}'],
   synchronize: false,
