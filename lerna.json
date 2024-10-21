@@ -4,6 +4,7 @@
   "packages": [
     "frontend/*",
     "backend/*",
-    "fullstack/*"
+    "fullstack/*",
+    "basics/*"
   ]
 }
