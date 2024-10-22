@@ -1,7 +1,8 @@
+include:
+  - infra.yaml
+
 services:
   web:
     build: .
     ports:
       - "8000:5000"
-  redis:
-    image: "redis:alpine"
