@@ -1,0 +1,1 @@
+This project is created by the instructions taken from [Docker Compose Quickstart](https://docs.docker.com/compose/gettingstarted/)
