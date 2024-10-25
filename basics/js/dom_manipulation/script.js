@@ -16,6 +16,8 @@ body.append(div2)
 
 // selections the elements
 const divs = document.querySelectorAll('div')
+// To select span ith multiple classes:
+// const span = document.querySelector('span.first.second');
 console.log(divs)
 
 // modify the elements
