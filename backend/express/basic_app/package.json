@@ -10,6 +10,8 @@
   "description": "",
   "dependencies": {
     "express": "^4.21.1",
-    "express-generator": "^4.16.1"
+    "express-generator": "^4.16.1",
+    "express-session": "^1.18.1",
+    "pbkdf2-password": "^1.2.1"
   }
 }
