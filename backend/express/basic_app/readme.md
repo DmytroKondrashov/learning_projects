@@ -1,0 +1,1 @@
+This app was created by [the ofiicial guide of express.js](https://expressjs.com/en/starter/hello-world.html)
