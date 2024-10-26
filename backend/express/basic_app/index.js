@@ -1,6 +1,10 @@
 const express = require('express');
+const path = require('path')
 const app = express();
 const port = 3000;
+
+// use this middleware to serve the static files like /images/cat.avif
+app.use(express.static(path.join(__dirname,'public')))
 
 app.get('/', (req, res) => {
   res.send('Hello world')
