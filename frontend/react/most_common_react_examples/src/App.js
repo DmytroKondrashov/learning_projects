@@ -1,6 +1,6 @@
 import Toolbar from './components/toolbar'
 import './App.css';
-import {UseStateComponent, Person} from './components/use_state_component';
+import {UseStateComponent, Person, List} from './components/use_state_component';
 
 function App() {
   return (
@@ -8,6 +8,7 @@ function App() {
       <Toolbar />
       <UseStateComponent initialCount={3} />
       <Person />
+      <List/>
     </>
   );
 }

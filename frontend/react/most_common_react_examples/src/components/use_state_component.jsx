@@ -41,3 +41,22 @@ export function Person() {
     </>
   )
 }
+
+export function List() {
+  const [list, setList] = useState([])
+  const [item, setItem] = useState('')
+
+  return(
+    <>
+      <h1>To-Dos</h1>
+      <input type="text" value={item} onChange={e => setItem(e.target.value)} />
+      <button onClick={() => {
+        setList([...list, item])
+        setItem('')
+      }}>Add</button>
+      <ul>
+        {list.map(item => <li key={item}>{item}</li>)}
+      </ul>
+    </>
+  )
+}
