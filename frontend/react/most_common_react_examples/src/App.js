@@ -5,7 +5,7 @@ import UseReducerComponent from './components/use_reducer_component';
 import UseEffectComponent from './components/use_effect_component';
 import React from 'react';
 import ChildComponent from './components/context/child_component';
-
+import SaveTheVariable from './components/use_ref/save_the_variable';
 export const UserContext = React.createContext();
 
 function App() {
@@ -21,6 +21,8 @@ function App() {
       <UserContext.Provider value={'John Doe'}>
         <ChildComponent/>
       </UserContext.Provider>
+
+      <SaveTheVariable />
     </>
   );
 }
