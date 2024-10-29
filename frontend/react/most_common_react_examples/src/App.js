@@ -3,8 +3,10 @@ import './App.css';
 import {UseStateComponent, Person, List} from './components/use_state_component';
 import UseReducerComponent from './components/use_reducer_component';
 import UseEffectComponent from './components/use_effect_component';
-import { AuthProvider } from './components/context/context_provider';
-import UserStatus from './components/context/context_consumer';
+import React from 'react';
+import ChildComponent from './components/context/child_component';
+
+export const UserContext = React.createContext();
 
 function App() {
   return (
@@ -16,9 +18,9 @@ function App() {
       <UseReducerComponent />
       <UseEffectComponent />
 
-      <AuthProvider>
-        <UserStatus />
-      </AuthProvider>
+      <UserContext.Provider value={'John Doe'}>
+        <ChildComponent/>
+      </UserContext.Provider>
     </>
   );
 }
