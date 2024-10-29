@@ -2,6 +2,7 @@ import Toolbar from './components/toolbar'
 import './App.css';
 import {UseStateComponent, Person, List} from './components/use_state_component';
 import UseReducerComponent from './components/use_reducer_component';
+import UseEffectComponent from './components/use_effect_component';
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <Person />
       <List/>
       <UseReducerComponent/>
+      <UseEffectComponent/>
     </>
   );
 }
