@@ -6,6 +6,7 @@ import UseEffectComponent from './components/use_effect_component';
 import React from 'react';
 import ChildComponent from './components/context/child_component';
 import SaveTheVariable from './components/use_ref/save_the_variable';
+import DomManipulation from './components/use_ref/dom_manipulation';
 export const UserContext = React.createContext();
 
 function App() {
@@ -23,6 +24,8 @@ function App() {
       </UserContext.Provider>
 
       <SaveTheVariable />
+
+      <DomManipulation />
     </>
   );
 }
