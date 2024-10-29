@@ -1,9 +1,13 @@
 import Toolbar from './components/toolbar'
 import './App.css';
+import UseStateComponent from './components/use_state_component';
 
 function App() {
   return (
-    <Toolbar />
+    <>
+      <Toolbar />
+      <UseStateComponent initialCount={3} />
+    </>
   );
 }
 
