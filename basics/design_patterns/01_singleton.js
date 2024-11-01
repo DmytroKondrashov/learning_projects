@@ -79,5 +79,12 @@ class Singleton {
 const sing1 = Singleton.getInstance();
 const sing2 = Singleton.getInstance();
 
+// Will throw an error
+// const test = new Singleton();
+// test.#instance = [];
+
+// Will throw an error
+// sing1.#instance = [];
+
 sing1.setName("Ilon");
 console.log(sing2.getName());
