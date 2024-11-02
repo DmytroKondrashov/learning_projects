@@ -51,7 +51,7 @@ class Singleton {
   static #instance = null;
 
   constructor() {
-    if (Singleton.#instance) {
+    if (Singleton.#instance instanceof Singleton) {
       return Singleton.#instance;
     }
 
