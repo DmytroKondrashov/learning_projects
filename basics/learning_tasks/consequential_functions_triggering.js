@@ -28,4 +28,11 @@ function runSync(args) {
   args.reduce((acc, fn) => {return acc.then(() => fn()) }, Promise.resolve())
 }
 
+// using async/await
+// async function runSync(args) {
+//   for (const fn of args) {
+//     await fn();
+//   }
+// }
+
 runSync([fn1, fn2, fn3]); //output should be 1,2,3
