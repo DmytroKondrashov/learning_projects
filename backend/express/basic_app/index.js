@@ -151,6 +151,46 @@ app.get('/request', (req, res) => {
   res.send('Successfully received the request!')
 })
 
+// ================================ response properties & methods ==========================================
+app.get('/response', (req, res) => {
+  // This property holds a reference to the instance of the Express application that is using the middleware.
+  console.log('App: ', res.app)
+
+  // List of variables passed through the middleware
+  console.log('Locals: ', res.locals)
+
+  // Appends the specified value to the HTTP response header field
+  res.append('Link', 'http://localhost:3000/')
+
+  // Set response cookies
+  res.cookie('name', 'express')
+
+  // Sets the response’s HTTP header field to value
+  res.set('Content-Type', 'text/html')
+  // Set the response format
+  // res.format({
+  //   text: () => { res.send('text') },
+  //   json: () => { res.send({ message: 'hey' }) }
+  // })
+
+  // Redirects to the URL derived from the specified path, with specified status
+  // res.redirect('/')
+
+  // Renders a view
+  // res.render('login')
+
+  // Sends a JSON response.
+  // res.json({ message: 'Hey!' })
+
+  // Sends the data as a response
+  res.send('Hello World!')
+
+  // Sends a file as a response
+  // res.sendFile(path.join(__dirname, 'public/images/cat.avif'))
+
+  res.send('Successfully received the request!')
+})
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
