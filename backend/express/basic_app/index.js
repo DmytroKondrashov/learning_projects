@@ -6,6 +6,8 @@ let session = require('express-session');
 const app = express();
 const port = 3000;
 
+const usersRouter = require('./routes/users')
+
 // use this middleware to serve the static files like /images/cat.avif
 app.use(express.static(path.join(__dirname,'public')))
 
@@ -20,6 +22,8 @@ app.use(session({
   saveUninitialized:true,
   secret: 'keyboard cat',
 }))
+
+app.use('/users', usersRouter);
 
 // Session-persisted message middleware
 // every fynction that has the next parameter is a middleware
