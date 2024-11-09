@@ -127,6 +127,30 @@ app.post('/login', function(req, res) {
   });
 })
 
+// ================================ request properties ==========================================
+app.get('/request', (req, res) => {
+  // The URL path on which a router instance was mounted.
+  console.log('Base URL: ', req.baseUrl)
+  // The request body
+  console.log('Body: ', req.body)
+  // The request cookies
+  console.log('Cookies: ', req.cookies)
+  // The request headers
+  console.log('Headers: ', req.headers)
+  // The request host name
+  console.log('Hostname: ', req.hostname)
+  // The request methos
+  console.log('Method: ', req.method)
+  // The request parameter
+  console.log('Params: ', req.params)
+  // The request path
+  console.log('Path: ', req.path)
+  // The request query
+  console.log('Query: ', req.query)
+
+  res.send('Successfully received the request!')
+})
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
