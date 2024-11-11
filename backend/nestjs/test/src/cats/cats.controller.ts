@@ -13,6 +13,7 @@ import {
 import { CreateCatDto } from './dto/create.cat.dto';
 import { CatsService } from './cats.service';
 import { Cat } from './interfaces/cat.interface';
+import { Forbiddenexception } from './exceptions/forbidden.excception';
 
 @Controller('cats')
 export class CatsController {
@@ -39,19 +40,30 @@ export class CatsController {
     return 'This action adds a new cat';
   }
 
-  @Get('*')
-  wildcard() {
-    return 'This action handles the wildcard route';
-  }
-
   @Get('redirect')
   @Redirect('/cats', 302)
   redirectToCats() {
     return;
   }
 
+  // The order of handlers MATTERS! if this handler would be last -
+  // the localhost:3000/cats/error would be handled by the wildcard handler
+  @Get('error')
+  throwError() {
+    // use built-in exception
+    // throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+
+    // use custom exception
+    throw new Forbiddenexception();
+  }
+
   @Get(':id')
   findOne(@Param() params: any) {
     return `This action returns a #${params.id} cat`;
+  }
+
+  @Get('*')
+  wildcard() {
+    return 'This action handles the wildcard route';
   }
 }
