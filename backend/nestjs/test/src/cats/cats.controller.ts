@@ -7,6 +7,7 @@ import {
   Inject,
   Optional,
   Param,
+  ParseIntPipe,
   Post,
   Redirect,
   UseFilters,
@@ -61,8 +62,8 @@ export class CatsController {
   }
 
   @Get(':id')
-  findOne(@Param() params: any) {
-    return `This action returns a #${params.id} cat`;
+  findOne(@Param('id', ParseIntPipe) params: any) {
+    return `This action returns a #${params} cat`;
   }
 
   @Get('*')
