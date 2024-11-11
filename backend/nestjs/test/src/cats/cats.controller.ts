@@ -9,11 +9,13 @@ import {
   Param,
   Post,
   Redirect,
+  UseFilters,
 } from '@nestjs/common';
 import { CreateCatDto } from './dto/create.cat.dto';
 import { CatsService } from './cats.service';
 import { Cat } from './interfaces/cat.interface';
 import { Forbiddenexception } from './exceptions/forbidden.excception';
+import { HttpExceptionFilter } from './exceptions/http.exception.filter';
 
 @Controller('cats')
 export class CatsController {
@@ -49,6 +51,7 @@ export class CatsController {
   // The order of handlers MATTERS! if this handler would be last -
   // the localhost:3000/cats/error would be handled by the wildcard handler
   @Get('error')
+  @UseFilters(HttpExceptionFilter)
   throwError() {
     // use built-in exception
     // throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
