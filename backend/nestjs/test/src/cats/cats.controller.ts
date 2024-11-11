@@ -17,6 +17,7 @@ import { CatsService } from './cats.service';
 import { Cat } from './interfaces/cat.interface';
 import { Forbiddenexception } from './exceptions/forbidden.excception';
 import { HttpExceptionFilter } from './exceptions/http.exception.filter';
+import { ValidationPipe } from './pipes/validation.pipe';
 
 @Controller('cats')
 export class CatsController {
@@ -32,7 +33,7 @@ export class CatsController {
   }
 
   @Post('create')
-  createCat(@Body() body: CreateCatDto) {
+  createCat(@Body(new ValidationPipe()) body: CreateCatDto) {
     return this.catsService.create(body);
   }
 
