@@ -3,6 +3,8 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  // we can use guard globally
+  // app.useGlobalGuards(new RolesGuard());
   await app.listen(3000);
 }
 bootstrap();

@@ -11,6 +11,7 @@ import {
   Post,
   Redirect,
   UseFilters,
+  UseGuards,
 } from '@nestjs/common';
 import { CreateCatDto } from './dto/create.cat.dto';
 import { CatsService } from './cats.service';
@@ -18,8 +19,14 @@ import { Cat } from './interfaces/cat.interface';
 import { Forbiddenexception } from './exceptions/forbidden.excception';
 import { HttpExceptionFilter } from './exceptions/http.exception.filter';
 import { ValidationPipe } from './pipes/validation.pipe';
+import { RolesGuard } from './guards/roles.guard';
+import { Roles } from './decorators/roles.decorator';
 
 @Controller('cats')
+//  we passed the RolesGuard class (instead of an instance), leaving responsibility for instantiation to the framework and enabling dependency injection.
+@UseGuards(RolesGuard)
+// we can also pass an in-place instance:
+// @UseGuards(new RolesGuard())
 export class CatsController {
   constructor(
     private catsService: CatsService,
@@ -33,6 +40,7 @@ export class CatsController {
   }
 
   @Post('create')
+  @Roles(['admin'])
   createCat(@Body(new ValidationPipe()) body: CreateCatDto) {
     return this.catsService.create(body);
   }
