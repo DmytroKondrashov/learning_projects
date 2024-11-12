@@ -10,6 +10,7 @@ import {
   ParseIntPipe,
   Post,
   Redirect,
+  Scope,
   UseFilters,
   UseInterceptors,
 } from '@nestjs/common';
@@ -22,7 +23,7 @@ import { ValidationPipe } from './pipes/validation.pipe';
 import { Roles } from './decorators/roles.decorator';
 import { LoggingInterceptor } from './interceptors/logging.interceptor';
 
-@Controller('cats')
+@Controller({ path: 'cats', scope: Scope.DEFAULT })
 @UseInterceptors(LoggingInterceptor)
 //  we passed the RolesGuard class (instead of an instance), leaving responsibility for instantiation to the framework and enabling dependency injection.
 // @UseGuards(RolesGuard)
