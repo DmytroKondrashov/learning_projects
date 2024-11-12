@@ -11,7 +11,7 @@ import {
   Post,
   Redirect,
   UseFilters,
-  UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { CreateCatDto } from './dto/create.cat.dto';
 import { CatsService } from './cats.service';
@@ -19,12 +19,13 @@ import { Cat } from './interfaces/cat.interface';
 import { Forbiddenexception } from './exceptions/forbidden.excception';
 import { HttpExceptionFilter } from './exceptions/http.exception.filter';
 import { ValidationPipe } from './pipes/validation.pipe';
-import { RolesGuard } from './guards/roles.guard';
 import { Roles } from './decorators/roles.decorator';
+import { LoggingInterceptor } from './interceptors/logging.interceptor';
 
 @Controller('cats')
+@UseInterceptors(LoggingInterceptor)
 //  we passed the RolesGuard class (instead of an instance), leaving responsibility for instantiation to the framework and enabling dependency injection.
-@UseGuards(RolesGuard)
+// @UseGuards(RolesGuard)
 // we can also pass an in-place instance:
 // @UseGuards(new RolesGuard())
 export class CatsController {
