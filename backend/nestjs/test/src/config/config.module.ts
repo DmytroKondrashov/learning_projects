@@ -18,7 +18,7 @@ export class ConfigModule {
         },
         ConfigService,
       ],
-      exports: [ConfigService],
+      exports: [ConfigService, CONFIG_OPTIONS],
     };
   }
 }
