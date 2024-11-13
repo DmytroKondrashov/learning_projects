@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { CatsController } from './cats.controller';
 import { CatsService } from './cats.service';
-import { ConfigModule } from 'src/config/config.module';
-import { ConfigService } from 'src/config/config.service';
-import { LazyModule } from 'src/lazy/lazy.module';
+import { ConfigModule } from '../config/config.module';
+import { ConfigService } from '../config/config.service';
+import { LazyModule } from '../lazy/lazy.module';
 
 const configFactory = {
   provide: 'CONFIG',
@@ -13,6 +13,7 @@ const configFactory = {
 };
 
 @Module({
+  // We can register the Config Module
   imports: [ConfigModule.register({ folder: './config' }), LazyModule],
   controllers: [CatsController],
   // This is actually a shorthand for associating the token CatsService with the class CatsService:

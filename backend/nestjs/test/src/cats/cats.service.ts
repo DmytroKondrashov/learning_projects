@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { Cat } from './interfaces/cat.interface';
 import { ModuleRef } from '@nestjs/core';
-import { ConfigService } from 'src/config/config.service';
-import { LazyService } from 'src/lazy/lazy.service';
+import { ConfigService } from '../config/config.service';
+import { LazyService } from '../lazy/lazy.service';
 
 @Injectable()
 export class CatsService {
