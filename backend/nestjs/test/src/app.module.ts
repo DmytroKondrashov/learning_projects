@@ -14,7 +14,11 @@ import { LazyModule } from './lazy/lazy.module';
 // When you want to provide a set of providers which should be available everywhere out-of-the-box - use @Global()
 @Global()
 @Module({
-  imports: [CatsModule, ConfigModule.register({ folder: './config' }), LazyModule],
+  imports: [
+    CatsModule,
+    ConfigModule.register({ folder: './config' }),
+    LazyModule,
+  ],
   // We can inject dependencies directly into the app module
   // controllers: [AppController, CatsController],
   // providers: [AppService, CatsService],
