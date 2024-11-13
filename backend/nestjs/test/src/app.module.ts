@@ -9,11 +9,12 @@ import { CatsModule } from './cats/cats.module';
 import { LoggerMiddleware } from './middleware/logger.middleware';
 import { logger } from './middleware/functional.logger.middleware';
 import { ConfigModule } from './config/config.module';
+import { LazyModule } from './lazy/lazy.module';
 
 // When you want to provide a set of providers which should be available everywhere out-of-the-box - use @Global()
 @Global()
 @Module({
-  imports: [CatsModule, ConfigModule.register({ folder: './config' })],
+  imports: [CatsModule, ConfigModule.register({ folder: './config' }), LazyModule],
   // We can inject dependencies directly into the app module
   // controllers: [AppController, CatsController],
   // providers: [AppService, CatsService],
