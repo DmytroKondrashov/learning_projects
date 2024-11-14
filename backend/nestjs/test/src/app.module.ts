@@ -8,15 +8,22 @@ import {
 import { CatsModule } from './cats/cats.module';
 import { LoggerMiddleware } from './middleware/logger.middleware';
 import { logger } from './middleware/functional.logger.middleware';
-import { ConfigModule } from './config/config.module';
+// import { ConfigModule } from './config/config.module';
 import { LazyModule } from './lazy/lazy.module';
+import { ConfigModule } from '@nestjs/config';
+import someConfig from '../config/some.config';
 
 // When you want to provide a set of providers which should be available everywhere out-of-the-box - use @Global()
 @Global()
 @Module({
   imports: [
     CatsModule,
-    ConfigModule.register({ folder: './config' }),
+    // ConfigModule.register({ folder: './config' }),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: ['../config/development.env'],
+      load: [someConfig],
+    }),
     LazyModule,
   ],
   // We can inject dependencies directly into the app module
