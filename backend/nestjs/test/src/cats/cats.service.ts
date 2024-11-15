@@ -6,7 +6,7 @@ import { LazyService } from '../lazy/lazy.service';
 import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Cat as CatEntity } from './entites/cat.entity';
-import { Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 
 @Injectable()
 export class CatsService {
@@ -18,6 +18,7 @@ export class CatsService {
     private readonly configService: ConfigService,
     @InjectRepository(CatEntity)
     private catRepository: Repository<CatEntity>,
+    private readonly dataSource: DataSource,
   ) {}
   async onModuleInit() {
     this.lazyService = await this.moduleRef.create(LazyService);
@@ -33,5 +34,28 @@ export class CatsService {
 
   async findAll(): Promise<Cat[]> {
     return this.cats;
+  }
+
+  async createMany(cats: Cat[]) {
+    const queryRuner = this.dataSource.createQueryRunner();
+
+    await queryRuner.connect();
+    await queryRuner.startTransaction();
+
+    try {
+      cats.forEach(async (cat) => {
+        await queryRuner.manager.save(cat);
+      });
+      await queryRuner.commitTransaction();
+    } catch (error) {
+      await queryRuner.rollbackTransaction();
+    } finally {
+      await queryRuner.release();
+    }
+
+    // Alternatively:
+    // await this.dataSource.transaction(async (manager) => {
+    //   await manager.save(cats);
+    // });
   }
 }
