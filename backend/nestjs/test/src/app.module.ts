@@ -12,6 +12,7 @@ import { logger } from './middleware/functional.logger.middleware';
 import { LazyModule } from './lazy/lazy.module';
 import { ConfigModule } from '@nestjs/config';
 import someConfig from '../config/some.config';
+import * as Joi from 'joi';
 
 // When you want to provide a set of providers which should be available everywhere out-of-the-box - use @Global()
 @Global()
@@ -23,6 +24,12 @@ import someConfig from '../config/some.config';
       isGlobal: true,
       envFilePath: ['../config/development.env'],
       load: [someConfig],
+      validationSchema: Joi.object({
+        NODE_ENV: Joi.string()
+          .valid('development', 'production', 'test')
+          .default('development'),
+        DATABASE_PORT: Joi.number().port().default(3000),
+      }),
     }),
     LazyModule,
   ],
