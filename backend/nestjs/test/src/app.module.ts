@@ -17,6 +17,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { Cat } from './cats/entites/cat.entity';
 import { Photo } from './cats/entites/photo.entity';
+import { MongooseModule } from '@nestjs/mongoose';
 
 // When you want to provide a set of providers which should be available everywhere out-of-the-box - use @Global()
 @Global()
@@ -45,6 +46,7 @@ import { Photo } from './cats/entites/photo.entity';
       entities: [Cat, Photo],
       synchronize: true,
     }),
+    MongooseModule.forRoot('mongodb://localhost:27017/nestjs_test'),
     LazyModule,
   ],
   // We can inject dependencies directly into the app module
