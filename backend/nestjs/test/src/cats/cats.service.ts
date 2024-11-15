@@ -4,6 +4,9 @@ import { ModuleRef } from '@nestjs/core';
 // import { ConfigService } from '../config/config.service';
 import { LazyService } from '../lazy/lazy.service';
 import { ConfigService } from '@nestjs/config';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Cat as CatEntity } from './entites/cat.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class CatsService {
@@ -13,6 +16,8 @@ export class CatsService {
   constructor(
     private moduleRef: ModuleRef,
     private readonly configService: ConfigService,
+    @InjectRepository(CatEntity)
+    private catRepository: Repository<CatEntity>,
   ) {}
   async onModuleInit() {
     this.lazyService = await this.moduleRef.create(LazyService);

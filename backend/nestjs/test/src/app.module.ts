@@ -13,6 +13,9 @@ import { LazyModule } from './lazy/lazy.module';
 import { ConfigModule } from '@nestjs/config';
 import someConfig from '../config/some.config';
 import * as Joi from 'joi';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { DataSource } from 'typeorm';
+import { Cat } from './cats/entites/cat.entity';
 
 // When you want to provide a set of providers which should be available everywhere out-of-the-box - use @Global()
 @Global()
@@ -31,6 +34,16 @@ import * as Joi from 'joi';
         DATABASE_PORT: Joi.number().port().default(3000),
       }),
     }),
+    TypeOrmModule.forRoot({
+      type: 'mysql',
+      host: 'localhost',
+      port: 3306,
+      username: 'root',
+      password: 'root',
+      database: 'nestjs_test',
+      entities: [Cat],
+      synchronize: true,
+    }),
     LazyModule,
   ],
   // We can inject dependencies directly into the app module
@@ -38,6 +51,8 @@ import * as Joi from 'joi';
   // providers: [AppService, CatsService],
 })
 export class AppModule implements NestModule {
+  constructor(private dataSource: DataSource) {}
+
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(LoggerMiddleware, logger)
