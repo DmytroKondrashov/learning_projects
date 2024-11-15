@@ -16,6 +16,7 @@ import * as Joi from 'joi';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { Cat } from './cats/entites/cat.entity';
+import { Photo } from './cats/entites/photo.entity';
 
 // When you want to provide a set of providers which should be available everywhere out-of-the-box - use @Global()
 @Global()
@@ -41,7 +42,7 @@ import { Cat } from './cats/entites/cat.entity';
       username: 'root',
       password: 'root',
       database: 'nestjs_test',
-      entities: [Cat],
+      entities: [Cat, Photo],
       synchronize: true,
     }),
     LazyModule,
