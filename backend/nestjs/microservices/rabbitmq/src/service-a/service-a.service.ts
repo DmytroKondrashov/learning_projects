@@ -15,14 +15,15 @@ export class ServiceAService {
       options: {
         urls: ['amqp://127.0.0.1:5672'],
         queue: 'service_b_queue',
-        // queueOptions: {
-        //   durable: false,
-        // },
+        queueOptions: {
+          durable: true,
+        },
       },
     });
   }
 
-  sendMessage() {
+  async sendMessage() {
+    console.log('sendMessage');
     return this.client.send(
       { cmd: 'message' },
       { data: 'Hello from ServiceA' },

@@ -9,9 +9,9 @@ async function bootstrap() {
     transport: Transport.RMQ,
     options: {
       urls: ['amqp://127.0.0.1:5672'],
-      queue: 'main_queue',
+      queue: 'service_b_queue',
       queueOptions: {
-        durable: false,
+        durable: true,
       },
     },
   };
