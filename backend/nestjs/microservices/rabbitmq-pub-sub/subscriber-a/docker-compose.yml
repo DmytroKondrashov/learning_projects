@@ -4,7 +4,7 @@ services:
   nestjs-app:
     build: .
     ports:
-      - "3000:3000"
+      - "3001:3000"
     environment:
       RABBITMQ_URL: amqp://user:password@rabbitmq:5672
 
