@@ -13,7 +13,7 @@ async function bootstrap() {
       },
     },
   });
-  await app.listen();
   console.log('Publisher microservice is running');
+  await app.listen();
 }
 bootstrap();
