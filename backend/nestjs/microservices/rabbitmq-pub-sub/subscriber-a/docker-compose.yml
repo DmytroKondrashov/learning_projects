@@ -7,8 +7,10 @@ services:
       - "3001:3000"
     environment:
       RABBITMQ_URL: amqp://user:password@rabbitmq:5672
+    networks:
+      - rabbitmq_default
 
 networks:
-  default:
+  rabbitmq_default:
     external: true
     name: rabbitmq_default
