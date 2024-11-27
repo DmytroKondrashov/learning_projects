@@ -9,6 +9,7 @@ export class PublisherController {
   @Get('publish')
   publishMessage() {
     this.publisherService.publishMessage();
+    console.log('Message published');
     return { message: 'Message published' };
   }
 }
