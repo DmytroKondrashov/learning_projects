@@ -9,7 +9,7 @@ async function bootstrap() {
       urls: [process.env.RABBITMQ_URL],
       queue: 'pubsub_queue',
       queueOptions: {
-        durable: true,
+        durable: false,
       },
     },
   });
