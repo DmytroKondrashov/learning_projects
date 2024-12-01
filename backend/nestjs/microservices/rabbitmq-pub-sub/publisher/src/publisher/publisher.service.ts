@@ -23,6 +23,8 @@ export class PublisherService {
   }
 
   publishMessage() {
-    return this.client.emit('event_name', { message: 'Hello from Publisher!' });
+    return this.client.emit('pubsub_queue', {
+      message: 'Hello from Publisher!',
+    });
   }
 }
