@@ -11,7 +11,8 @@ export class AppController {
 
   @Get('publish')
   async publishMessage() {
-    const payload = { message: 'Hello from Publisher!' };
+    // const payload = { message: 'Hello from Publisher!' };
+    const payload = 'Hello from Publisher!';
     await this.kafkaClient.emit('test-topic', payload).toPromise();
     return 'Message published!';
   }
