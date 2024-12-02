@@ -19,7 +19,7 @@ export class ServiceBController implements OnModuleInit, OnModuleDestroy {
     await this.producer.disconnect();
   }
 
-  @MessagePattern('message_b')
+  @MessagePattern('topic_b')
   handleMessage(@Payload() message: any): string {
     return `ServiceB received message: ${message.data}`;
   }
