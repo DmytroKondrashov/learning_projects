@@ -7,7 +7,7 @@ export class AppController implements OnModuleInit, OnModuleDestroy {
     clientId: 'kafka-subscriber-2',
     brokers: ['127.0.0.1:9092'],
   });
-  private readonly consumer = this.kafka.consumer({ groupId: 'test-group' });
+  private readonly consumer = this.kafka.consumer({ groupId: 'test-group-2' });
 
   async onModuleInit() {
     await this.consumer.connect();
