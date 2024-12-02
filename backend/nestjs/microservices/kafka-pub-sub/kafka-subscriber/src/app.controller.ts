@@ -12,7 +12,7 @@ export class AppController implements OnModuleInit, OnModuleDestroy {
   async onModuleInit() {
     await this.consumer.connect();
     await this.consumer.subscribe({
-      topic: 'test-topic',
+      topics: ['common-topic', 'kafka-subscriber-topic'],
       fromBeginning: false,
     });
 

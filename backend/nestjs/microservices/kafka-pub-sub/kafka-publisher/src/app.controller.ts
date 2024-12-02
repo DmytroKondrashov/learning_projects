@@ -1,4 +1,10 @@
-import { Controller, Get, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  OnModuleDestroy,
+  OnModuleInit,
+  Query,
+} from '@nestjs/common';
 import { Kafka, Producer } from 'kafkajs';
 
 @Controller()
@@ -16,9 +22,9 @@ export class AppController implements OnModuleInit, OnModuleDestroy {
   }
 
   @Get('publish')
-  async publishMessage() {
+  async publishMessage(@Query('topic') topic: string) {
     await this.producer.send({
-      topic: 'test-topic',
+      topic: topic,
       messages: [
         {
           value: JSON.stringify({
