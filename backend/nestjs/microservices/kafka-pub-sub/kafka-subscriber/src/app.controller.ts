@@ -30,6 +30,7 @@ export class AppController implements OnModuleInit, OnModuleDestroy {
     await this.consumer.disconnect();
   }
 
+  // This will not work!
   // @MessagePattern('test-topic')
   // handleMessage(@Payload() message: any) {
   //   console.log(message);
