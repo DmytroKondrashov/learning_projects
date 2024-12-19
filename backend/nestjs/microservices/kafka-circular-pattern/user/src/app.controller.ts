@@ -7,7 +7,7 @@ export class AppController {
     @Inject('API_GATEWAY_SERVICE') private readonly client: ClientKafka,
   ) {}
 
-  @EventPattern('user.created')
+  @EventPattern('user.created.init')
   async handleUserCreated(@Payload() message: any) {
     console.log('User created: ', message);
     this.client.emit('user.created.success', {

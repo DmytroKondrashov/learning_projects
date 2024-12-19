@@ -13,7 +13,7 @@ export class AppController {
   @EventPattern('user.created')
   async handleCreatedUser(@Payload() message: any) {
     console.log('User created: ', message);
-    this.client.emit('user.created', { userId: message.userId });
+    this.client.emit('user.created.init', { userId: message.userId });
   }
 
   @MessagePattern('user.created.success')
