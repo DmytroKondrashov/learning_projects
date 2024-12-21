@@ -1,23 +1,25 @@
-import { Controller, Inject } from '@nestjs/common';
-import {
-  ClientKafka,
-  EventPattern,
-  MessagePattern,
-  Payload,
-} from '@nestjs/microservices';
+import { Controller, Post, Body, Inject } from '@nestjs/common';
+import { ClientKafka } from '@nestjs/microservices';
 
 @Controller()
 export class AppController {
-  constructor(@Inject('USER_SERVICE') private readonly client: ClientKafka) {}
+  constructor(
+    @Inject('API_GATEWAY_SERVICE') private readonly client: ClientKafka,
+  ) {}
 
-  @EventPattern('user.created')
-  async handleCreatedUser(@Payload() message: any) {
-    console.log('User created: ', message);
-    this.client.emit('user.created.init', { userId: message.userId });
-  }
+  @Post('create-user')
+  async createUser(@Body() userData: any) {
+    // Simulate user creation logic
+    const userId = '12345'; // Replace with actual user ID
+    const message = {
+      userId,
+      username: userData.username,
+      email: userData.email,
+    };
 
-  @MessagePattern('user.created.success')
-  async handleCreatedUserSuccess(@Payload() message: any) {
-    console.log('User created successfully: ', message);
+    // Send message to user.created topic
+    this.client.emit('user.created', message);
+
+    return { message: 'User creation message sent', userId };
   }
 }
