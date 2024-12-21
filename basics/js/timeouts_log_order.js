@@ -11,5 +11,4 @@
   console.log(4)
 })();
 
-//I said: 1, 4, 3, 5, 2
 //Correct: 1, 4, 5, 3, 2
