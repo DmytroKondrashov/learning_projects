@@ -1,23 +1,26 @@
-import { Controller, Inject } from '@nestjs/common';
+import { Controller } from '@nestjs/common';
 import {
-  ClientKafka,
-  EventPattern,
+  Ctx,
+  KafkaContext,
   MessagePattern,
   Payload,
 } from '@nestjs/microservices';
 
 @Controller()
 export class AppController {
-  constructor(@Inject('USER_SERVICE') private readonly client: ClientKafka) {}
+  constructor() {}
 
-  @EventPattern('user.created')
-  async handleCreatedUser(@Payload() message: any) {
-    console.log('User created: ', message);
-    this.client.emit('user.created.init', { userId: message.userId });
-  }
+  @MessagePattern('user.created')
+  async handleCreateUser(
+    @Payload() message: any,
+    @Ctx() context: KafkaContext,
+  ) {
+    const originalMessage = context.getMessage();
+    const response =
+      `Receiving a new message from topic: user.created: ` +
+      JSON.stringify(originalMessage.value);
+    console.log(response);
 
-  @MessagePattern('user.created.success')
-  async handleCreatedUserSuccess(@Payload() message: any) {
-    console.log('User created successfully: ', message);
+    return response;
   }
 }

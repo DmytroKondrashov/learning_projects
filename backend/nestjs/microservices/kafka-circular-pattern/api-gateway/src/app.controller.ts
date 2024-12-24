@@ -1,25 +1,39 @@
-import { Controller, Post, Body, Inject } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Inject,
+  OnModuleDestroy,
+  OnModuleInit,
+} from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 
 @Controller()
-export class AppController {
+export class AppController implements OnModuleInit, OnModuleDestroy {
   constructor(
     @Inject('API_GATEWAY_SERVICE') private readonly client: ClientKafka,
   ) {}
 
-  @Post('create-user')
-  async createUser(@Body() userData: any) {
-    // Simulate user creation logic
-    const userId = '12345'; // Replace with actual user ID
-    const message = {
-      userId,
-      username: userData.username,
-      email: userData.email,
-    };
+  onModuleInit() {
+    ['user.created'].forEach((key) => this.client.subscribeToResponseOf(key));
+  }
 
-    // Send message to user.created topic
-    this.client.emit('user.created', message);
+  onModuleDestroy() {
+    this.client.close();
+  }
 
-    return { message: 'User creation message sent', userId };
+  @Get('kafka-test')
+  async kafkaTest() {
+    return this.client.emit('user.created', {
+      foo: 'bar',
+      data: new Date().toString(),
+    });
+  }
+
+  @Get('kafka-test-response')
+  async kafkaTestResponse() {
+    return this.client.send('user.created', {
+      foo: 'bar',
+      data: new Date().toString(),
+    });
   }
 }

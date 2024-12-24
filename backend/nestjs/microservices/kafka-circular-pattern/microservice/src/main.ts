@@ -9,9 +9,6 @@ async function bootstrap() {
       client: {
         brokers: ['localhost:9092'],
       },
-      consumer: {
-        groupId: 'api-gateway-consumer',
-      },
     },
   });
 
