@@ -23,7 +23,7 @@ export class AppController implements OnModuleInit, OnModuleDestroy {
 
   @Get('kafka-test')
   async kafkaTest() {
-    return this.client.emit('test', { foo: 'bar' });
+    return this.client.emit('kafka.test', { foo: 'bar' });
   }
 
   @EventPattern('kafka.response')
