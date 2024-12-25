@@ -26,7 +26,7 @@ export class AppController implements OnModuleInit, OnModuleDestroy {
     return this.client.emit('test', { foo: 'bar' });
   }
 
-  @EventPattern('response')
+  @EventPattern('kafka.response')
   async response(data: any) {
     console.log(data);
   }
