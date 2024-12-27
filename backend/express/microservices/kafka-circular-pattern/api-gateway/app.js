@@ -1,7 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const axios = require("axios");
-const { KafkaClient, Producer } = require("kafka-node");
+const { KafkaClient, Producer, Consumer } = require("kafka-node");
 
 const app = express();
 app.use(bodyParser.json());
