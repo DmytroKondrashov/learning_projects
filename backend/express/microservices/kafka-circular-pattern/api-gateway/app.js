@@ -17,6 +17,16 @@ producer.on("error", (err) => {
   console.error("Kafka producer error:", err);
 });
 
+const responseConsumer = new Consumer(
+  kafkaClient,
+  [{ topic: "response-topic", partition: 0 }],
+  { autoCommit: true }
+)
+
+responseConsumer.on("message", (message) => {
+  console.log("Received message from Kafka:", message.value);
+})
+
 app.post("/publish", (req, res) => {
   const { topic, message } = req.body;
 
