@@ -6,7 +6,7 @@ const app = express();
 app.use(bodyParser.json())
 
 const kafkaClient = new KafkaClient({ kafkaHost: "localhost:9092" });
-const consumer = new Consumer(kafkaClient, [{ topic: "response-topic", partition: 0 }], { autoCommit: true });
+const consumer = new Consumer(kafkaClient, [{ topic: "user-topic", partition: 0 }], { autoCommit: true });
 const producer = new Producer(kafkaClient);
 
 producer.on("ready", () => {

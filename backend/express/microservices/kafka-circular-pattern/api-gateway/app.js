@@ -46,6 +46,8 @@ responseConsumer.on("message", (message) => {
 app.post("/publish", (req, res) => {
   const { topic, message } = req.body;
 
+  console.log({ topic, message })
+
   const payload = [
     { topic, messages: JSON.stringify(message), partition: 0 }
   ]
