@@ -6,16 +6,22 @@ import {
   Get,
   Req,
   Inject,
+  OnModuleInit,
 } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import { JwtAuthGuard } from './jwt-auth.guard';
 
 @Controller('auth')
-export class AppController {
+export class AppController implements OnModuleInit {
   constructor(
     @Inject('AUTH_SERVICE') private readonly authClient: ClientKafka,
     @Inject('SECURED_SERVICE') private readonly securedClient: ClientKafka,
   ) {}
+
+  async onModuleInit() {
+    this.authClient.subscribeToResponseOf('login');
+    await this.authClient.connect();
+  }
 
   @Post('login')
   async login(@Body() body: { username: string; password: string }) {
