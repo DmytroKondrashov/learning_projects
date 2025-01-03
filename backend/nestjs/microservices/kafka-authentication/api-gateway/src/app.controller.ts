@@ -20,6 +20,7 @@ export class AppController implements OnModuleInit {
 
   async onModuleInit() {
     this.authClient.subscribeToResponseOf('login');
+    this.authClient.subscribeToResponseOf('get_secured_data');
     await this.authClient.connect();
   }
 
