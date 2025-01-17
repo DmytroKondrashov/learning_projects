@@ -1,8 +1,8 @@
-module.exports = {
+export default {
   options: {
     session: {
       // If this still says `undefined`, set a real secret!
-      secret: 'very_secret_string'
+      secret: undefined
     }
   }
 };
