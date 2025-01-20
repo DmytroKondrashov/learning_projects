@@ -3,10 +3,36 @@
 // Increment the large integer by one and return the resulting array of digits.
 
 var plusOne = function(digits) {
-  const joinedDigits = digits.join('');
-  const int = parseInt(joinedDigits) + 1;
-  let str = int.toString();
-  return str.split('');
-};
+  const result = [];
+    let moreThanNine = false;
+    if (digits[digits.length -1] + 1 === 10) {
+        result.unshift(0);
+        moreThanNine = true;
+        if (digits.length -1 === 0) {
+          result.unshift(1);
+        }
+    } else {
+        result.unshift(digits[digits.length -1] + 1);
+    }
+
+    for (let i = digits.length - 2; i >= 0; i--) {
+        if (moreThanNine) {
+            if (digits[i] + 1 === 10) {
+                result.unshift(0);
+                moreThanNine = true;
+                if (i === 0) {
+                    result.unshift(1);
+                }
+            } else {
+                result.unshift(digits[i] + 1);
+                moreThanNine = false;
+            }
+        } else {
+            result.unshift(digits[i])
+        }
+    }
+
+    return result;
+}
 
 console.log(plusOne([1,2,3]))
