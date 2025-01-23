@@ -9,5 +9,5 @@ export class User {
   email: string;
 
   @Field(() => [Post])
-  posts: Post[];
+  posts?: Post[];
 }
