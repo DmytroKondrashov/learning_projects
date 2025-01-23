@@ -11,12 +11,12 @@ export class UserResolver {
   }
 
   @Query(() => User)
-  async user(@Args('id') id: number) {
+  async user(@Args('id') id: number): Promise<User> {
     return this.userService.findOne(id);
   }
 
   @Mutation(() => User)
-  async createUser(@Args('email') email: string) {
-    return this.userService.create(email);
+  async createUser(@Args('email') email: string): Promise<User> {
+    return this.userService.create(email) as unknown as User;
   }
 }
