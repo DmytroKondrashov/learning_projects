@@ -1,12 +1,13 @@
 import { Injectable } from '@nestjs/common';
+import { Post } from './models/post.model';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class PostService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async findAll() {
-    return this.prisma.post.findMany();
+  async findAll(): Promise<Post[]> {
+    return this.prisma.post.findMany({ include: { user: true } });
   }
 
   async findOne(id: number) {
