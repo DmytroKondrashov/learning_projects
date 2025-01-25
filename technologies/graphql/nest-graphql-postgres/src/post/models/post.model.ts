@@ -12,6 +12,6 @@ export class Post {
   @Field()
   userId: number;
 
-  @Field(() => User)
-  user: User;
+  // @Field(() => User)
+  // user: User;
 }
