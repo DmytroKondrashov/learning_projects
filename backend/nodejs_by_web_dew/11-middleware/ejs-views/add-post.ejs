@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Node.js Course | <%= title %></title>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/main.css">
+</head>
+<body>
+  <%- include('./partials/nav.ejs') %>
+  <form id="post-form">
+    <div class="form-info">
+      <label>Post Title
+        <input type="text" name="title">
+      </label>
+      <label>Author
+        <input type="text" name="author">
+      </label>
+    </div>
+    <div class="form-text">
+      <label>Post Text
+        <textarea name="text"></textarea>
+      </label>
+    </div>
+    <div class="form-button">
+      <input type="submit" value="Submit">
+    </div>
+  </form>
+</body>
+</html>
