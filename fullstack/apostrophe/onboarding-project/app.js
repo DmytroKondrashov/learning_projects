@@ -29,6 +29,7 @@ apostrophe({
         className: 'bp-video-widget'
       }
     },
+    'article-widget': {},
     // `asset` supports the project's build for client-side assets.
     asset: {},
     // use vite for asset bundling and hot module reloading
