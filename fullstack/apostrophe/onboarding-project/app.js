@@ -29,6 +29,7 @@ apostrophe({
         className: 'bp-video-widget'
       }
     },
+    '@apostrophecms/i18n': {},
     'article-widget': {},
     // `asset` supports the project's build for client-side assets.
     asset: {},
