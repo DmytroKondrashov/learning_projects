@@ -41,6 +41,7 @@
   "dependencies": {
     "@apostrophecms/vite": "^1.0.0",
     "apostrophe": "^4.9.0",
+    "bootstrap": "^5.3.3",
     "normalize.css": "^8.0.1"
   },
   "devDependencies": {
