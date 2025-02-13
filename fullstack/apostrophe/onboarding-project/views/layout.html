@@ -11,6 +11,14 @@
   {% endif %}
 {% endblock %}
 
+{% block extraHead %}
+  <link rel="icon" sizes="16x16" href="{{ apos.asset.url('/modules/asset/favicon/favicon-16.png')}}">
+  <link rel="icon" sizes="32x32" href="{{ apos.asset.url('/modules/asset/favicon/favicon-32.png')}}">
+  <link rel="icon" sizes="96x96" href="{{ apos.asset.url('/modules/asset/favicon/favicon-96.png')}}">
+  <link rel="icon" sizes="180x180" href="{{ apos.asset.url('/modules/asset/favicon/favicon-180.png')}}">
+  <link rel="icon" sizes="512x512" href="{{ apos.asset.url('/modules/asset/favicon/favicon-512.png')}}">
+{% endblock %}
+
 {% block beforeMain %}
   <header>
     {% render topbar.mainArea() %}
