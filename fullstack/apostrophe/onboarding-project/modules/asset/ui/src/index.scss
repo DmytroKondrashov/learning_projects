@@ -1,1 +1,8 @@
+// Add theme SASS variables
+@import './scss/_theme-settings';
+// Add theme fonts and base styles
+@import './scss/_theme-main';
+// Add styling for theme components
+@import './scss/_theme-topbar';
+
 @import 'bootstrap';
