@@ -1,4 +1,4 @@
-const bootstrap = require('bootstrap');
+import bootstrap from 'bootstrap';
 
 export default () => {
   // Your own project level JS may go here

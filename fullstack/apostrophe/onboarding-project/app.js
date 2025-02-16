@@ -14,7 +14,6 @@ apostrophe({
     // have a minimal configuration here to turn them on: `moduleName: {}`
     // ***********************************************************************
     // `className` options set custom CSS classes for Apostrophe core widgets.
-    '@apostrophecms/i18n': {},
     '@apostrophecms/rich-text-widget': {
       options: {
         className: 'bp-rich-text'
@@ -30,6 +29,7 @@ apostrophe({
         className: 'bp-video-widget'
       }
     },
+    '@apostrophecms/i18n': {},
     'article-widget': {},
     // `asset` supports the project's build for client-side assets.
     asset: {},
