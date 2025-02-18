@@ -50,7 +50,7 @@ app.post('/refresh', (req, res) => {
 app.post('logout', (req, res) => {
   refreshTokens = refreshTokens.filter(token => token !== req.cookies.refreshToken);
   res.clearCookie('refreshToken');
-  res.sendStatus(204).json({ message: 'Logged out successfully' });
+  res.sendStatus(204);
 })
 
 authorisedUser = (req, res, next) => {
@@ -59,9 +59,28 @@ authorisedUser = (req, res, next) => {
   if (token === null) return res.sendStatus(401);
 
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-    if (err) return res.status(401).json({ message: 'Unauthorized' });
-    req.user = user;
-    next();
+    if (!err) {
+      req.user = user;
+      return next();
+    }
+    
+    if (err.name === 'TokenExpiredError') {
+      const refreshToken = req.cookies.refreshToken;
+      if (!refreshToken || !refreshTokens.includes(refreshToken)) {
+        return res.sendStatus(403);
+      }
+
+      jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (refreshErr, decoded) => {
+        if (refreshErr) return res.sendStatus(403);
+
+        const newAccessToken = generateAccessToken({ id: decoded.id });
+        res.setHeader('Authorization', `Bearer ${newAccessToken}`);
+        req.user = decoded;
+        next();
+      });
+    } else {
+      res.sendStatus(403);
+    }
   })
 } 
 
