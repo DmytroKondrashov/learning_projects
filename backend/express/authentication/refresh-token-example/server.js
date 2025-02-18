@@ -14,6 +14,37 @@ const refreshTokens = [];
 const generateAccessToken = (user) => jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '60s' });
 const generateRefreshToken = (user) => jwt.sign(user, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '7d' });
 
+authorisedUser = (req, res, next) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+  if (token === null) return res.sendStatus(401);
+
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+    if (!err) {
+      req.user = user;
+      return next();
+    }
+    
+    if (err.name === 'TokenExpiredError') {
+      const refreshToken = req.cookies.refreshToken;
+      if (!refreshToken || !refreshTokens.includes(refreshToken)) {
+        return res.sendStatus(403);
+      }
+
+      jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (refreshErr, decoded) => {
+        if (refreshErr) return res.sendStatus(403);
+
+        const newAccessToken = generateAccessToken({ id: decoded.id });
+        res.setHeader('Authorization', `Bearer ${newAccessToken}`);
+        req.user = decoded;
+        next();
+      });
+    } else {
+      res.sendStatus(403);
+    }
+  })
+}
+
 app.post('/login', (req, res) => {
   const { username } = req.body;
 
@@ -52,37 +83,6 @@ app.post('logout', (req, res) => {
   res.clearCookie('refreshToken');
   res.sendStatus(204);
 })
-
-authorisedUser = (req, res, next) => {
-  const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
-  if (token === null) return res.sendStatus(401);
-
-  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-    if (!err) {
-      req.user = user;
-      return next();
-    }
-    
-    if (err.name === 'TokenExpiredError') {
-      const refreshToken = req.cookies.refreshToken;
-      if (!refreshToken || !refreshTokens.includes(refreshToken)) {
-        return res.sendStatus(403);
-      }
-
-      jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (refreshErr, decoded) => {
-        if (refreshErr) return res.sendStatus(403);
-
-        const newAccessToken = generateAccessToken({ id: decoded.id });
-        res.setHeader('Authorization', `Bearer ${newAccessToken}`);
-        req.user = decoded;
-        next();
-      });
-    } else {
-      res.sendStatus(403);
-    }
-  })
-} 
 
 app.listen(3000, () => {
   console.log('Server is running on port 3000');
