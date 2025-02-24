@@ -1,4 +1,4 @@
-import bootstrap from 'bootstrap';
+import Bootstrap from 'bootstrap';
 
 export default () => {
   // Your own project level JS may go here
