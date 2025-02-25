@@ -9,6 +9,7 @@ export default {
         label: 'Top Area',
         options: {
           widgets: {
+            'row-widget': {},
             '@apostrophecms/image': {
               // This option will add these classes to any image
               className: 'img-fluid image-fit-center-center'
