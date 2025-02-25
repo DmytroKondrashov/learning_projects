@@ -1,4 +1,4 @@
-const fullConfig = require('../../../lib/area');
+import fullConfig from '../../../lib/area.js';
 const fields = {
   columns: {
     label: 'Column layout',
@@ -65,6 +65,4 @@ for (let i = 1; i <= 4; i++) {
   // console.log(`Output for i = ${i}:`, fields);
 }
 
-module.exports = {
-  fields
-};
+export { fields };

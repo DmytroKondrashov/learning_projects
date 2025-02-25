@@ -1,4 +1,4 @@
-import { fields } from './lib/fields';
+import { fields } from './lib/fields.js';
 
 export default {
   extend: '@apostrophecms/widget-type',
