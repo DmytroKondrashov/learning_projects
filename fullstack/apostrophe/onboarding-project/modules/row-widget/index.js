@@ -1,3 +1,5 @@
+const { fields } = require('./lib/fields');
+
 export default {
   extend: '@apostrophecms/widget-type',
   options: {
@@ -6,6 +8,6 @@ export default {
     previewIcon: 'view-column-outline'
   },
   fields: {
-    add: {}
+    add: fields
   }
 };
