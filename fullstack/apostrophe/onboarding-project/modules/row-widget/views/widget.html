@@ -1,4 +1,4 @@
-{% set cols = apos.modules['row-widget'].helpers.layoutToColumns(data.widget.layout) %}
+{% set cols = apos.modules['row-widget'].layoutToColumns(data.widget.columns) %}
 
 <div class="row mb-5">
   {%  for column in cols %}
