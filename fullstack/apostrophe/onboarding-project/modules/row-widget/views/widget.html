@@ -1,2 +1,7 @@
-<section data-row-widget>
-</section>
+<div class="row mb-5">
+  {% for column in data.widget.columns %}
+    <div class="col-md-{{column}}">
+      {% area data.widget, 'area'+loop.index %}
+    </div>
+  {% endfor %}
+</div>
