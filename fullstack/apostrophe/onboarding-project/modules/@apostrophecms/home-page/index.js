@@ -79,6 +79,7 @@ export default {
                   // This option will add these classes to any image
                   className: 'img-fluid image-fit-center-center'
                 },
+                'row-widget': {},
                 '@apostrophecms/video': {},
                 '@apostrophecms/html': {},
                 '@apostrophecms/rich-text': {
