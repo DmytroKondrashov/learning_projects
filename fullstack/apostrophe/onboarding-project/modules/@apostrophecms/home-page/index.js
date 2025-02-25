@@ -9,7 +9,7 @@ export default {
         label: 'Top Area',
         options: {
           widgets: {
-            'row-widget': {},
+            'row': {},
             '@apostrophecms/image': {
               // This option will add these classes to any image
               className: 'img-fluid image-fit-center-center'
@@ -79,7 +79,7 @@ export default {
                   // This option will add these classes to any image
                   className: 'img-fluid image-fit-center-center'
                 },
-                'row-widget': {},
+                'row': {},
                 '@apostrophecms/video': {},
                 '@apostrophecms/html': {},
                 '@apostrophecms/rich-text': {
