@@ -1,4 +1,4 @@
-const { fields } = require('./lib/fields');
+import { fields } from './lib/fields';
 
 export default {
   extend: '@apostrophecms/widget-type',
