@@ -38,5 +38,8 @@ apostrophe({
     // The project's first custom page type.
     'default-page': {},
     'row-widget': {}
+  },
+  icons: {
+    'view-column-outline': 'ViewColumnOutline'
   }
 });
