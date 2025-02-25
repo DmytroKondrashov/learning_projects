@@ -1,5 +1,7 @@
+{% let cols = apos.modules['row-widget'].helpers.layoutToColumns(data.widget.layout) %}
+
 <div class="row mb-5">
-  {% for column in data.widget.columns %}
+  {%  for column in cols %}
     <div class="col-md-{{column}}">
       {% area data.widget, 'area'+loop.index %}
     </div>
