@@ -1,5 +1,8 @@
-export default {
-  '@apostrophecms/image': {},
+const basicConfig = {
+  '@apostrophecms/image': {
+    // This option will add these classes to any image
+    className: 'img-fluid image-fit-center-center'
+  },
   '@apostrophecms/video': {},
   '@apostrophecms/html': {},
   '@apostrophecms/rich-text': {
@@ -17,8 +20,6 @@ export default {
       'blockquote',
       'codeBlock',
       '|',
-      'horizontalRule',
-      '|',
       'undo',
       'redo'
     ],
@@ -26,6 +27,15 @@ export default {
       {
         tag: 'p',
         label: 'Paragraph (P)'
+      },
+      {
+        tag: 'h2',
+        label: 'Heading 2 (H2)'
+      },
+      {
+        tag: 'h2',
+        label: 'Special underline',
+        class: 'custom-underline display-6 ps-2'
       },
       {
         tag: 'h3',
@@ -38,7 +48,15 @@ export default {
     ],
     insert: [
       'table',
-      'image'
+      'image',
+      'horizontalRule'
     ]
   }
 };
+
+const fullConfig = {
+  ...basicConfig,
+  deal: {}
+};
+
+export { basicConfig, fullConfig };

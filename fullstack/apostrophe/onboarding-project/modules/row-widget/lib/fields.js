@@ -1,4 +1,4 @@
-import fullConfig from '../../../lib/area.js';
+import { fullConfig } from '../../../lib/area.js';
 const fields = {
   columns: {
     label: 'Column layout',
