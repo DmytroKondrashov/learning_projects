@@ -5,7 +5,6 @@ const basicConfig = {
   },
   '@apostrophecms/video': {},
   '@apostrophecms/html': {},
-  'deal-widget': {},
   '@apostrophecms/rich-text': {
     toolbar: [
       'styles',
@@ -52,13 +51,13 @@ const basicConfig = {
       'image',
       'horizontalRule'
     ]
-  },
-  'rating-widget': {}
+  }
 };
 
 const fullConfig = {
   ...basicConfig,
-  deal: {}
+  'rating-widget': {},
+  'deal-widget': {}
 };
 
 export { basicConfig, fullConfig };
