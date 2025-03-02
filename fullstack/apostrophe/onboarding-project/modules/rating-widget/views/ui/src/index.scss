@@ -1,0 +1,7 @@
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css");
+@import './scss/_font-awesome-stars';
+
+.fa-star:before {
+  color: var(--bs-info);
+  font-size: 20px;
+}
