@@ -37,7 +37,8 @@ apostrophe({
     '@apostrophecms/vite': {},
     // The project's first custom page type.
     'default-page': {},
-    'row-widget': {}
+    'row-widget': {},
+    'deal-widget': {}
   },
   icons: {
     'view-column-outline': 'ViewColumnOutline'
