@@ -1,2 +1,29 @@
-<section data-rating-widget>
+<section class="container" data-rating-widget>
+  <div class="row">
+    <div class="card mb-3 col-md-6">
+      <div class="card-body">
+        <h5 class="card-title">Apostrophe Product Ratings</h5>
+        <div class="card-text">
+          <div class="row mb-3">
+            <p class="mb-1">Quality:</p>
+            <div class="fontawesome-rating">
+              {% component 'rating-widget:stars' with { starsData: data.widget.productQuality } %}
+            </div>
+          </div>
+          <div class="row mb-3">
+            <p class="mb-1">Safety:</p>
+            <div class="fontawesome-rating">
+              {% component 'rating-widget:stars' with { starsData: data.widget.productSafety } %}
+            </div>
+          </div>
+          <div class="row mb-3">
+            <p class="mb-1">Value:</p>
+            <div class="fontawesome-rating">
+              {% component 'rating-widget:stars' with { starsData: data.widget.productValue } %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
