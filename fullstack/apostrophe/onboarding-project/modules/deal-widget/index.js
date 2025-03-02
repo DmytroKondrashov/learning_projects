@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   // extending a core module creates a new instance of that module type
   // with a new name, but all the same functions
   extend: '@apostrophecms/widget-type',
