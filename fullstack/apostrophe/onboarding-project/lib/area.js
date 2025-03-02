@@ -52,7 +52,8 @@ const basicConfig = {
       'image',
       'horizontalRule'
     ]
-  }
+  },
+  'rating-widget': {}
 };
 
 const fullConfig = {
