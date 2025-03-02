@@ -5,6 +5,7 @@ const basicConfig = {
   },
   '@apostrophecms/video': {},
   '@apostrophecms/html': {},
+  'deal-widget': {},
   '@apostrophecms/rich-text': {
     toolbar: [
       'styles',
