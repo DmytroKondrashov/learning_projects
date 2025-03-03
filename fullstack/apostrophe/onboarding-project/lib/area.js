@@ -56,8 +56,8 @@ const basicConfig = {
 
 const fullConfig = {
   ...basicConfig,
-  'rating-widget': {},
-  'deal-widget': {}
+  'rating': {},
+  'deal': {}
 };
 
 export { basicConfig, fullConfig };
