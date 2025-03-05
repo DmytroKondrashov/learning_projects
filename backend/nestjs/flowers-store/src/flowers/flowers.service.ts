@@ -9,7 +9,23 @@ export class FlowersService {
   }
 
   findAll() {
-    return `This action returns all flowers`;
+    return [
+      {
+        name: 'Rose',
+        color: 'Red',
+        price: 100,
+      },
+      {
+        name: 'Lily',
+        color: 'White',
+        price: 50,
+      },
+      {
+        name: 'Daisy',
+        color: 'White',
+        price: 20,
+      },
+    ];
   }
 
   findOne(id: number) {
