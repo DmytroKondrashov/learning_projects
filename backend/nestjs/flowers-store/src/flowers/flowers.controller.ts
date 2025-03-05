@@ -6,10 +6,12 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { FlowersService } from './flowers.service';
 import { CreateFlowerDto } from './dto/create-flower.dto';
 import { UpdateFlowerDto } from './dto/update-flower.dto';
+import { ParseIntPipe } from 'src/pipes/pipe';
 
 @Controller('flowers')
 export class FlowersController {
@@ -21,7 +23,8 @@ export class FlowersController {
   }
 
   @Get()
-  findAll() {
+  findAll(@Query('pageNumber', ParseIntPipe) pageNumber: number) {
+    console.log(pageNumber);
     return this.flowersService.findAll();
   }
 
