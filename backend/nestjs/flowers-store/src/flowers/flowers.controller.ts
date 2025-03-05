@@ -7,11 +7,13 @@ import {
   Param,
   Delete,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { FlowersService } from './flowers.service';
 import { CreateFlowerDto } from './dto/create-flower.dto';
 import { UpdateFlowerDto } from './dto/update-flower.dto';
 import { ParseIntPipe } from 'src/pipes/pipe';
+import { AuthGuard } from 'src/guards/guard';
 
 @Controller('flowers')
 export class FlowersController {
@@ -23,6 +25,7 @@ export class FlowersController {
   }
 
   @Get()
+  @UseGuards(AuthGuard)
   findAll(@Query('pageNumber', ParseIntPipe) pageNumber: number) {
     console.log(pageNumber);
     return this.flowersService.findAll();
