@@ -1,14 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { CreateFlowerDto } from './dto/create-flower.dto';
 import { UpdateFlowerDto } from './dto/update-flower.dto';
+import { Flower } from '@prisma/client';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class FlowersService {
+  constructor(private readonly prisma: PrismaService) {}
+
   create(createFlowerDto: CreateFlowerDto) {
     return 'This action adds a new flower';
   }
 
-  findAll() {
+  findAll(): Flower {
     return [
       {
         name: 'Rose',
