@@ -1,15 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { CreateFlowerDto } from './dto/create-flower.dto';
-import { UpdateFlowerDto } from './dto/update-flower.dto';
 import { Flower } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { FlowersCreateDto, TFlowersUpdateDto } from 'src/dtos/flowers.dto';
 
 @Injectable()
 export class FlowersService {
   constructor(private readonly prisma: PrismaService) {}
 
-  create(createFlowerDto: CreateFlowerDto) {
-    return 'This action adds a new flower';
+  create(createFlowerDto: FlowersCreateDto) {
+    return this.prisma.flower.create({
+      data: createFlowerDto,
+    });
   }
 
   findAll(): Promise<Flower[]> {
@@ -17,14 +18,21 @@ export class FlowersService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} flower`;
+    return this.prisma.flower.findUnique({
+      where: { id },
+    });
   }
 
-  update(id: number, updateFlowerDto: UpdateFlowerDto) {
-    return `This action updates a #${id} flower`;
+  update(id: number, updateFlowerDto: TFlowersUpdateDto) {
+    return this.prisma.flower.update({
+      where: { id },
+      data: updateFlowerDto,
+    });
   }
 
   remove(id: number) {
-    return `This action removes a #${id} flower`;
+    return this.prisma.flower.delete({
+      where: { id },
+    });
   }
 }
