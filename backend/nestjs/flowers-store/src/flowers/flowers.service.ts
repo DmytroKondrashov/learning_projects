@@ -12,24 +12,8 @@ export class FlowersService {
     return 'This action adds a new flower';
   }
 
-  findAll(): Flower {
-    return [
-      {
-        name: 'Rose',
-        color: 'Red',
-        price: 100,
-      },
-      {
-        name: 'Lily',
-        color: 'White',
-        price: 50,
-      },
-      {
-        name: 'Daisy',
-        color: 'White',
-        price: 20,
-      },
-    ];
+  findAll(): Promise<Flower[]> {
+    return this.prisma.flower.findMany();
   }
 
   findOne(id: number) {
