@@ -12,3 +12,12 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Flower {
+  id Int @id @default(autoincrement())
+  name String
+  color String
+  price Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
