@@ -9,6 +9,8 @@ import {
   Query,
   UseGuards,
   UseInterceptors,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { FlowersService } from './flowers.service';
 import { UpdateFlowerDto } from './dto/update-flower.dto';
@@ -22,6 +24,7 @@ export class FlowersController {
   constructor(private readonly flowersService: FlowersService) {}
 
   @Post()
+  @UsePipes(new ValidationPipe())
   create(@Body() createFlowerDto: FlowersCreateDto) {
     return this.flowersService.create(createFlowerDto);
   }
