@@ -24,6 +24,7 @@ export class FlowersController {
   constructor(private readonly flowersService: FlowersService) {}
 
   @Post()
+  @UseGuards(AuthGuard)
   @UsePipes(new ValidationPipe())
   create(@Body() createFlowerDto: FlowersCreateDto) {
     return this.flowersService.create(createFlowerDto);
