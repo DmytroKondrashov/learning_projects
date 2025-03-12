@@ -4,9 +4,14 @@ import { AppService } from './app.service';
 import { FlowersModule } from './flowers/flowers.module';
 import { LoggerMiddleware } from './middleware/middleware';
 import { PrismaService } from './prisma/prisma.service';
-
+import { ConfigModule } from '@nestjs/config';
 @Module({
-  imports: [FlowersModule],
+  imports: [
+    FlowersModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+  ],
   controllers: [AppController],
   providers: [AppService, PrismaService],
 })
