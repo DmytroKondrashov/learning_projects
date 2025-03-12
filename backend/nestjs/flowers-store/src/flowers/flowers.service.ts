@@ -2,10 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { Flower } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { FlowersCreateDto, TFlowersUpdateDto } from 'src/dtos/flowers.dto';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class FlowersService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly config: ConfigService,
+  ) {}
 
   create(createFlowerDto: FlowersCreateDto) {
     return this.prisma.flower.create({
@@ -14,6 +18,7 @@ export class FlowersService {
   }
 
   findAll(): Promise<Flower[]> {
+    console.log(this.config.get('MODE'));
     return this.prisma.flower.findMany();
   }
 
