@@ -20,8 +20,6 @@ export class AppService {
   }
 
   sendMessage() {
-    this.client.emit('flowers-store', {
-      message: 'New order',
-    });
+    this.client.emit('flowers-store', 'New order');
   }
 }
