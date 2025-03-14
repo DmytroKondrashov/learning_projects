@@ -19,7 +19,9 @@ export class AppService {
     });
   }
 
-  getHello(): string {
-    return 'Hello World!';
+  sendMessage() {
+    this.client.emit('flowers-store', {
+      message: 'New order',
+    });
   }
 }
