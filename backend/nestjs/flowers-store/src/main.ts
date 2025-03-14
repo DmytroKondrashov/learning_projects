@@ -4,12 +4,17 @@ import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import 'reflect-metadata';
 
 async function bootstrap() {
-  const app = await NestFactory.createMicroservice<MicroserviceOptions>(
-    AppModule,
-    {
+  const app = await NestFactory.create(AppModule);
+  await app.listen(3000);
+
+  const microserviceApp =
+    await NestFactory.createMicroservice<MicroserviceOptions>(AppModule, {
       transport: Transport.TCP,
-    },
-  );
-  await app.listen();
+      options: {
+        host: 'localhost',
+        port: 8877,
+      },
+    });
+  await microserviceApp.listen();
 }
 bootstrap();
