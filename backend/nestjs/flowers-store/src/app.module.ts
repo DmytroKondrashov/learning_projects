@@ -6,6 +6,7 @@ import { LoggerMiddleware } from './middleware/middleware';
 import { PrismaService } from './prisma/prisma.service';
 import { ConfigModule } from '@nestjs/config';
 import { MicroserviceModule } from './microservice/microservice.module';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 @Module({
   imports: [
     FlowersModule,
@@ -13,6 +14,16 @@ import { MicroserviceModule } from './microservice/microservice.module';
       isGlobal: true,
     }),
     MicroserviceModule,
+    ClientsModule.register([
+      {
+        name: 'ORDER_SERVICE',
+        transport: Transport.TCP,
+        options: {
+          host: 'localhost',
+          port: 8877,
+        },
+      },
+    ]),
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],
