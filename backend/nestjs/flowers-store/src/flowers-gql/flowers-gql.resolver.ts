@@ -6,5 +6,7 @@ export class FlowersGqlResolver {
   constructor(private readonly flowersService: FlowersService) {}
 
   @Query(() => String, { name: 'flowers' })
-  findAll() {}
+  findAll() {
+    return this.flowersService.findAll();
+  }
 }
