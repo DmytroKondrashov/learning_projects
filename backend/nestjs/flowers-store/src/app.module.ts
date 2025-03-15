@@ -10,6 +10,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ApolloDriverConfig, ApolloDriver } from '@nestjs/apollo';
 import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
+import { FlowersGqlModule } from './flowers-gql/flowers-gql.module';
 @Module({
   imports: [
     FlowersModule,
@@ -32,6 +33,7 @@ import { join } from 'path';
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       sortSchema: true,
     }),
+    FlowersGqlModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],
