@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { FlowersGqlService } from './flowers-gql.service';
 import { FlowersGqlResolver } from './flowers-gql.resolver';
+import { FlowersService } from 'src/flowers/flowers.service';
 
 @Module({
-  providers: [FlowersGqlResolver, FlowersGqlService],
+  providers: [FlowersGqlResolver, FlowersService],
 })
 export class FlowersGqlModule {}
