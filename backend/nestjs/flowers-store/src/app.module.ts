@@ -7,6 +7,8 @@ import { PrismaService } from './prisma/prisma.service';
 import { ConfigModule } from '@nestjs/config';
 import { MicroserviceModule } from './microservice/microservice.module';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { ApolloDriverConfig, ApolloDriver } from '@nestjs/apollo';
+import { GraphQLModule } from '@nestjs/graphql';
 @Module({
   imports: [
     FlowersModule,
@@ -24,6 +26,9 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         },
       },
     ]),
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+    }),
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],
