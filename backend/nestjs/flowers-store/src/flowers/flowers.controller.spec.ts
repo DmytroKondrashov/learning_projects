@@ -1,6 +1,5 @@
 import { Test } from '@nestjs/testing';
 import { FlowersController } from './flowers.controller';
-import { FlowersService } from './flowers.service';
 
 describe('FlowersController', () => {
   let controller: FlowersController;
@@ -10,7 +9,7 @@ describe('FlowersController', () => {
       controllers: [FlowersController],
       providers: [
         {
-          provide: FlowersService,
+          provide: 'FlowersService',
           useValue: {
             findAll: jest.fn().mockResolvedValue([
               {
