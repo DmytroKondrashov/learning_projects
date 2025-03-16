@@ -12,7 +12,8 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
 import { FlowersGqlModule } from './flowers-gql/flowers-gql.module';
 // import { WebsocketGateway } from './websocket.gateway';
-import { ChatGateway } from './websocket.gateway';
+// import { ChatGateway } from './websocket.gateway';
+import { ChatGateway } from './chat/chat.gateway';
 @Module({
   imports: [
     FlowersModule,
