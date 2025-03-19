@@ -3,6 +3,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import * as request from 'supertest';
 import { AppModule } from 'src/app.module';
 
+// Important! In order for tests to pass you need to comment out the AuthGuard in the Flowers controller
+
 describe('FlowersController (e2e)', () => {
   let app: INestApplication;
 

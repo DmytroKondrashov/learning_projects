@@ -2,6 +2,8 @@ import { Test } from '@nestjs/testing';
 import { FlowersController } from './flowers.controller';
 import { FlowersService } from './flowers.service';
 
+// Important! In order for tests to pass you need to comment out the AuthGuard in the Flowers controller
+
 describe('FlowersController', () => {
   let controller: FlowersController;
 
