@@ -18,6 +18,7 @@ import { ParseIntPipe } from '../pipes/pipe';
 import { AuthGuard } from '../guards/guard';
 import { LoggingInterceptor } from '../interceptors/interceptor';
 import { FlowersCreateDto } from '../dtos/flowers.dto';
+import { ApiOperation, ApiBody, ApiResponse } from '@nestjs/swagger';
 
 @Controller('flowers')
 export class FlowersController {
@@ -26,6 +27,9 @@ export class FlowersController {
   @Post()
   @UseGuards(AuthGuard)
   @UsePipes(new ValidationPipe())
+  @ApiOperation({ summary: 'Create a new flower' })
+  @ApiBody({ type: FlowersCreateDto })
+  @ApiResponse({ status: 201 })
   create(@Body() createFlowerDto: FlowersCreateDto) {
     return this.flowersService.create(createFlowerDto);
   }
