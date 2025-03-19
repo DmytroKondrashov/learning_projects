@@ -1,6 +1,7 @@
 import { Test } from '@nestjs/testing';
 import { FlowersService } from './flowers.service';
-
+import { PrismaService } from '../prisma/prisma.service';
+import { ConfigService } from '@nestjs/config';
 describe('FlowerService', () => {
   let service: FlowersService;
 
@@ -8,8 +9,9 @@ describe('FlowerService', () => {
     const module = await Test.createTestingModule({
       providers: [
         FlowersService,
+        ConfigService,
         {
-          provide: 'PrismaService',
+          provide: PrismaService,
           useValue: {
             flower: {
               findMany: jest.fn().mockResolvedValue([
