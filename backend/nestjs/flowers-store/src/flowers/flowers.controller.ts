@@ -14,10 +14,10 @@ import {
 } from '@nestjs/common';
 import { FlowersService } from './flowers.service';
 import { UpdateFlowerDto } from './dto/update-flower.dto';
-import { ParseIntPipe } from 'src/pipes/pipe';
-import { AuthGuard } from 'src/guards/guard';
-import { LoggingInterceptor } from 'src/interceptors/interceptor';
-import { FlowersCreateDto } from 'src/dtos/flowers.dto';
+import { ParseIntPipe } from '../pipes/pipe';
+import { AuthGuard } from '../guards/guard';
+import { LoggingInterceptor } from '../interceptors/interceptor';
+import { FlowersCreateDto } from '../dtos/flowers.dto';
 
 @Controller('flowers')
 export class FlowersController {
