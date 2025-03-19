@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Flower } from '@prisma/client';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { FlowersCreateDto, TFlowersUpdateDto } from 'src/dtos/flowers.dto';
 import { ConfigService } from '@nestjs/config';
 
