@@ -52,8 +52,8 @@
             {#if post.text}
               <p>{post.text}</p>
             {/if}
-            {#if post.photo && post.photo.length > 0}
-              <img src={post.photo[post.photo.length - 1].file_url} alt="Post Image" class="post-image" />
+            {#if post.photoUrl}
+              <img src={post.photoUrl} alt="Post Image" class="post-image" />
             {/if}
             {#if post.caption}
               <i>{post.caption}</i>
