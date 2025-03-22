@@ -22,6 +22,7 @@ if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHANNEL_ID) {
 
 app.get('/api/posts', async (req, res) => {
   try {
+    const { limit = 20, offset = 0 } = req.query;
     const response = await axios.get(
       `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getUpdates`
     );
@@ -29,8 +30,15 @@ app.get('/api/posts', async (req, res) => {
     const messages = response.data.result
       .map(update => update.channel_post)
       .filter(post => post && post.chat.id.toString() === TELEGRAM_CHANNEL_ID);
+
+      const paginatedMessages = messages.slice(Number(offset), Number(offset) + Number(limit));
     
-    res.json(messages);
+    res.json({
+      total: messages.length,
+      limit: Number(limit),
+      offset: Number(offset),
+      posts: paginatedMessages
+    });
   } catch (error) {
     console.error('Error fetching Telegram posts:', error);
     res.status(500).json({ error: 'Failed to fetch posts' });
