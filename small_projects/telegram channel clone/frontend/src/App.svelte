@@ -60,7 +60,7 @@
       </ul>
       <div class="pagination">
         <button on:click={prevPage} disabled={offset === 0}>Previous</button>
-        <span>Page {offset / limit + 1} of {Math.ceil(total / limit)}</span>
+        <span class="page-info">Page {offset / limit + 1} of {Math.ceil(total / limit)}</span>
         <button on:click={nextPage} disabled={offset + limit >= total}>Next</button>
       </div>
     {/if}
@@ -83,5 +83,19 @@
     margin: 10px 0;
     padding: 10px;
     border-radius: 5px;
+  }
+  .pagination {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .page-info {
+    margin: 0 10px;
+  }
+
+  h1 {
+    width: 100%;
+    text-align: center;
   }
 </style>
