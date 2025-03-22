@@ -31,7 +31,22 @@ app.get('/api/posts', async (req, res) => {
       .map(update => update.channel_post)
       .filter(post => post && post.chat.id.toString() === TELEGRAM_CHANNEL_ID);
 
-      const paginatedMessages = messages.slice(Number(offset), Number(offset) + Number(limit));
+    for (let post of messages) {
+      if (post.photo) {
+        const largestPhoto = post.photo[post.photo.length - 1]; // Get the highest resolution image
+        const fileId = largestPhoto.file_id;
+
+        // Fetch file path
+        const fileResponse = await axios.get(
+          `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getFile?file_id=${fileId}`
+        );
+
+        // Construct image URL
+        post.photoUrl = `https://api.telegram.org/file/bot${TELEGRAM_BOT_TOKEN}/${fileResponse.data.result.file_path}`;
+      }
+    }
+
+    const paginatedMessages = messages.slice(Number(offset), Number(offset) + Number(limit));
     
     res.json({
       total: messages.length,
