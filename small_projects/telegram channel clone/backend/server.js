@@ -33,7 +33,7 @@ app.get('/api/posts', async (req, res) => {
 
     for (let post of messages) {
       if (post.photo) {
-        const largestPhoto = post.photo[post.photo.length - 1]; // Get the highest resolution image
+        const largestPhoto = post.photo[2];
         const fileId = largestPhoto.file_id;
 
         // Fetch file path
