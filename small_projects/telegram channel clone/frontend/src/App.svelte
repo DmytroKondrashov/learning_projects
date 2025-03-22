@@ -39,7 +39,7 @@
 </script>
 
 <main class="container">
-  <h1>Telegram Posts</h1>
+  <h1>Inkvi's Daily Life</h1>
   {#if loading}
     <p>Loading...</p>
   {:else}
