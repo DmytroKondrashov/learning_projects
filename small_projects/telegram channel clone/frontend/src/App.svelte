@@ -12,6 +12,7 @@
       const response = await fetch(`http://localhost:5000/api/posts?limit=${limit}&offset=${offset}`);
       const data = await response.json();
       posts = data.posts;
+      console.log(posts);
       total = data.total;
     } catch (error) {
       console.error('Error fetching posts:', error);
@@ -47,7 +48,14 @@
     {:else}
       <ul>
         {#each posts as post}
-          <li>{post.text}</li>
+          <li>
+            {#if post.text}
+              <i>{post.text}</i>
+            {/if}
+            {#if post.caption}
+              <i>{post.caption}</i>
+            {/if}
+          </li>
         {/each}
       </ul>
       <div class="pagination">
