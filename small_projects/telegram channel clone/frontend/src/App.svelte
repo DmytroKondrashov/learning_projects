@@ -50,7 +50,10 @@
         {#each posts as post}
           <li>
             {#if post.text}
-              <i>{post.text}</i>
+              <p>{post.text}</p>
+            {/if}
+            {#if post.photo && post.photo.length > 0}
+              <img src={post.photo[post.photo.length - 1].file_url} alt="Post Image" class="post-image" />
             {/if}
             {#if post.caption}
               <i>{post.caption}</i>
