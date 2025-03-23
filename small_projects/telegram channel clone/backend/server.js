@@ -2,6 +2,7 @@ import express from 'express';
 import axios from 'axios';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import pg from 'pg';
 
 dotenv.config();
 
@@ -10,6 +11,11 @@ const PORT = process.env.PORT || 5000;
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const TELEGRAM_CHANNEL_ID = process.env.TELEGRAM_CHANNEL_ID;
 const FRONTEND_ORIGIN = 'http://localhost:8080'; 
+
+const { Pool } = pg;
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+});
 
 app.use(cors({
   origin: FRONTEND_ORIGIN,
