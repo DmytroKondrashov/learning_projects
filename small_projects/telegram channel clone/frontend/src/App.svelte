@@ -46,30 +46,34 @@
 <main class="container">
   <h1>Inkvi's Daily Life</h1>
   {#if loading}
-    <p>Loading...</p>
+    <div class="loader is-loading"></div>
   {:else}
     {#if posts.length === 0}
-      <p>No posts available.</p>
+      <div class="notification is-warning">No posts available.</div>
     {:else}
-      <ul>
-        {#each posts as post}
-          <li>
+      {#each posts as post}
+        <div class="box">
+          <div class="media">
+            <div class="media-content">
+              {#if post.photoUrl}
+                <figure class="image is-4by3">
+                  <img src={post.photoUrl} alt="Post Image" />
+                </figure>
+              {/if}
+              {#if post.caption}
+                <p><strong>Caption:</strong> {post.caption}</p>
+              {/if}
+            </div>
             {#if post.text}
-              <p>{post.text}</p>
+              <hr />
+              <p class="content">{post.text}</p>
             {/if}
-            {#if post.photoUrl}
-              <img src={post.photoUrl} alt="Post Image" class="post-image" />
-            {/if}
-            {#if post.caption}
-              <i>{post.caption}</i>
-            {/if}
-          </li>
-        {/each}
-      </ul>
-      <div class="pagination">
-        <button on:click={prevPage} disabled={offset === 0}>Previous</button>
-        <span class="page-info">Page {offset / limit + 1} of {Math.ceil(total / limit)}</span>
-        <button on:click={nextPage} disabled={offset + limit >= total}>Next</button>
+          </div>
+        </div>
+      {/each}
+      <div class="buttons is-centered">
+        <button class="button is-link" on:click={prevPage} disabled={offset === 0}>Previous</button>
+        <button class="button is-link" on:click={nextPage} disabled={offset + limit >= total}>Next</button>
       </div>
     {/if}
   {/if}
