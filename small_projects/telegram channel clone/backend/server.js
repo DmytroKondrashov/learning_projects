@@ -38,9 +38,12 @@ app.get('/api/posts', async (req, res) => {
       .filter(post => post && post.chat.id.toString() === TELEGRAM_CHANNEL_ID);
 
     for (let post of messages) {
-      if (post.photo) {
-        const largestPhoto = post.photo[2];
-        const fileId = largestPhoto.file_id;
+      const { message_id, text, caption, photo } = post;
+
+      let photoUrl = null;
+      if (photo) {
+        const mediumPhoto = post.photo[2];
+        const fileId = mediumPhoto.file_id;
 
         // Fetch file path
         const fileResponse = await axios.get(
@@ -50,15 +53,33 @@ app.get('/api/posts', async (req, res) => {
         // Construct image URL
         post.photoUrl = `https://api.telegram.org/file/bot${TELEGRAM_BOT_TOKEN}/${fileResponse.data.result.file_path}`;
       }
+
+      const existingPost = await pool.query(
+        'SELECT * FROM posts WHERE telegram_message_id = $1',
+        [message_id]
+      );
+
+      if (existingPost.rows.length === 0) {
+        await pool.query(
+          `INSERT INTO posts (telegram_message_id, text, caption, photo_url) 
+          VALUES ($1, $2, $3, $4)`,
+          [message_id, text || '', caption || '', photoUrl]
+        );
+      }
     }
 
-    const paginatedMessages = messages.slice(Number(offset), Number(offset) + Number(limit));
+    const paginatedPosts = await pool.query(
+      `SELECT * FROM posts ORDER BY created_at DESC LIMIT $1 OFFSET $2`,
+      [limit, offset]
+    );
+
+    const totalCount = await pool.query('SELECT COUNT(*) FROM posts');
     
     res.json({
-      total: messages.length,
+      total: parseInt(totalCount.rows[0].count),
       limit: Number(limit),
       offset: Number(offset),
-      posts: paginatedMessages
+      posts: paginatedPosts.rows,
     });
   } catch (error) {
     console.error('Error fetching Telegram posts:', error);
