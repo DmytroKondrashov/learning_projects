@@ -7,7 +7,7 @@
   import { onMount } from 'svelte';
 
   let posts = [];
-  let loading = false;
+  let loading = true;
   let limit = 20;
   let offset = 0;
   let total = 0;
