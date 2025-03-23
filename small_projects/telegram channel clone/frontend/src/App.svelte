@@ -44,7 +44,7 @@
 </script>
 
 <main class="container">
-  <h1>Inkvi's Daily Life</h1>
+  <h1 class="title is-2 has-text-centered has-text-primary">Inkvi's Daily Life</h1>
   {#if loading}
     <div class="loader is-loading"></div>
   {:else}
