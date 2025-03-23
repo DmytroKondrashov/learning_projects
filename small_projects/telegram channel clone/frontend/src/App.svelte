@@ -55,9 +55,9 @@
         <div class="box is-max-desktop">
           <div class="media">
             <div class="media-content">
-              {#if post.photoUrl}
+              {#if post.photo_url}
                 <figure class="image is-4by3">
-                  <img src={post.photoUrl} alt="Post Image" />
+                  <img src={post.photo_url} alt="Post Image" />
                 </figure>
               {/if}
               {#if post.caption}
