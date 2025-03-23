@@ -43,7 +43,7 @@
   onMount(fetchPosts);
 </script>
 
-<main class="container">
+<main class="py-6">
   <h1 class="title is-2 has-text-centered has-text-primary">Inkvi's Daily Life</h1>
   {#if loading}
     <div class="loader is-loading"></div>
@@ -52,7 +52,7 @@
       <div class="notification is-warning">No posts available.</div>
     {:else}
       {#each posts as post}
-        <div class="box">
+        <div class="box is-max-desktop">
           <div class="media">
             <div class="media-content">
               {#if post.photoUrl}
@@ -86,28 +86,12 @@
     padding: 20px;
     font-family: Arial, sans-serif;
   }
-  ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  li {
-    background: #f4f4f4;
-    margin: 10px 0;
-    padding: 10px;
-    border-radius: 5px;
-  }
-  .pagination {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .page-info {
-    margin: 0 10px;
-  }
-
   h1 {
     width: 100%;
     text-align: center;
+  }
+  .box {
+    max-width: 600px;
+    margin: auto;
   }
 </style>
