@@ -49,9 +49,10 @@ app.get('/api/posts', async (req, res) => {
         const fileResponse = await axios.get(
           `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getFile?file_id=${fileId}`
         );
+        console.log(fileResponse.data);
 
         // Construct image URL
-        post.photoUrl = `https://api.telegram.org/file/bot${TELEGRAM_BOT_TOKEN}/${fileResponse.data.result.file_path}`;
+        photoUrl = `https://api.telegram.org/file/bot${TELEGRAM_BOT_TOKEN}/${fileResponse.data.result.file_path}`;
       }
 
       const existingPost = await pool.query(
