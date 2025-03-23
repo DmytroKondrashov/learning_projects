@@ -61,7 +61,7 @@
                 </figure>
               {/if}
               {#if post.caption}
-                <p><strong>Caption:</strong> {post.caption}</p>
+                <i>{post.caption}</i>
               {/if}
             </div>
             {#if post.text}
