@@ -53,8 +53,8 @@
     {:else}
       {#each posts as post}
         <div class="box is-max-desktop">
-          <div class="media">
-            <div class="media-content">
+          <div>
+            <div>
               {#if post.photo_url}
                 <figure class="image is-4by3">
                   <img src={post.photo_url} alt="Post Image" />
