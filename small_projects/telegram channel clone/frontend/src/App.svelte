@@ -60,12 +60,17 @@
                   <img src={post.photo_url} alt="Post Image" />
                 </figure>
               {/if}
+              {#if post.photo_url && post.caption }
+                <hr />
+              {/if}
               {#if post.caption}
                 <i>{post.caption}</i>
               {/if}
+              {#if post.caption && post.text}
+                <hr />
+              {/if}
             </div>
             {#if post.text}
-              <hr />
               <p class="content">{post.text}</p>
             {/if}
           </div>
