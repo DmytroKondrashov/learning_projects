@@ -62,7 +62,7 @@ app.get('/api/posts', async (req, res) => {
         await pool.query(
           `INSERT INTO posts (telegram_message_id, text, caption, photo_url) 
           VALUES ($1, $2, $3, $4)`,
-          [message_id, text || '', caption || '', JSON.stringify(photoUrls)]
+          [message_id, text || '', caption || '', photoUrls]
         );
       }
     }
