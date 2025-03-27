@@ -52,17 +52,21 @@
       <div class="notification is-warning">No posts available.</div>
     {:else}
       {#each posts as post}
-        <div class="box is-max-desktop mb-6">
+      <div class="box is-max-desktop">
+        <div>
           <div>
-            <div>
-              {#if post.photo_url}
-                <figure class="image is-4by3">
-                  <img src={post.photo_url} alt="Post Image" />
-                </figure>
-              {/if}
-              {#if post.photo_url && post.caption }
-                <hr />
-              {/if}
+            {#if post.photo_url && post.photo_url.length > 0}
+              <div class="image-gallery">
+                {#each post.photo_url as imageUrl}
+                  <figure class="image">
+                    <img src={imageUrl} alt="Post Image" />
+                  </figure>
+                {/each}
+              </div>
+            {/if}
+            {#if post.photo_url?.length > 0 && post.caption}
+              <hr />
+            {/if}
               {#if post.caption}
                 <i>{post.caption}</i>
               {/if}
@@ -105,5 +109,32 @@
     width: auto;
     margin: 0 auto;
     object-fit: contain;
+  }
+  
+  .image-gallery {
+    display: grid;
+    grid-gap: 10px;
+    margin-bottom: 1rem;
+  }
+
+  .image-gallery:has(> :nth-child(1):nth-last-child(1)) {
+    /* Single image */
+    grid-template-columns: 1fr;
+  }
+
+  .image-gallery:has(> :nth-child(1):nth-last-child(2)) {
+    /* Two images */
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .image-gallery:has(> :nth-child(1):nth-last-child(n+3)) {
+    /* Three or more images */
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+
+  .image-gallery .image img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
   }
 </style>
