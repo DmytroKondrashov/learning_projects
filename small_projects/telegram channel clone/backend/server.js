@@ -40,19 +40,17 @@ app.get('/api/posts', async (req, res) => {
     for (let post of messages) {
       const { message_id, text, caption, photo } = post;
 
-      let photoUrl = null;
+      let photoUrls = [];
       if (photo) {
-        const mediumPhoto = post.photo[2];
-        const fileId = mediumPhoto.file_id;
+        for (let photoItem of photo) {
+          const fileId = photoItem.file_id;
 
-        // Fetch file path
-        const fileResponse = await axios.get(
-          `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getFile?file_id=${fileId}`
-        );
-        console.log(fileResponse.data);
+          const fileResponse = await axios.get(
+            `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getFile?file_id=${fileId}`
+          );
 
-        // Construct image URL
-        photoUrl = `https://api.telegram.org/file/bot${TELEGRAM_BOT_TOKEN}/${fileResponse.data.result.file_path}`;
+          photoUrls.push(`https://api.telegram.org/file/bot${TELEGRAM_BOT_TOKEN}/${fileResponse.data.result.file_path}`);
+        }
       }
 
       const existingPost = await pool.query(
@@ -64,7 +62,7 @@ app.get('/api/posts', async (req, res) => {
         await pool.query(
           `INSERT INTO posts (telegram_message_id, text, caption, photo_url) 
           VALUES ($1, $2, $3, $4)`,
-          [message_id, text || '', caption || '', photoUrl]
+          [message_id, text || '', caption || '', JSON.stringify(photoUrls)]
         );
       }
     }
