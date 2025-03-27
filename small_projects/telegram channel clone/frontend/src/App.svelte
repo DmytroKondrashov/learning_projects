@@ -52,7 +52,7 @@
       <div class="notification is-warning">No posts available.</div>
     {:else}
       {#each posts as post}
-        <div class="box is-max-desktop">
+        <div class="box is-max-desktop mb-6">
           <div>
             <div>
               {#if post.photo_url}
@@ -98,5 +98,12 @@
   .box {
     max-width: 600px;
     margin: auto;
+  }
+
+  .image img {
+    max-height: 600px;
+    width: auto;
+    margin: 0 auto;
+    object-fit: contain;
   }
 </style>
