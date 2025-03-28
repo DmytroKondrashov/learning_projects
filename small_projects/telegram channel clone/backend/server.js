@@ -33,36 +33,78 @@ app.get('/api/posts', async (req, res) => {
       `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getUpdates`
     );
     
+    // Group messages by media_group_id
+    const messageGroups = new Map();
+    
     const messages = response.data.result
       .map(update => update.channel_post)
       .filter(post => post && post.chat.id.toString() === TELEGRAM_CHANNEL_ID);
 
+    // First pass: group messages by media_group_id
     for (let post of messages) {
-      const { message_id, text, caption, photo } = post;
-
-      let photoUrls = [];
-      if (photo) {
-        for (let photoItem of photo) {
-          const fileId = photoItem.file_id;
-
+      const { message_id, text, caption, photo, media_group_id } = post;
+      
+      if (media_group_id) {
+        // If this post is part of a media group
+        if (!messageGroups.has(media_group_id)) {
+          messageGroups.set(media_group_id, {
+            message_id: message_id,
+            text: text || '',
+            caption: caption || '',
+            photoUrls: [],
+            media_group_id
+          });
+        }
+        
+        // Add photos to the group
+        if (photo) {
+          const fileId = photo[photo.length - 1].file_id; // Get the highest quality photo
           const fileResponse = await axios.get(
             `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getFile?file_id=${fileId}`
           );
+          const photoUrl = `https://api.telegram.org/file/bot${TELEGRAM_BOT_TOKEN}/${fileResponse.data.result.file_path}`;
+          messageGroups.get(media_group_id).photoUrls.push(photoUrl);
+        }
 
+        // Combine captions and texts
+        if (caption && !messageGroups.get(media_group_id).caption.includes(caption)) {
+          messageGroups.get(media_group_id).caption += (messageGroups.get(media_group_id).caption ? '\n' : '') + caption;
+        }
+        if (text && !messageGroups.get(media_group_id).text.includes(text)) {
+          messageGroups.get(media_group_id).text += (messageGroups.get(media_group_id).text ? '\n' : '') + text;
+        }
+      } else {
+        // Handle single posts (not part of a media group)
+        let photoUrls = [];
+        if (photo) {
+          const fileId = photo[photo.length - 1].file_id;
+          const fileResponse = await axios.get(
+            `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getFile?file_id=${fileId}`
+          );
           photoUrls.push(`https://api.telegram.org/file/bot${TELEGRAM_BOT_TOKEN}/${fileResponse.data.result.file_path}`);
         }
+        
+        messageGroups.set(message_id, {
+          message_id,
+          text: text || '',
+          caption: caption || '',
+          photoUrls
+        });
       }
+    }
 
+    // Save grouped messages to database
+    for (let [_, post] of messageGroups) {
       const existingPost = await pool.query(
         'SELECT * FROM posts WHERE telegram_message_id = $1',
-        [message_id]
+        [post.message_id]
       );
 
       if (existingPost.rows.length === 0) {
         await pool.query(
           `INSERT INTO posts (telegram_message_id, text, caption, photo_url) 
           VALUES ($1, $2, $3, $4)`,
-          [message_id, text || '', caption || '', photoUrls]
+          [post.message_id, post.text, post.caption, post.photoUrls]
         );
       }
     }
