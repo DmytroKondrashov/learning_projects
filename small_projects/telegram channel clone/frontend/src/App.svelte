@@ -17,7 +17,6 @@
       const response = await fetch(`http://localhost:5000/api/posts?limit=${limit}&offset=${offset}`);
       const data = await response.json();
       posts = data.posts;
-      console.log(posts);
       total = data.total;
     } catch (error) {
       console.error('Error fetching posts:', error);
@@ -52,7 +51,7 @@
       <div class="notification is-warning">No posts available.</div>
     {:else}
       {#each posts as post}
-      <div class="box is-max-desktop">
+      <div class="box is-max-desktop mb-6">
         <div>
           <div>
             {#if post.photo_url && post.photo_url.length > 0}
@@ -110,7 +109,7 @@
     margin: 0 auto;
     object-fit: contain;
   }
-  
+
   .image-gallery {
     display: grid;
     grid-gap: 10px;
