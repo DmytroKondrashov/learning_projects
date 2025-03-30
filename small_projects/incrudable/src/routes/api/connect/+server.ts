@@ -1,6 +1,7 @@
 import { json } from '@sveltejs/kit';
-import { Client } from 'pg';
 import dotenv from 'dotenv';
+import pkg from 'pg';
+const {Client} = pkg;
 
 dotenv.config();
 
