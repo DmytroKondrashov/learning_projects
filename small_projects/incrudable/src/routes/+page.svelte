@@ -7,6 +7,24 @@
     let tables = writable<string[]>([]);
     let connectionStatus = writable('');
 
+    function getCookie(name: string) {
+        const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+        return match ? decodeURIComponent(match[2]) : null;
+    }
+
+    function setCookie(name: string, value: string, days = 7) {
+        const expires = new Date();
+        expires.setDate(expires.getDate() + days);
+        document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires.toUTCString()}; path=/`;
+    }
+
+    async function loadConfigFromCookie() {
+        const storedConfig = getCookie('dbConfig');
+        if (storedConfig) {
+            dbConfig.set(JSON.parse(storedConfig));
+        }
+    }
+
     async function connectToDatabase() {
         connectionStatus.set('Connecting...');
         try {
@@ -20,6 +38,7 @@
             if (data.success) {
                 connectionStatus.set('Connected');
                 tables.set(data.tables);
+                setCookie('dbConfig', JSON.stringify($dbConfig));
             } else {
                 connectionStatus.set('Failed to connect');
             }
@@ -32,6 +51,8 @@
     function navigateToTable(table: string) {
         goto(`/table/${table}`);
     }
+
+    onMount(loadConfigFromCookie);
 </script>
 
 <main class="p-4">
