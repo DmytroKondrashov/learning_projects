@@ -4,7 +4,7 @@
     import { writable } from 'svelte/store';
 
     let tableName = writable('');
-    let endpoints = writable({ create: false, read: false, update: false, delete: false });
+    let endpoints = writable({ create: false, getAll: false, getById: false, update: false, delete: false });
 
     onMount(() => {
         const table = $page.params.table;
@@ -36,8 +36,12 @@
             <span>Create Endpoint</span>
         </label>
         <label class="flex items-center space-x-2">
-            <input type="checkbox" bind:checked={$endpoints.read} on:change={() => toggleEndpoint('read')} />
-            <span>Read Endpoint</span>
+            <input type="checkbox" bind:checked={$endpoints.getAll} on:change={() => toggleEndpoint('getAll')} />
+            <span>Get All Endpoint</span>
+        </label>
+        <label class="flex items-center space-x-2">
+            <input type="checkbox" bind:checked={$endpoints.getById} on:change={() => toggleEndpoint('getById')} />
+            <span>Get By ID Endpoint</span>
         </label>
         <label class="flex items-center space-x-2">
             <input type="checkbox" bind:checked={$endpoints.update} on:change={() => toggleEndpoint('update')} />
