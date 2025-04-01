@@ -1,53 +1,51 @@
 <script lang="ts">
-  import { page } from '$app/stores';
-  import { onMount } from 'svelte';
-  import { writable } from 'svelte/store';
+    import { page } from '$app/stores';
+    import { onMount } from 'svelte';
+    import { writable } from 'svelte/store';
 
-  let tableName = writable('');
-  let tableData = writable([]);
-  let columns = writable([]);
+    let tableName = writable('');
+    let endpoints = writable({ create: false, read: false, update: false, delete: false });
 
-  onMount(async () => {
-      const table = $page.params.table;
-      tableName.set(table);
+    onMount(() => {
+        const table = $page.params.table;
+        tableName.set(table);
+    });
 
-      try {
-          const response = await fetch(`/api/table/${table}`);
-          const data = await response.json();
-          
-          if (data.success) {
-              columns.set(data.columns);
-              tableData.set(data.rows);
-          }
-      } catch (error) {
-          console.error('Error fetching table data:', error);
-      }
-  });
+    async function toggleEndpoint(type: string) {
+        endpoints.update(ep => ({ ...ep, [type]: !ep[type] }));
+        
+        const response = await fetch(`/api/table/${$tableName}/endpoint`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ type, enabled: !$endpoints[type] })
+        });
+        
+        const data = await response.json();
+        if (!data.success) {
+            console.error('Failed to update endpoint:', data.error);
+        }
+    }
 </script>
 
 <main class="p-4">
-  <h1 class="text-xl font-bold">Table: {$tableName}</h1>
-
-  {#if $columns.length > 0}
-      <table class="mt-4 border-collapse border border-gray-300 w-full">
-          <thead>
-              <tr>
-                  {#each $columns as col}
-                      <th class="border p-2 bg-gray-100">{col}</th>
-                  {/each}
-              </tr>
-          </thead>
-          <tbody>
-              {#each $tableData as row}
-                  <tr>
-                      {#each $columns as col}
-                          <td class="border p-2">{row[col]}</td>
-                      {/each}
-                  </tr>
-              {/each}
-          </tbody>
-      </table>
-  {:else}
-      <p class="mt-4">No data found.</p>
-  {/if}
+    <h1 class="text-xl font-bold">Table: {$tableName}</h1>
+    
+    <div class="mt-4 space-y-2">
+        <label class="flex items-center space-x-2">
+            <input type="checkbox" bind:checked={$endpoints.create} on:change={() => toggleEndpoint('create')} />
+            <span>Create Endpoint</span>
+        </label>
+        <label class="flex items-center space-x-2">
+            <input type="checkbox" bind:checked={$endpoints.read} on:change={() => toggleEndpoint('read')} />
+            <span>Read Endpoint</span>
+        </label>
+        <label class="flex items-center space-x-2">
+            <input type="checkbox" bind:checked={$endpoints.update} on:change={() => toggleEndpoint('update')} />
+            <span>Update Endpoint</span>
+        </label>
+        <label class="flex items-center space-x-2">
+            <input type="checkbox" bind:checked={$endpoints.delete} on:change={() => toggleEndpoint('delete')} />
+            <span>Delete Endpoint</span>
+        </label>
+    </div>
 </main>
