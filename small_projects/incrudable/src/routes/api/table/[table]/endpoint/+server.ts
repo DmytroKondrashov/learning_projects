@@ -25,24 +25,22 @@ export async function GET({ params, url, cookies }) {
     }
 }
 
-export async function POST({ params, request, cookies }) {
-    const { table } = params;
-    const cookieHeader = cookies.get('dbConfig');
-    if (!cookieHeader) return json({ success: false, error: "No DB config found" }, { status: 400 });
-
-    const dbConfig = JSON.parse(cookieHeader);
-    const pool = new Pool(dbConfig);
-
+export async function POST({ params, request }) {
     try {
-        const data = await request.json();
-        const keys = Object.keys(data).join(', ');
-        const values = Object.values(data);
-        const placeholders = values.map((_, i) => `$${i + 1}`).join(', ');
+        const { type, enabled } = await request.json();
+        
+        // Here we're just acknowledging the endpoint toggle
+        // We don't need to modify the database table
+        return json({ 
+            success: true, 
+            message: `${type} endpoint ${enabled ? 'enabled' : 'disabled'} for table ${params.table}`
+        });
 
-        await pool.query(`INSERT INTO ${table} (${keys}) VALUES (${placeholders})`, values);
-        return json({ success: true });
     } catch (error) {
-        return json({ success: false, error: error.message }, { status: 500 });
+        return json({ 
+            success: false, 
+            error: error instanceof Error ? error.message : 'Unknown error occurred' 
+        }, { status: 500 });
     }
 }
 
