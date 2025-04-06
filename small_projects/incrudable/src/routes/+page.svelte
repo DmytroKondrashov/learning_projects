@@ -7,15 +7,26 @@
     let tables = writable<string[]>([]);
     let connectionStatus = writable('');
 
-    function getCookie(name: string) {
-        const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
-        return match ? decodeURIComponent(match[2]) : null;
-    }
-
     function setCookie(name: string, value: string, days = 7) {
         const expires = new Date();
         expires.setDate(expires.getDate() + days);
-        document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires.toUTCString()}; path=/`;
+        const cookieString = `${name}=${encodeURIComponent(value)};expires=${expires.toUTCString()};path=/;SameSite=Strict`;
+        document.cookie = cookieString;
+        console.log('Setting cookie:', cookieString);
+        console.log('Current cookies:', document.cookie);
+    }
+
+    function getCookie(name: string) {
+        const nameEQ = name + "=";
+        const ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) {
+                return decodeURIComponent(c.substring(nameEQ.length, c.length));
+            }
+        }
+        return null;
     }
 
     async function loadConfigFromCookie() {
