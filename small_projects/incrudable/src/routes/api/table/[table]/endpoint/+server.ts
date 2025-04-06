@@ -1,6 +1,6 @@
 import { json } from '@sveltejs/kit';
-import { Pool } from 'pg';
-import { parse } from 'cookie';
+import pkg from 'pg';
+const {Pool} = pkg;
 
 export async function GET({ params, url, cookies }) {
     const { table, id } = params;
