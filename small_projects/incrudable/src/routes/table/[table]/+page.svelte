@@ -12,17 +12,28 @@
     });
 
     async function toggleEndpoint(type: string) {
-        endpoints.update(ep => ({ ...ep, [type]: !ep[type] }));
-        
-        const response = await fetch(`/api/table/${$tableName}/endpoint`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ type, enabled: !$endpoints[type] })
-        });
-        
-        const data = await response.json();
-        if (!data.success) {
-            console.error('Failed to update endpoint:', data.error);
+        try {
+            endpoints.update(ep => ({ ...ep, [type]: !ep[type] }));
+            
+            const response = await fetch(`/api/table/${$tableName}/endpoint`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    type, 
+                    enabled: $endpoints[type] 
+                })
+            });
+            
+            const data = await response.json();
+            if (!data.success) {
+                // Revert the toggle if the server request failed
+                endpoints.update(ep => ({ ...ep, [type]: !ep[type] }));
+                console.error('Failed to update endpoint:', data.error);
+            }
+        } catch (error) {
+            // Revert the toggle if there was an error
+            endpoints.update(ep => ({ ...ep, [type]: !ep[type] }));
+            console.error('Error updating endpoint:', error);
         }
     }
 </script>
