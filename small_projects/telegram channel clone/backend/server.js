@@ -28,6 +28,24 @@ if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHANNEL_ID) {
   process.exit(1);
 }
 
+const downloadImage = async (url, filename) => {
+  const localPath = path.resolve('images', filename);
+  const writer = fs.createWriteStream(localPath);
+
+  const response = await axios({
+    url,
+    method: 'GET',
+    responseType: 'stream'
+  });
+
+  response.data.pipe(writer);
+
+  return new Promise((resolve, reject) => {
+    writer.on('finish', () => resolve(`/images/${filename}`));
+    writer.on('error', reject);
+  });
+};
+
 app.get('/api/posts', async (req, res) => {
   try {
     const { limit = 20, offset = 0 } = req.query;
