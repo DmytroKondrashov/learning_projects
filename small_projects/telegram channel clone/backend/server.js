@@ -82,8 +82,14 @@ app.get('/api/posts', async (req, res) => {
           const fileResponse = await axios.get(
             `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getFile?file_id=${fileId}`
           );
-          const photoUrl = `https://api.telegram.org/file/bot${TELEGRAM_BOT_TOKEN}/${fileResponse.data.result.file_path}`;
-          messageGroups.get(media_group_id).photoUrls.push(photoUrl);
+          const filePath = fileResponse.data.result.file_path;
+          const fileUrl = `https://api.telegram.org/file/bot${TELEGRAM_BOT_TOKEN}/${filePath}`;
+          
+          // Save locally with a unique filename
+          const filename = `${fileId}.jpg`;
+          const localUrl = await downloadImage(fileUrl, filename);
+          
+          messageGroups.get(media_group_id).photoUrls.push(localUrl);
         }
 
         // Combine captions and texts
