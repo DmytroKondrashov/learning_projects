@@ -3,6 +3,8 @@ import axios from 'axios';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import pg from 'pg';
+import fs from 'fs';
+import path from 'path';
 
 dotenv.config();
 
