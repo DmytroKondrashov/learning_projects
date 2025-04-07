@@ -12,7 +12,12 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const TELEGRAM_CHANNEL_ID = process.env.TELEGRAM_CHANNEL_ID;
-const FRONTEND_ORIGIN = 'http://localhost:8080'; 
+const FRONTEND_ORIGIN = 'http://localhost:8080';
+const IMAGE_DIR = '/Users/dmitrykondar/Documents/learning/learning_docs/cache';
+
+if (!fs.existsSync(IMAGE_DIR)) {
+  fs.mkdirSync(IMAGE_DIR, { recursive: true });
+}
 
 const { Pool } = pg;
 const pool = new Pool({
@@ -23,7 +28,7 @@ app.use(cors({
   origin: FRONTEND_ORIGIN,
 }));
 
-app.use('/images', express.static(path.join(__dirname, 'images')));
+app.use('/images', express.static(IMAGE_DIR));
 
 if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHANNEL_ID) {
   console.error('Please set TELEGRAM_BOT_TOKEN and TELEGRAM_CHANNEL_ID in your .env file');
@@ -31,7 +36,7 @@ if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHANNEL_ID) {
 }
 
 const downloadImage = async (url, filename) => {
-  const localPath = path.resolve('images', filename);
+  const localPath = path.resolve(IMAGE_DIR, filename);
   const writer = fs.createWriteStream(localPath);
 
   const response = await axios({
@@ -84,11 +89,16 @@ app.get('/api/posts', async (req, res) => {
           const fileResponse = await axios.get(
             `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getFile?file_id=${fileId}`
           );
-          const filePath = fileResponse.data.result.file_path;
-          const fileUrl = `https://api.telegram.org/file/bot${TELEGRAM_BOT_TOKEN}/${filePath}`;
+          // const filePath = fileResponse.data.result.file_path;
+          // const fileUrl = `https://api.telegram.org/file/bot${TELEGRAM_BOT_TOKEN}/${filePath}`;
           
           // Save locally with a unique filename
-          const filename = `${fileId}.jpg`;
+          // const filename = `${fileId}.jpg`;
+          // const localUrl = await downloadImage(fileUrl, filename);
+
+          const filePath = fileResponse.data.result.file_path;
+          const fileUrl = `https://api.telegram.org/file/bot${TELEGRAM_BOT_TOKEN}/${filePath}`;
+          const filename = `${fileId}.jpg`; // Or keep filePath.split('/').pop() to preserve filename
           const localUrl = await downloadImage(fileUrl, filename);
           
           messageGroups.get(media_group_id).photoUrls.push(localUrl);
@@ -109,7 +119,11 @@ app.get('/api/posts', async (req, res) => {
           const fileResponse = await axios.get(
             `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getFile?file_id=${fileId}`
           );
-          photoUrls.push(`https://api.telegram.org/file/bot${TELEGRAM_BOT_TOKEN}/${fileResponse.data.result.file_path}`);
+          const filePath = fileResponse.data.result.file_path;
+          const fileUrl = `https://api.telegram.org/file/bot${TELEGRAM_BOT_TOKEN}/${filePath}`;
+          const filename = `${IMAGE_DIR}/${fileId}.jpg`; // Save to IMAGE_DIR
+          const localUrl = await downloadImage(fileUrl, filename);
+          photoUrls.push(localUrl);
         }
         
         messageGroups.set(message_id, {
