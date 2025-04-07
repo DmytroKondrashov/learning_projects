@@ -23,6 +23,8 @@ app.use(cors({
   origin: FRONTEND_ORIGIN,
 }));
 
+app.use('/images', express.static(path.join(__dirname, 'images')));
+
 if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHANNEL_ID) {
   console.error('Please set TELEGRAM_BOT_TOKEN and TELEGRAM_CHANNEL_ID in your .env file');
   process.exit(1);
