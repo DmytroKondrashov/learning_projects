@@ -121,7 +121,7 @@ app.get('/api/posts', async (req, res) => {
           );
           const filePath = fileResponse.data.result.file_path;
           const fileUrl = `https://api.telegram.org/file/bot${TELEGRAM_BOT_TOKEN}/${filePath}`;
-          const filename = `${IMAGE_DIR}/${fileId}.jpg`; // Save to IMAGE_DIR
+          const filename = `${fileId}.jpg`;
           const localUrl = await downloadImage(fileUrl, filename);
           photoUrls.push(localUrl);
         }
@@ -162,7 +162,10 @@ app.get('/api/posts', async (req, res) => {
       total: parseInt(totalCount.rows[0].count),
       limit: Number(limit),
       offset: Number(offset),
-      posts: paginatedPosts.rows,
+      posts: paginatedPosts.rows.map(post => {
+        post.photo_url = post.photo_url.map(url => `http://localhost:5000${url}`);
+        return post;
+      }),
     });
   } catch (error) {
     console.error('Error fetching Telegram posts:', error);
