@@ -12,8 +12,6 @@
         expires.setDate(expires.getDate() + days);
         const cookieString = `${name}=${encodeURIComponent(value)};expires=${expires.toUTCString()};path=/;SameSite=Strict`;
         document.cookie = cookieString;
-        console.log('Setting cookie:', cookieString);
-        console.log('Current cookies:', document.cookie);
     }
 
     function getCookie(name: string) {
