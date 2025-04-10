@@ -1,5 +1,5 @@
 import { json } from '@sveltejs/kit';
-import { endpointRegistry } from '../endpoint/+server';
+import { endpointRegistry } from '$lib/server/endpointRegistry';
 
 export async function GET({ params }) {
     const { table, operation } = params;
