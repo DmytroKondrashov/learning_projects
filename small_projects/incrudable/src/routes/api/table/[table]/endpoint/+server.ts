@@ -29,7 +29,7 @@ export const POST: RequestHandler = async ({ params, request }) => {
     return json({ success: true, table, type, enabled });
 }
 
-export { endpointRegistry };
+// export { endpointRegistry };
 
 // export async function GET({ params, url, cookies }) {
 //     console.log('GET request received');
