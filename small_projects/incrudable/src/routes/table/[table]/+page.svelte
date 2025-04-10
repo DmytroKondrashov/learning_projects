@@ -11,9 +11,11 @@
         tableName.set(table);
     });
 
-    async function toggleEndpoint(type: string) {
+    async function toggleEndpoint(type: keyof typeof $endpoints) {
         try {
             endpoints.update(ep => ({ ...ep, [type]: !ep[type] }));
+
+            endpoints.subscribe(value => console.log(value));
             
             const response = await fetch(`/api/table/${$tableName}/endpoint`, {
                 method: 'POST',
