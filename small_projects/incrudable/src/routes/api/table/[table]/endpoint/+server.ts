@@ -2,9 +2,10 @@ import { json } from '@sveltejs/kit';
 // import pkg from 'pg';
 // const {Pool} = pkg;
 import type { RequestHandler } from './$types';
+import { endpointRegistry, type EndpointType } from '$lib/server/endpointRegistry';
 
-type EndpointType = 'create' | 'getAll' | 'getById' | 'update' | 'delete';
-const endpointRegistry: Record<string, Partial<Record<EndpointType, boolean>>> = {};
+// type EndpointType = 'create' | 'getAll' | 'getById' | 'update' | 'delete';
+// const endpointRegistry: Record<string, Partial<Record<EndpointType, boolean>>> = {};
 
 export const POST: RequestHandler = async ({ params, request }) => {
     const table = params.table;
@@ -22,7 +23,7 @@ export const POST: RequestHandler = async ({ params, request }) => {
         endpointRegistry[table] = {};
     }
 
-    endpointRegistry[table][type] = enabled;
+    endpointRegistry[table][type as EndpointType] = enabled;
     console.log(`Endpoint ${type} for table ${table} is now ${enabled ? 'enabled' : 'disabled'}`);
 
     return json({ success: true, table, type, enabled });
