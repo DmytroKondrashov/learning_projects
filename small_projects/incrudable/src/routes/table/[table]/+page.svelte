@@ -12,8 +12,13 @@
     });
 
     async function toggleEndpoint(type: keyof typeof $endpoints) {
+        const newValue = !$endpoints[type];
+
         try {
-            endpoints.update(ep => ({ ...ep, [type]: !ep[type] }));
+            endpoints.update(ep => ({
+                ...ep,
+                [type]: newValue
+            }));
 
             endpoints.subscribe(value => console.log(value));
             
@@ -22,19 +27,19 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ 
                     type, 
-                    enabled: $endpoints[type] 
+                    enabled: newValue
                 })
             });
             
             const data = await response.json();
             if (!data.success) {
                 // Revert the toggle if the server request failed
-                endpoints.update(ep => ({ ...ep, [type]: !ep[type] }));
+                endpoints.update(ep => ({ ...ep, [type]: !newValue }));
                 console.error('Failed to update endpoint:', data.error);
             }
         } catch (error) {
             // Revert the toggle if there was an error
-            endpoints.update(ep => ({ ...ep, [type]: !ep[type] }));
+            endpoints.update(ep => ({ ...ep, [type]: !newValue }));
             console.error('Error updating endpoint:', error);
         }
     }
