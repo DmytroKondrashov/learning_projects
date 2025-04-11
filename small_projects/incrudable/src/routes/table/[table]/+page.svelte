@@ -12,15 +12,17 @@
     });
 
     async function toggleEndpoint(type: keyof typeof $endpoints) {
-        const newValue = !$endpoints[type];
+        const newValue = $endpoints[type];
 
         try {
-            endpoints.update(ep => ({
-                ...ep,
-                [type]: newValue
-            }));
-
-            endpoints.subscribe(value => console.log(value));
+            endpoints.update(ep => {
+                const updatedEndpoints = {
+                    ...ep,
+                    [type]: newValue
+                };
+                console.log(updatedEndpoints);
+                return updatedEndpoints;
+            });
             
             const response = await fetch(`/api/table/${$tableName}/endpoint`, {
                 method: 'POST',
@@ -42,6 +44,8 @@
             endpoints.update(ep => ({ ...ep, [type]: !newValue }));
             console.error('Error updating endpoint:', error);
         }
+
+        // endpoints.update(ep => ({ create: true, getAll: true, getById: true, update: true, delete: true }));
     }
 </script>
 
