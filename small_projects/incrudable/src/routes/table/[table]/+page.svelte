@@ -32,9 +32,22 @@
             //     })
             // });
 
+            const dbConfigCookie = document.cookie
+                .split('; ')
+                .find(row => row.startsWith('dbConfig='));
+            
+            if (!dbConfigCookie) {
+                throw new Error('Database configuration not found');
+            }
+
+            const dbConfig = decodeURIComponent(dbConfigCookie.split('=')[1]);
+
             const response = await fetch(`/api/table/${$tableName}/${type}`, {
                 method: 'GET',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'dbConfig': dbConfig
+                },
             });
             
             const data = await response.json();
