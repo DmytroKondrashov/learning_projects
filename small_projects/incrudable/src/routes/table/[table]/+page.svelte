@@ -20,20 +20,25 @@
                     ...ep,
                     [type]: newValue
                 };
-                console.log(updatedEndpoints);
                 return updatedEndpoints;
             });
             
-            const response = await fetch(`/api/table/${$tableName}/endpoint`, {
-                method: 'POST',
+            // const response = await fetch(`/api/table/${$tableName}/endpoint`, {
+            //     method: 'POST',
+            //     headers: { 'Content-Type': 'application/json' },
+            //     body: JSON.stringify({ 
+            //         type, 
+            //         enabled: newValue
+            //     })
+            // });
+
+            const response = await fetch(`/api/table/${$tableName}/${type}`, {
+                method: 'GET',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 
-                    type, 
-                    enabled: newValue
-                })
             });
             
             const data = await response.json();
+            console.log(data);
             if (!data.success) {
                 // Revert the toggle if the server request failed
                 endpoints.update(ep => ({ ...ep, [type]: !newValue }));
