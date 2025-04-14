@@ -23,7 +23,7 @@
 // }
 
 import { json } from '@sveltejs/kit';
-import { endpointRegistry } from '$lib/server/endpointRegistry';
+import { endpointRegistry, EndpointType } from '$lib/server/endpointRegistry';
 import { parse } from 'cookie';
 import pkg from 'pg';
 
@@ -40,14 +40,18 @@ function getClient(dbConfig: any) {
     });
 }
 
-export async function GET({ params, url, request }) {
+export async function GET({ params, request }) {
     const { table, operation } = params;
-    const cookies = parse(request.headers.get('dbConfig') || '');
-    const dbConfig = cookies.dbConfig ? JSON.parse(cookies.dbConfig) : null;
+    const dbConfigHeader = request.headers.get('dbConfig');
+    const dbConfig = dbConfigHeader ? JSON.parse(dbConfigHeader) : null;
 
     if (!dbConfig) return json({ success: false, error: 'No database configuration found' }, { status: 400 });
 
-    const allowed = endpointRegistry?.[table]?.[operation as keyof typeof endpointRegistry[string]];
+    console.log({ table, operation })
+    console.log(endpointRegistry[table]);
+    const allowed = (operation: string): operation is EndpointType => {
+        return ['create', 'getAll', 'getById', 'update', 'delete'].includes(operation);
+    };
     if (!allowed) return json({ success: false, error: 'Endpoint not enabled' }, { status: 404 });
 
     const client = getClient(dbConfig);
