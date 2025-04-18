@@ -21,7 +21,7 @@ app.post('/flashcards', async (req, res) => {
   const { word, translation } = req.body;
 
   try {
-    await pool.query('INSERT INTO words (word, translation) VALUES ($1, $2)', [word, translation]);
+    await pool.query('INSERT INTO words (english, russian) VALUES ($1, $2)', [english, russian]);
     res.status(201).json({ message: "Flashcard created successfully" });
   } catch (err) {
     console.error(err);
