@@ -2,6 +2,8 @@ const assert = require("assert");
 const { parse } = require("csv-parse");
 const fs = require("fs");
 const path = require("path");
+const pool = require('../db');
+require('dotenv').config();
 
 const records = [];
 // Initialize the parser
@@ -29,4 +31,7 @@ parser.on("error", function (err) {
 // Test that the parsed records matched the expected records
 parser.on("end", function () {
   console.log(records);
+  records.forEach(async (record) => {
+    await pool.query('INSERT INTO words (english, russian) VALUES ($1, $2)', [record[0], record[1]]);
+  });
 });
