@@ -18,7 +18,7 @@ app.get('/flashcards', async (req, res) => {
 })
 
 app.post('/flashcards', async (req, res) => {
-  const { word, translation } = req.body;
+  const { english, russian } = req.body;
 
   try {
     await pool.query('INSERT INTO words (english, russian) VALUES ($1, $2)', [english, russian]);
