@@ -10,7 +10,8 @@
       ],
       "program": "${file}",
       "restart": true,
-      "runtimeExecutable": "nodemon"
+      "runtimeExecutable": "nodemon",
+      "console": "integratedTerminal"
     }
   ]
 }
