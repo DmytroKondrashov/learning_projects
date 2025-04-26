@@ -29,6 +29,21 @@ app.post('/flashcards', async (req, res) => {
   }
 })
 
+app.get('/flashcards/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const result = await pool.query('SELECT * FROM words WHERE id = $1', [id]);
+    if (result.rows.length === 0) {
+      res.status(404).json({ error: 'Flashcard not found' });
+    }
+    return res.json(result.rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+})
+
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 })
