@@ -7,8 +7,8 @@ const router = express.Router();
 const products = [];
 
 router.get('/add-product', (req, res, next) => {
-  console.log('In the another middleware!');
-  res.sendFile(path.join(rootDir, 'views', 'add-product.html'));
+  // res.sendFile(path.join(rootDir, 'views', 'add-product.html'));
+  res.render('add-product', {docTitle: 'Add Product'});
 });
 
 router.post('/add-product', (req, res, next) => {
