@@ -9,7 +9,7 @@ router.get('/', (req, res, next) => {
   // Old (no template engine)
   // res.sendFile(path.join(rootDir, 'views', 'shop.html'));
   // New (with template engine)
-  res.render('shop', { prods: adminData.products, pageTitle: 'Shop', hasProducts: adminData.products.length > 0 });
+  res.render('shop', { prods: adminData.products, pageTitle: 'Shop', hasProducts: adminData.products.length > 0, activeShop: true, activeAddProduct: false, productCSS: true, formsCSS: true });
 });
 
 module.exports = router;
