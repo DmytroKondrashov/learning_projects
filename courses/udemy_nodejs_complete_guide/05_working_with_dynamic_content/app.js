@@ -8,8 +8,8 @@ const expressHbs = require('express-handlebars');
 const app = express();
 
 // app.set('view engine', 'pug');
-app.engine('handlebars', expressHbs());
-app.set('view engine', 'handlebars');
+app.engine('hbs', expressHbs());
+app.set('view engine', 'hbs');
 app.set('views', 'views');
 
 app.use(bodyParser.urlencoded({extended: false}));
