@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const adminRoutes = require('./routes/admin');
 const shopRouter = require('./routes/shop');
 const path = require('path');
+const errorController = require('./controllers/error');
 // const expressHbs = require('express-handlebars');
 
 const app = express();
@@ -20,9 +21,6 @@ app.use('/admin', adminRoutes);
 
 app.use(shopRouter);
 
-app.use((req, res, next) => {
-  // res.status(404).sendFile(path.join(__dirname, 'views', '404.html'));
-  res.render('404', { pageTitle: 'Page Not Found' });
-})
+app.use(errorController.get404);
 
 app.listen(3000);
