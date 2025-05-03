@@ -9,3 +9,11 @@ exports.postAddProduct = (req, res, next) => {
   console.log(req.body);
   res.redirect('/');
 }
+
+exports.getProducts = (req, res, next) => {
+  console.log(adminData.products);
+  // Old (no template engine)
+  // res.sendFile(path.join(rootDir, 'views', 'shop.html'));
+  // New (with template engine)
+  res.render('shop', { prods: adminData.products, path: '/', pageTitle: 'Shop', hasProducts: adminData.products.length > 0, activeShop: true, activeAddProduct: false, productCSS: true, formsCSS: true });
+}
