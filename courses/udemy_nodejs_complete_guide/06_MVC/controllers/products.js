@@ -7,11 +7,11 @@ exports.getAddProduct =(req, res, next) => {
 
 exports.postAddProduct = (req, res, next) => {
   console.log(req.body);
+  products.push({title: req.body.title});
   res.redirect('/');
 }
 
 exports.getProducts = (req, res, next) => {
-  console.log(adminData.products);
   // Old (no template engine)
   // res.sendFile(path.join(rootDir, 'views', 'shop.html'));
   // New (with template engine)
