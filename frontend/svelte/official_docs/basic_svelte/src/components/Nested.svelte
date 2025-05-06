@@ -1,5 +1,5 @@
 <script lang="ts">
-  let { answer } = $props();
+  let { answer = 'a mystery' } = $props();
 </script>
 
-<p>This is a nested component</p>
+<p>This is a {answer}</p>

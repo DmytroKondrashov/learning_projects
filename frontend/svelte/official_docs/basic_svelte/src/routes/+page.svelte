@@ -33,6 +33,7 @@
 <img {src} alt="A cat">
 <p>This is a paragraph</p>
 <Nested />
+<Nested answer={'42'}/>
 <div>{@html rawHTML}</div>
 
 <p>The count is {count}</p>
