@@ -6,13 +6,13 @@
 <h1 style="color: {selected}">Pick a colour</h1>
 
 <div>
-	{#each colors as color}
+	{#each colors as color, i}
     <button
       style="background: {color}"
       aria-label={color}
-      aria-current={selected === "red"}
-      onclick={() => selected = "red"}
-    ></button>
+      aria-current={selected === color}
+      onclick={() => selected = color}
+    >{i + 1}</button>
   {/each}
 </div>
 
