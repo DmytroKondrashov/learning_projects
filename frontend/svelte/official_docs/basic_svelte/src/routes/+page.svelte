@@ -16,6 +16,14 @@
     numbers.push(numbers.length + 1);
   }
   $inspect(numbers);
+
+  let elapsed = $state(0)
+  let interval = $state(1000)
+  $effect(() => {
+    setInterval(() => {
+      elapsed += 1;
+    }, interval)
+  })
 </script>
 
 <h1>Hello {name.toUpperCase()}</h1>
@@ -25,10 +33,14 @@
 <div>{@html rawHTML}</div>
 
 <p>The count is {count}</p>
-<button on:click={increment}>Increment the count</button>
+<button onclick={increment}>Increment the count</button>
 
 <p>{numbers.join(" + ")} = {total}</p>
-<button on:click={addNumber}>Add a number</button>
+<button onclick={addNumber}>Add a number</button>
+
+<p>Elapsed time: {elapsed} seconds</p>
+<button onclick={() => interval /= 2}>Speed up</button>
+<button onclick={() => interval *= 2}>Slow down</button>
 
 <style>
   p {
