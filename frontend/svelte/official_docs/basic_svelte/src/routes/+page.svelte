@@ -2,6 +2,7 @@
   import Nested from "../components/Nested.svelte"
   import Counter from '../components/Counter.svelte'
   import ColorPicker from "../components/ColorPicker.svelte";
+  import { roll } from "../utils/utils.js";
 
   let name = "Svelte"
   let src = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzTojBf4VJCGR4Z-QxG-7GozKDuWjCst6z6Q&s"
@@ -28,6 +29,8 @@
 
     return () => {clearInterval(id)}
   })
+
+  let promise = $state(roll());
 </script>
 
 <h1>Hello {name.toUpperCase()}</h1>
@@ -64,6 +67,17 @@
 
 <br><br><br>
 <ColorPicker />
+
+<br><br><br>
+<button onclick={() => promise = roll()}>Roll</button>
+{#await promise}
+  <p>Rolling...</p>
+{:then result} 
+  <p>Rolled a {result}</p>
+{:catch error}
+  <p style="color: red;">Error: {error.message}</p>
+{/await}
+
 <style>
   p {
     color: goldenrod;
