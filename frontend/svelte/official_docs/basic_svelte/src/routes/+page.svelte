@@ -1,5 +1,6 @@
 <script lang="ts">
   import Nested from "../components/Nested.svelte"
+  import Counter from '../components/Counter.svelte'
 
   let name = "Svelte"
   let src = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzTojBf4VJCGR4Z-QxG-7GozKDuWjCst6z6Q&s"
@@ -43,6 +44,13 @@
 <p>Elapsed time: {elapsed} seconds</p>
 <button onclick={() => interval /= 2}>Speed up</button>
 <button onclick={() => interval *= 2}>Slow down</button>
+
+<br>
+<br>
+<br>
+<Counter />
+<Counter />
+<Counter />
 
 <style>
   p {
