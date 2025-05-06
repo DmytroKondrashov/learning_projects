@@ -1,4 +1,5 @@
 const Product = require('../models/product');
+const rootDir = require('../util/path');
 
 exports.getAddProduct =(req, res, next) => {
   // res.sendFile(path.join(rootDir, 'views', 'add-product.html'));
@@ -12,9 +13,14 @@ exports.postAddProduct = (req, res, next) => {
 }
 
 exports.getProducts = (req, res, next) => {
-  const products = Product.fetchAll();
-  // Old (no template engine)
-  // res.sendFile(path.join(rootDir, 'views', 'shop.html'));
-  // New (with template engine)
-  res.render('shop', { prods: products, path: '/', pageTitle: 'Shop', hasProducts: products.length > 0, activeShop: true, activeAddProduct: false, productCSS: true, formsCSS: true });
+  Product.fetchAll(products => {
+    res.render('shop', {
+      prods: products,
+      pageTitle: 'Shop',
+      path: '/',
+      hasProducts: products.length > 0,
+      activeShop: true,
+      productCSS: true
+    });
+  });
 }
