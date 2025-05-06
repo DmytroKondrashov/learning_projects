@@ -4,4 +4,4 @@
 </script>
 
 <h1>Hello {name.toUpperCase()}</h1>
-<img src={src} alt="A cat">
+<img {src} alt="A cat">
