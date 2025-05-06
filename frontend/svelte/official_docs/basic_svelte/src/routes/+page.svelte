@@ -41,6 +41,8 @@
 
 {#if count > 10}
   <p>The count is greater than 10</p>
+{:else} 
+  <p>The count is less than 10</p>
 {/if}
 
 <p>{numbers.join(" + ")} = {total}</p>
