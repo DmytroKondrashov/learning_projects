@@ -1,16 +1,11 @@
 <script>
   let m = $state({ x: 0, y: 0 })
-
-  /**
-   * @param {{ clientX: number; clientY: number; }} event
-   */
-  function onpointermove(event) {
-    m.x = event.clientX;
-    m.y = event.clientY;
-  }
 </script>
 
-<div {onpointermove}>
+<div onpointermove={(event) => {
+    m.x = event.clientX;
+    m.y = event.clientY;
+  }}>
   The pointer is at {Math.round(m.x)} x {Math.round(m.y)}
 </div>
 
