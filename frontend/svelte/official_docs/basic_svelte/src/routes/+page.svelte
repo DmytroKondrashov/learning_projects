@@ -15,6 +15,7 @@
   function addNumber() {
     numbers.push(numbers.length + 1);
   }
+  $inspect(numbers);
 </script>
 
 <h1>Hello {name.toUpperCase()}</h1>
