@@ -6,6 +6,7 @@
   let rawHTML = `this string contains some <strong>HTML</strong>`
   let count = $state(0)
   let numbers = $state([1, 2, 3, 4, 5])
+  let total = $derived(numbers.reduce((acc, curr) => acc + curr, 0))
 
   function increment () {
     count += 1;
@@ -25,7 +26,7 @@
 <p>The count is {count}</p>
 <button on:click={increment}>Increment the count</button>
 
-<p>{numbers.join(" + ")}</p>
+<p>{numbers.join(" + ")} = {total}</p>
 <button on:click={addNumber}>Add a number</button>
 
 <style>
