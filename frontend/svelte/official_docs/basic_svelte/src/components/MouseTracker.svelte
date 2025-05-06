@@ -16,7 +16,7 @@
 
 <style>
 	div {
-		position: fixed;
+		position: relative;
 		left: 0;
 		top: 0;
 		width: 100%;
