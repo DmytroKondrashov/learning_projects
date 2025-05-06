@@ -3,6 +3,7 @@
   import Counter from '../components/Counter.svelte'
   import ColorPicker from "../components/ColorPicker.svelte";
   import { roll } from "../utils/utils.js";
+  import MouseTracker from "../components/MouseTracker.svelte"
 
   let name = "Svelte"
   let src = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzTojBf4VJCGR4Z-QxG-7GozKDuWjCst6z6Q&s"
@@ -78,6 +79,8 @@
   <p style="color: red;">Error: {error.message}</p>
 {/await}
 
+<br><br><br>
+<MouseTracker />
 <style>
   p {
     color: goldenrod;
