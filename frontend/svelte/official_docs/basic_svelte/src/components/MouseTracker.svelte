@@ -10,7 +10,7 @@
   }
 </script>
 
-<div>
+<div {onpointermove}>
   The pointer is at {Math.round(m.x)} x {Math.round(m.y)}
 </div>
 
