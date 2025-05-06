@@ -5,9 +5,14 @@
   let src = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzTojBf4VJCGR4Z-QxG-7GozKDuWjCst6z6Q&s"
   let rawHTML = `this string contains some <strong>HTML</strong>`
   let count = $state(0)
+  let numbers = $state([1, 2, 3, 4, 5])
 
   function increment () {
     count += 1;
+  }
+
+  function addNumber() {
+    numbers.push(numbers.length + 1);
   }
 </script>
 
@@ -19,6 +24,10 @@
 
 <p>The count is {count}</p>
 <button on:click={increment}>Increment the count</button>
+
+<p>{numbers.join(" + ")}</p>
+<button on:click={addNumber}>Add a number</button>
+
 <style>
   p {
     color: goldenrod;
