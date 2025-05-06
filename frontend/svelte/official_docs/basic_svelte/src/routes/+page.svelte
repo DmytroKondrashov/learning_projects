@@ -4,6 +4,7 @@
   import ColorPicker from "../components/ColorPicker.svelte";
   import { roll } from "../utils/utils.js";
   import MouseTracker from "../components/MouseTracker.svelte"
+  import Stepper from "../components/Stepper.svelte"
 
   let name = "Svelte"
   let src = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzTojBf4VJCGR4Z-QxG-7GozKDuWjCst6z6Q&s"
@@ -32,6 +33,8 @@
   })
 
   let promise = $state(roll());
+
+  let value = $state(0);
 </script>
 
 <h1>Hello {name.toUpperCase()}</h1>
@@ -81,6 +84,14 @@
 
 <br><br><br>
 <MouseTracker />
+
+<br><br><br>
+<p>The current value is {value}</p>
+<Stepper 
+  increment={() => value += 1}
+  decrement={() => value -= 1}
+/>
+
 <style>
   p {
     color: goldenrod;
