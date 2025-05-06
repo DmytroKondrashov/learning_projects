@@ -5,3 +5,12 @@
 
 <h1>Hello {name.toUpperCase()}</h1>
 <img {src} alt="A cat">
+<p>This is a paragraph</p>
+
+<style>
+  p {
+    color: goldenrod;
+    font-family: serif;
+    font-size: 2em;
+  }
+</style>
