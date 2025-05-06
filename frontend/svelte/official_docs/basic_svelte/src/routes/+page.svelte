@@ -20,9 +20,11 @@
   let elapsed = $state(0)
   let interval = $state(1000)
   $effect(() => {
-    setInterval(() => {
+    const id = setInterval(() => {
       elapsed += 1;
     }, interval)
+
+    return () => {clearInterval(id)}
   })
 </script>
 
