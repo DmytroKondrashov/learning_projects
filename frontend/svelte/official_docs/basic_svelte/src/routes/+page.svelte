@@ -39,6 +39,10 @@
 <p>The count is {count}</p>
 <button onclick={increment}>Increment the count</button>
 
+{#if count > 10}
+  <p>The count is greater than 10</p>
+{/if}
+
 <p>{numbers.join(" + ")} = {total}</p>
 <button onclick={addNumber}>Add a number</button>
 
