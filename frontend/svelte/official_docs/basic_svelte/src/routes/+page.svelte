@@ -1,6 +1,7 @@
 <script lang="ts">
   import Nested from "../components/Nested.svelte"
   import Counter from '../components/Counter.svelte'
+  import ColorPicker from "../components/ColorPicker.svelte";
 
   let name = "Svelte"
   let src = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzTojBf4VJCGR4Z-QxG-7GozKDuWjCst6z6Q&s"
@@ -61,6 +62,8 @@
 <Counter />
 <Counter />
 
+<br><br><br>
+<ColorPicker />
 <style>
   p {
     color: goldenrod;
