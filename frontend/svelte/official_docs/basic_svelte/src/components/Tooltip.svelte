@@ -1,22 +1,25 @@
 <script>
-  import tippy from 'tippy.js';
+	import tippy from 'tippy.js';
 
-  let content = $state('Hello!')
+	let content = $state('Hello!');
 
-  function tooltip(node) {
-    $effect(() => {
-      const tooltip = tippy(node)
-      return tooltip.destroy()
-    })
-  }
+	function tooltip(node) {
+		$effect(() => {
+			const tooltip = tippy(node);
+
+			return tooltip.destroy;
+		});
+	}
 </script>
 
 <input bind:value={content} />
 
-<button use:tooltip>Hover me</button>
+<button use:tooltip>
+	Hover me
+</button>
 
 <style>
-  :global {
+	:global {
 		[data-tippy-root] {
 			--bg: #666;
 			background-color: var(--bg);
