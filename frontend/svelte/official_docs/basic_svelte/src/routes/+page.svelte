@@ -7,6 +7,7 @@
   import Stepper from "../components/Stepper.svelte"
   import Card from '../components/Card.svelte'
   import Box from '../components/Box.svelte'
+  import Tooltip from '../components/Tooltip.svelte'
 
   let name = "Svelte"
   let src = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzTojBf4VJCGR4Z-QxG-7GozKDuWjCst6z6Q&s"
@@ -131,6 +132,9 @@
   <Box --color='green'/>
   <Box --color='blue'/>
 </div>
+
+<br><br><br>
+<Tooltip />
 
 <style>
   p {
