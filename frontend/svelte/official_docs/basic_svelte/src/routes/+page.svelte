@@ -6,6 +6,7 @@
   import MouseTracker from "../components/MouseTracker.svelte"
   import Stepper from "../components/Stepper.svelte"
   import Card from '../components/Card.svelte'
+  import Box from '../components/Box.svelte'
 
   let name = "Svelte"
   let src = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzTojBf4VJCGR4Z-QxG-7GozKDuWjCst6z6Q&s"
@@ -123,6 +124,11 @@
 
 <br><br><br>
 <Card />
+
+<br><br><br>
+<Box />
+<Box />
+<Box />
 
 <style>
   p {
