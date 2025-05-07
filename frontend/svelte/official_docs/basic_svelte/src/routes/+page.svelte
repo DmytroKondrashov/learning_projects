@@ -5,6 +5,7 @@
   import { roll } from "../utils/utils.js";
   import MouseTracker from "../components/MouseTracker.svelte"
   import Stepper from "../components/Stepper.svelte"
+  import Card from '../components/Card.svelte'
 
   let name = "Svelte"
   let src = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzTojBf4VJCGR4Z-QxG-7GozKDuWjCst6z6Q&s"
@@ -119,6 +120,9 @@
 
 <br><br><br>
 <textarea bind:value={text}></textarea>
+
+<br><br><br>
+<Card />
 
 <style>
   p {
