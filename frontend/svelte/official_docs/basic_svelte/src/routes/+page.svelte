@@ -38,6 +38,7 @@
 
   let a = $state(0)
   let b = $state(0)
+  let checked = $state(false)
 </script>
 
 <h1>Hello {name.toUpperCase()}</h1>
@@ -104,6 +105,7 @@
   <input type="number" bind:value={b} min={0} max={10} />
   <input type="range" bind:value={b} min={0} max={10} />
 </label>
+<input type="checkbox" bind:checked={checked} />
 
 <style>
   p {
