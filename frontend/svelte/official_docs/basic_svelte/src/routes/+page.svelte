@@ -40,6 +40,7 @@
   let b = $state(0)
   let checked = $state(false)
   let flavours = $state([])
+  let text = $state('')
 </script>
 
 <h1>Hello {name.toUpperCase()}</h1>
@@ -115,6 +116,9 @@
     <option>{flavour}</option>
   {/each}
 </select>
+
+<br><br><br>
+<textarea bind:value={text}></textarea>
 
 <style>
   p {
