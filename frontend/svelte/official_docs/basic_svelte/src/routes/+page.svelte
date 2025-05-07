@@ -35,6 +35,9 @@
   let promise = $state(roll());
 
   let value = $state(0);
+
+  let a = $state(0)
+  let b = $state(0)
 </script>
 
 <h1>Hello {name.toUpperCase()}</h1>
@@ -91,6 +94,16 @@
   increment={() => value += 1}
   decrement={() => value -= 1}
 />
+
+<br><br><br>
+<label>
+  <input type="number" bind:value={a} min={0} max={10} />
+  <input type="range" bind:value={a} min={0} max={10} />
+</label>
+<label>
+  <input type="number" bind:value={b} min={0} max={10} />
+  <input type="range" bind:value={b} min={0} max={10} />
+</label>
 
 <style>
   p {
