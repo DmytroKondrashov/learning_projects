@@ -127,9 +127,9 @@
 
 <br><br><br>
 <div class="boxes">
-  <Box />
-  <Box />
-  <Box />
+  <Box --color='red'/>
+  <Box --color='green'/>
+  <Box --color='blue'/>
 </div>
 
 <style>
