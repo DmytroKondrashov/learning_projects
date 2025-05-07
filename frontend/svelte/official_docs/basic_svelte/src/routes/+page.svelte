@@ -126,9 +126,11 @@
 <Card />
 
 <br><br><br>
-<Box />
-<Box />
-<Box />
+<div class="boxes">
+  <Box />
+  <Box />
+  <Box />
+</div>
 
 <style>
   p {
