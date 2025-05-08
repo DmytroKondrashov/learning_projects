@@ -1,5 +1,6 @@
 export function scale(domain, range) {
   const m = (range[1] - range[0]) / (domain[1] - domain[0]);
+  return (value) => range[0] + m * (value - domain[0]);
 }
 
 export function getTicks(min, max) {
