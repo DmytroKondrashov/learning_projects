@@ -8,6 +8,7 @@
   import Card from '../components/Card.svelte'
   import Box from '../components/Box.svelte'
   import Tooltip from '../components/Tooltip.svelte'
+  import { fade } from 'svelte/transition'
 
   let name = "Svelte"
   let src = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzTojBf4VJCGR4Z-QxG-7GozKDuWjCst6z6Q&s"
@@ -44,6 +45,8 @@
   let checked = $state(false)
   let flavours = $state([])
   let text = $state('')
+
+  let visible = $state(true)
 </script>
 
 <h1>Hello {name.toUpperCase()}</h1>
@@ -135,6 +138,18 @@
 
 <br><br><br>
 <Tooltip />
+
+<br><br><br>
+<label>
+  <input type="checkbox" bind:checked={visible} />
+  Visivle
+</label>
+
+{#if visible}
+  <p transition:fade>
+    Fades in and out
+  </p>
+{/if}
 
 <style>
   p {
