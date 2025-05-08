@@ -53,7 +53,7 @@
 <style>
 	.outer {
 		width: 100%;
-		height: 100%;
+		height: 400px;
 		padding: 2em;
 		box-sizing: border-box;
 	}
