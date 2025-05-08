@@ -8,7 +8,7 @@
   import Card from '../components/Card.svelte'
   import Box from '../components/Box.svelte'
   import Tooltip from '../components/Tooltip.svelte'
-  import { fade } from 'svelte/transition'
+  import { fade, fly } from 'svelte/transition'
 
   let name = "Svelte"
   let src = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzTojBf4VJCGR4Z-QxG-7GozKDuWjCst6z6Q&s"
@@ -142,12 +142,22 @@
 <br><br><br>
 <label>
   <input type="checkbox" bind:checked={visible} />
-  Visivle
+  Visible
 </label>
-
 {#if visible}
   <p transition:fade>
     Fades in and out
+  </p>
+{/if}
+
+<br><br><br>
+<label>
+  <input type="checkbox" bind:checked={visible} />
+  Visible
+</label>
+{#if visible}
+  <p transition:fly>
+    Flies in and out
   </p>
 {/if}
 
