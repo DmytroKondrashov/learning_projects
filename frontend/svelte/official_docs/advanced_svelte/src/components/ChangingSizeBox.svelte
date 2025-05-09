@@ -2,7 +2,7 @@
   const MAX_SIZE = 200;
 
   class Box {
-    width = 0;
+    width = $state(0);
     height = 0;
     area = 0;
 
