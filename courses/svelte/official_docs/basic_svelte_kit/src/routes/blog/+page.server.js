@@ -1,6 +1,6 @@
 import { posts } from './data';
 
-export default  function load() {
+export function load() {
   return {
     summaries: posts.map((post) => ({
       slug: post.slug,
