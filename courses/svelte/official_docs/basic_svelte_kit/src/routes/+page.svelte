@@ -1,2 +1,6 @@
+<script>
+  let { data } = $props();
+</script>
+
 <h1>home</h1>
-<p>this is the home page.</p>
+<p>Hello {data.visited ? 'friend' : 'stranger'}!</p>
