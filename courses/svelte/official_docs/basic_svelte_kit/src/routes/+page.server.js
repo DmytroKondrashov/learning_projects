@@ -16,17 +16,25 @@
 //   }
 // }
 
-import * as db from '$lib/server/database';
+import * as db from '$lib/server/database.js';
 
 export function load({ cookies }) {
-  let id = cookies.get('userId');
+	let id = cookies.get('userid');
 
-  if(!id) {
-    id = crypto.randomUUID();
-    cookies.set('userId', id, {path: '/'});
+	if (!id) {
+		id = crypto.randomUUID();
+		cookies.set('userid', id, { path: '/' });
+	}
 
-    return {
-      todos: db.getTodos(id)
-    }
-  }
+	return {
+		todos: db.getTodos(id)
+	};
 }
+
+export const actions = {
+	default: async ({ cookies, request }) => {
+		const data = await request.formData();
+		db.createTodo(cookies.get('userid'), data.get('description'));
+	}
+};
+

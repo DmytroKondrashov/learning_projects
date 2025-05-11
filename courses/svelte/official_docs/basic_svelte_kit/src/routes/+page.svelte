@@ -5,19 +5,25 @@
 <h1>home</h1>
 
 <div class="centered">
-  <h2>Todos</h2>
+	<h1>todos</h1>
 
-  <form method="POST">
-    <label>Add a todo:
-      <input name="description" autocomplete="off" />
-    </label>
-  </form>
+	<form method="POST">
+	<label>
+		add a todo:
+		<input
+			name="description"
+			autocomplete="off"
+		/>
+	</label>
+</form>
 
-  <ul class="todos">
-    {#each data.todos as todo (todo.id)}
-      <li>{todo.description}</li>
-    {/each}
-  </ul>
+	<ul class="todos">
+		{#each data.todos as todo (todo.id)}
+			<li>
+				{todo.description}
+			</li>
+		{/each}
+	</ul>
 </div>
 
 <style>

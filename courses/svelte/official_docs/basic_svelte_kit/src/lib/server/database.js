@@ -1,39 +1,32 @@
 const db = new Map();
 
-export function getTodos(userId) {
-  if (!db.get(userId)) {
-    db.set(userId, [{
-      id: crypto.randomUUID(),
-      description: 'Learn SvelteKit',
-      done: false
-    }])
-  }
+export function getTodos(userid) {
+	if (!db.get(userid)) {
+		db.set(userid, [{
+			id: crypto.randomUUID(),
+			description: 'Learn SvelteKit',
+			done: false
+		}]);
+	}
 
-  return db.get(userId);
+	return db.get(userid);
 }
 
-export function addTodo(userId, description) {
-  let todos = db.get(userId);
+export function createTodo(userid, description) {
+	const todos = db.get(userid);
 
-  if (!todos) {
-    db.set(userId, []);
-    todos = db.get(userId);
-  }
-
-  todos.push({
-    id: crypto.randomUUID(),
-      description,
-      done: false
-  });
-
-  db.set(userId, todos);
+	todos.push({
+		id: crypto.randomUUID(),
+		description,
+		done: false
+	});
 }
 
-export function deleteTodo(userId, id) {
-  const todos = db.get(userId);
-  const index = todos.findIndex((todo) => todo.id === id);
+export function deleteTodo(userid, todoid) {
+	const todos = db.get(userid);
+	const index = todos.findIndex((todo) => todo.id === todoid);
 
-  if (index !== -1) {
-    todos.splice(index, 1);
-  }
+	if (index !== -1) {
+		todos.splice(index, 1);
+	}
 }
