@@ -7,7 +7,7 @@
 <div class="centered">
 	<h1>todos</h1>
 
-	<form method="POST">
+	<form method="POST" action="?/create">
 	<label>
 		add a todo:
 		<input
