@@ -13,13 +13,20 @@ export function getTodos(userId) {
 }
 
 export function addTodo(userId, description) {
-  const todos = db.get(userId);
+  let todos = db.get(userId);
+
+  if (!todos) {
+    db.set(userId, []);
+    todos = db.get(userId);
+  }
 
   todos.push({
     id: crypto.randomUUID(),
       description,
       done: false
   });
+
+  db.set(userId, todos);
 }
 
 export function deleteTodo(userId, id) {
