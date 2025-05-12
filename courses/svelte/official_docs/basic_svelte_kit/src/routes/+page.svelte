@@ -2,6 +2,9 @@
   let { data, form } = $props();
 	import { enhance } from '$app/forms';
 	import { fly, slide } from 'svelte/transition';
+
+	let creating = $state(false);
+	let deleting = $state([]);
 </script>
 
 <h1>home</h1>
@@ -13,7 +16,17 @@
 		<p class="error">{form.error}</p>
 	{/if}
 
-	<form method="POST" action="?/create" use:enhance>
+	<form 
+		method="POST" 
+		action="?/create" 
+		use:enhance={() => {
+			creating = true;
+			return async ({ update }) => {
+				await update();
+				creating = false;
+			}
+		}}
+	>
 	<label>
 		add a todo:
 		<input
@@ -21,6 +34,7 @@
 			autocomplete="off"
 			required
 			value={form?.description ?? ''}
+			disabled={creating}
 		/>
 	</label>
 </form>
@@ -36,6 +50,10 @@
 			</li>
 		{/each}
 	</ul>
+
+	{#if creating}
+		<span class="saving">saving...</span>
+	{/if}
 </div>
 
 <style>
