@@ -1,5 +1,7 @@
 <script>
   let { data, form } = $props();
+	import { enhance } from '$app/forms';
+	import { fly, slide } from 'svelte/transition';
 </script>
 
 <h1>home</h1>
@@ -11,7 +13,7 @@
 		<p class="error">{form.error}</p>
 	{/if}
 
-	<form method="POST" action="?/create">
+	<form method="POST" action="?/create" use:enhance>
 	<label>
 		add a todo:
 		<input
@@ -25,8 +27,8 @@
 
 	<ul class="todos">
 		{#each data.todos as todo (todo.id)}
-			<li>
-				<form action="?/delete" method="POST">
+			<li in:fly={ {y: 20} } out:slide>
+				<form action="?/delete" method="POST" use:enhance>
           <input type="hidden" name='id' value={todo.id}>
           <span>{todo.description}</span>
           <button type="submit" aria-label="Mark as complete">X</button>
