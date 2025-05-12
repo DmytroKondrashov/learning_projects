@@ -1,11 +1,15 @@
 <script>
-  let { data } = $props();
+  let { data, form } = $props();
 </script>
 
 <h1>home</h1>
 
 <div class="centered">
 	<h1>todos</h1>
+
+	{#if form.error}
+		<p class="error">{form.error}</p>
+	{/if}
 
 	<form method="POST" action="?/create">
 	<label>
@@ -14,6 +18,7 @@
 			name="description"
 			autocomplete="off"
 			required
+			value={form?.description ?? ''}
 		/>
 	</label>
 </form>
