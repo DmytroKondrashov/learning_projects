@@ -20,7 +20,11 @@
 	<ul class="todos">
 		{#each data.todos as todo (todo.id)}
 			<li>
-				{todo.description}
+				<form action="?/delete" method="POST">
+          <input type="hidden" name='id' value={todo.id}>
+          <span>{todo.description}</span>
+          <button type="submit" aria-label="Mark as complete">X</button>
+        </form>
 			</li>
 		{/each}
 	</ul>
@@ -46,7 +50,7 @@
 
 	button {
 		border: none;
-		background: url(./remove.svg) no-repeat 50% 50%;
+		/* background: url(./remove.svg) no-repeat 50% 50%; */
 		background-size: 1rem 1rem;
 		cursor: pointer;
 		height: 100%;
