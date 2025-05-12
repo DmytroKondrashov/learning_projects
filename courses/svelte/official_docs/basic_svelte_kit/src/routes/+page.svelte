@@ -7,7 +7,7 @@
 <div class="centered">
 	<h1>todos</h1>
 
-	{#if form.error}
+	{#if form?.error}
 		<p class="error">{form.error}</p>
 	{/if}
 
