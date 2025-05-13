@@ -29,12 +29,35 @@
 	>
 	<label>
 		add a todo:
-		<input
+		<!-- Easy way with using form actions -->
+		<!-- <input
 			name="description"
 			autocomplete="off"
 			required
 			value={form?.description ?? ''}
 			disabled={creating}
+		/> -->
+
+		<!-- Hard way using POST -->
+		<input 
+			type="text"
+			autocomplete='off'
+			onkeydown={async (e) => {
+				if (e.key === 'Enter') return;
+
+				const input = e.currentTarget;
+				const description = input.value;
+
+				const response = await fetch('/todo', {
+					method: 'POST',
+					body: JSON.stringify({ description }),
+					headers: {
+						'Content-Type': 'application/json',
+					}
+				})
+
+				input.value = '';
+			}}
 		/>
 	</label>
 </form>
