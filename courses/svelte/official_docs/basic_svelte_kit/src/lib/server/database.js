@@ -1,44 +1,41 @@
 const db = new Map();
 
 export function getTodos(userid) {
-	if (!db.get(userid)) {
-		db.set(userid, [{
-			id: crypto.randomUUID(),
-			description: 'Learn SvelteKit',
-			done: false
-		}]);
+	if (!db.has(userid)) {
+		createTodo({ userid, description: 'Learn about API routes' });
 	}
 
-	return db.get(userid);
+	return Array.from(db.get(userid).values());
 }
 
-export function createTodo(userid, description) {
+export function createTodo({userid, description}) {
 	if (description === '') {
 		throw new Error('Description is required');
 	}
 
-	let todos = db.get(userid);
-
-	if (todos.find((todo) => todo.description === description)) {
-		throw new Error('todos must be unique!');
+	if (!db.has(userid)) {
+		db.set(userid, new Map());
 	}
 
-	const newTodo = {
-		id: crypto.randomUUID(),
+	const todos = db.get(userid);
+
+	const id = crypto.randomUUID();
+
+	todos.set(id, {
+		id,
 		description,
 		done: false
-	}
+	})
 
-	todos.push(newTodo);
-
-	return newTodo;
+	return { id };
 }
 
-export function deleteTodo(userid, todoid) {
+export function deleteTodo({userid, id}) {
 	const todos = db.get(userid);
-	const index = todos.findIndex((todo) => todo.id === todoid);
+	todos.delete(id);
+}
 
-	if (index !== -1) {
-		todos.splice(index, 1);
-	}
+export function toggleTodo({ userid, id, done }) {
+	const todos = db.get(userid);
+	todos.get(id).done = done;
 }
