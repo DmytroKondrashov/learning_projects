@@ -18,11 +18,6 @@ export function createTodo(userid, description) {
 	}
 
 	let todos = db.get(userid);
-	
-	if (!todos) {
-		db.set(userid, []);
-		todos = db.get(userid);
-	}
 
 	if (todos.find((todo) => todo.description === description)) {
 		throw new Error('todos must be unique!');

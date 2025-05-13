@@ -34,6 +34,7 @@ export function load({ cookies }) {
 
 export const actions = {
 	create: async ({ cookies, request }) => {
+		// Temporarly disabled while the POST route is implemented
 		await new Promise((resolve) => setTimeout(resolve, 1000));
 		const data = await request.formData();
 		try {

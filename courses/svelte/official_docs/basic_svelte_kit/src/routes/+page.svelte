@@ -30,16 +30,16 @@
 	<label>
 		add a todo:
 		<!-- Easy way with using form actions -->
-		<!-- <input
+		<input
 			name="description"
 			autocomplete="off"
 			required
 			value={form?.description ?? ''}
 			disabled={creating}
-		/> -->
+		/>
 
 		<!-- Hard way using POST -->
-		<input 
+		<!-- <input 
 			type="text"
 			autocomplete='off'
 			onkeydown={async (e) => {
@@ -48,7 +48,7 @@
 				const input = e.currentTarget;
 				const description = input.value;
 
-				const response = await fetch('/todo', {
+				const response = await fetch('/', {
 					method: 'POST',
 					body: JSON.stringify({ description }),
 					headers: {
@@ -58,18 +58,23 @@
 
 				const { id } = await response.json();
 
+				console.log(id);
+
 				const todos = [...data.todos, { id, description }];
 
 				data = { ...data, todos };
 
+				console.log(data);
+
 				input.value = '';
 			}}
-		/>
+		/> -->
 	</label>
 </form>
 
 	<ul class="todos">
-		{#each data.todos.filter((todo) => !deleting.includes(todo.id)) as todo (todo.id)}
+		<!-- {#each data.todos.filter((todo) => !deleting.includes(todo.id)) as todo (todo.id)} -->
+		{#each data.todos as todo (todo.id)}
 			<li in:fly={ {y: 20} } out:slide>
 				<form 
 					action="?/delete" 
