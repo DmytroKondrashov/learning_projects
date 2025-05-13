@@ -56,6 +56,12 @@
 					}
 				})
 
+				const { id } = await response.json();
+
+				const todos = [...data.todos, { id, description }];
+
+				data = { ...data, todos };
+
 				input.value = '';
 			}}
 		/>
