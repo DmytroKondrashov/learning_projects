@@ -43,7 +43,7 @@
 			type="text"
 			autocomplete='off'
 			onkeydown={async (e) => {
-				if (e.key === 'Enter') return;
+				if (e.key !== 'Enter') return;
 
 				const input = e.currentTarget;
 				const description = input.value;
