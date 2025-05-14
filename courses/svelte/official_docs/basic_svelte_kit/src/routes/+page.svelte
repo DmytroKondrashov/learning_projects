@@ -96,7 +96,12 @@
 					<button
 						aria-label="Mark as complete"
 						onclick={async (e) => {
-							// TODO handle delete
+							await fetch(`/todo/${todo.id}`, {
+								method: 'DELETE'
+							});
+
+							const todos = data.todos.filter((t) => t !== todo);
+							data = { ...data, todos };
 						}}
 					>X</button>
 				</label>
