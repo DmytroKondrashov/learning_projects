@@ -83,7 +83,13 @@
 						onchange={async (e) => {
 							const done = e.currentTarget.checked;
 
-							// TODO handle change
+							await fetch(`/todo/${todo.id}`, {
+								method: 'PUT',
+								body: JSON.stringify({ done }),
+								headers: {
+									'Content-Type': 'application/json',
+								}
+							});
 						}}
 					/>
 					<span>{todo.description}</span>
