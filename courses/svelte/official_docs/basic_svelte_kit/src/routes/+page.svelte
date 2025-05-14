@@ -16,7 +16,8 @@
 		<p class="error">{form.error}</p>
 	{/if}
 
-	<form 
+	<!-- Easy way with using form actions -->
+	<!-- <form 
 		method="POST" 
 		action="?/create" 
 		use:enhance={() => {
@@ -26,20 +27,21 @@
 				creating = false;
 			}
 		}}
-	>
+	> -->
+
 	<label>
 		add a todo:
 		<!-- Easy way with using form actions -->
-		<input
+		<!-- <input
 			name="description"
 			autocomplete="off"
 			required
 			value={form?.description ?? ''}
 			disabled={creating}
-		/>
+		/> -->
 
 		<!-- Hard way using POST -->
-		<!-- <input 
+		<input 
 			type="text"
 			autocomplete='off'
 			onkeydown={async (e) => {
@@ -48,7 +50,7 @@
 				const input = e.currentTarget;
 				const description = input.value;
 
-				const response = await fetch('/', {
+				const response = await fetch('/todo', {
 					method: 'POST',
 					body: JSON.stringify({ description }),
 					headers: {
@@ -58,19 +60,18 @@
 
 				const { id } = await response.json();
 
-				console.log(id);
-
-				const todos = [...data.todos, { id, description }];
+				const todos = [...data.todos, {
+					id,
+					description
+				}];
 
 				data = { ...data, todos };
 
-				console.log(data);
-
 				input.value = '';
 			}}
-		/> -->
+		/>
 	</label>
-</form>
+<!-- </form> -->
 
 	<ul class="todos">
 		<!-- {#each data.todos.filter((todo) => !deleting.includes(todo.id)) as todo (todo.id)} -->

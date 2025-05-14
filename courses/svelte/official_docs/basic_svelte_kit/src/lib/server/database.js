@@ -1,23 +1,19 @@
-const db = new Map();
+const database = new Map();
 
 export function getTodos(userid) {
-	if (!db.has(userid)) {
+	if (!database.has(userid)) {
 		createTodo({ userid, description: 'Learn about API routes' });
 	}
 
-	return Array.from(db.get(userid).values());
+	return Array.from(database.get(userid).values());
 }
 
-export function createTodo({userid, description}) {
-	if (description === '') {
-		throw new Error('Description is required');
+export function createTodo({ userid, description }) {
+	if (!database.has(userid)) {
+		database.set(userid, new Map());
 	}
 
-	if (!db.has(userid)) {
-		db.set(userid, new Map());
-	}
-
-	const todos = db.get(userid);
+	const todos = database.get(userid);
 
 	const id = crypto.randomUUID();
 
@@ -25,17 +21,19 @@ export function createTodo({userid, description}) {
 		id,
 		description,
 		done: false
-	})
+	});
 
-	return { id };
-}
-
-export function deleteTodo({userid, id}) {
-	const todos = db.get(userid);
-	todos.delete(id);
+	return {
+		id
+	};
 }
 
 export function toggleTodo({ userid, id, done }) {
-	const todos = db.get(userid);
+	const todos = database.get(userid);
 	todos.get(id).done = done;
+}
+
+export function deleteTodo({ userid, id }) {
+	const todos = database.get(userid);
+	todos.delete(id);
 }

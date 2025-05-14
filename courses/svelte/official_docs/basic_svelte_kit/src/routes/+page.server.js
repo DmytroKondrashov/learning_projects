@@ -1,53 +1,51 @@
-// uncomment for fun :)
-
-// export function load({ setHeaders }) {
-//   setHeaders({
-//     'Content-Type': 'text/plain'
-//   }) 
-// }
-
-// export function load({ cookies }) {
-//   const visited = cookies.get('visited');
-
-//   cookies.set('visited', 'true', {path: '/'});
-
-//   return {
-//     visited: visited === 'true'
-//   }
-// }
-
-import * as db from '$lib/server/database.js';
-import { fail } from '@sveltejs/kit';
+import * as database from '$lib/server/database.js';
 
 export function load({ cookies }) {
-	let id = cookies.get('userid');
+	let userid = cookies.get('userid');
 
-	if (!id) {
-		id = crypto.randomUUID();
-		cookies.set('userid', id, { path: '/' });
+	if (!userid) {
+		userid = crypto.randomUUID();
+		cookies.set('userid', userid, { path: '/' });
 	}
 
 	return {
-		todos: db.getTodos(id)
+		todos: database.getTodos(userid)
 	};
 }
 
-export const actions = {
-	create: async ({ cookies, request }) => {
-		// Temporarly disabled while the POST route is implemented
-		await new Promise((resolve) => setTimeout(resolve, 1000));
-		const data = await request.formData();
-		try {
-			db.createTodo(cookies.get('userid'), data.get('description'));
-		} catch (error) {
-			return fail(422, { description: data.get('description'), error: error.message });
-		}
-	},
+// Commented out while the POST route is implemented
+// import * as db from '$lib/server/database.js';
+// import { fail } from '@sveltejs/kit';
 
-  delete: async ({ cookies, request }) => {
-		await new Promise((resolve) => setTimeout(resolve, 1000));
-    const data = await request.formData();
-    db.deleteTodo(cookies.get('userid'), data.get('id'))
-  }
-};
+// export function load({ cookies }) {
+// 	let id = cookies.get('userid');
+
+// 	if (!id) {
+// 		id = crypto.randomUUID();
+// 		cookies.set('userid', id, { path: '/' });
+// 	}
+
+// 	return {
+// 		todos: db.getTodos(id)
+// 	};
+// }
+
+// export const actions = {
+// 	create: async ({ cookies, request }) => {
+// 		// Temporarly disabled while the POST route is implemented
+// 		await new Promise((resolve) => setTimeout(resolve, 1000));
+// 		const data = await request.formData();
+// 		try {
+// 			db.createTodo(cookies.get('userid'), data.get('description'));
+// 		} catch (error) {
+// 			return fail(422, { description: data.get('description'), error: error.message });
+// 		}
+// 	},
+
+//   delete: async ({ cookies, request }) => {
+// 		await new Promise((resolve) => setTimeout(resolve, 1000));
+//     const data = await request.formData();
+//     db.deleteTodo(cookies.get('userid'), data.get('id'))
+//   }
+// };
 
