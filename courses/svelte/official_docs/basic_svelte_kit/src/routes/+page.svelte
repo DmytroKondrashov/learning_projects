@@ -92,7 +92,7 @@
 						onclick={async (e) => {
 							// TODO handle delete
 						}}
-					></button>
+					>X</button>
 				</label>
 			</li>
 		{/each}
