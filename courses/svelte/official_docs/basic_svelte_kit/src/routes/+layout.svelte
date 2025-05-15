@@ -1,10 +1,15 @@
 <script lang="ts">
+	import { page, navigating } from '$app/state'
+	
   let { children } = $props();
 </script>
 
 <nav>
-	<a href="/">home</a>
-	<a href="/blog">blog</a>
+	<a href="/" aria-current={page.url.pathname === '/'}>home</a>
+	<a href="/blog" aria-current={page.url.pathname === '/blog'}>blog</a>
+	{#if navigating.to}
+		navigating to {navigating.to.url.pathname}
+	{/if}
 </nav>
 
 {@render children()}
