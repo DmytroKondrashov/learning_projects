@@ -29,11 +29,6 @@
       };
     }
   };
-
-  const handleOAuthLogin = async (provider: Provider) => {
-    let { error } = await supabase.auth.signInWithOAuth({ provider });
-    if (error) console.log("Error: ", error.message);
-  };
 </script>
 
 <div
@@ -102,31 +97,6 @@
       </div>
       <div class="relative flex justify-center text-sm leading-5">
         <span class="px-2 bg-white text-gray-500"> Or continue with </span>
-      </div>
-    </div>
-
-    <div>
-      <div class="mt-3">
-        <span class="block rounded-md shadow-sm">
-          <button
-            on:click={() => handleOAuthLogin("github")}
-            type="button"
-            class="w-3/4 mx-auto flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:border-blue-700 focus:shadow-outline-blue active:bg-blue-700 transition duration-150 ease-in-out"
-          >
-            GitHub
-          </button>
-        </span>
-      </div>
-      <div class="mt-3">
-        <span class="block rounded-md shadow-sm">
-          <button
-            on:click={() => handleOAuthLogin("google")}
-            type="button"
-            class="w-3/4 mx-auto flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:border-blue-700 focus:shadow-outline-blue active:bg-blue-700 transition duration-150 ease-in-out"
-          >
-            Google
-          </button>
-        </span>
       </div>
     </div>
   </div>
