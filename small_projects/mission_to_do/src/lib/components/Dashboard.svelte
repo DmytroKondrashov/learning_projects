@@ -2,7 +2,7 @@
   import { onMount } from 'svelte';
   import { supabase } from '$lib/supabaseClient';
   import { goto } from '$app/navigation';
-  import { PUBLIC_PROJECT_REF } from '$env/static/public';
+  import { PUBLIC_PROJECT_REF, PUBLIC_SUPABASE_ANON_KEY } from '$env/static/public';
 
   let todoLists = [];
   let loading = true;
@@ -22,7 +22,8 @@
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          'Authorization': `Bearer ${token}`,
+          'apikey': PUBLIC_SUPABASE_ANON_KEY,
         },
         body: JSON.stringify({
           query: `
@@ -39,9 +40,10 @@
             }
           `
         })
-      });
+      })
 
       const result = await response.json();
+      console.log(result);
       todoLists = result.data.todo_listCollection.edges.map(edge => edge.node);
     } catch (err) {
       error = err;
