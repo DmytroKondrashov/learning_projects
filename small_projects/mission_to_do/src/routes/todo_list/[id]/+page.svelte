@@ -31,16 +31,16 @@
           },
           body: JSON.stringify({
             query: `
-              query GetTodoList($id: UUID!) {
-                todo_list(id: $id) {
-                  id
-                  name
-                  list_items {
-                    id
-                    name
-                    description
-                    done
-                    due_date
+              query GetListItems($id: UUID!) {
+                list_itemCollection(filter: { todo_list_id: { eq: $id } }) {
+                  edges {
+                    node {
+                      id
+                      name
+                      description
+                      done
+                      due_date
+                    }
                   }
                 }
               }
@@ -50,8 +50,7 @@
         });
 
         const result = await response.json();
-        todoList = result.data.todo_list;
-        listItems = todoList.list_items;
+        listItems = result.data.list_itemCollection.edges.map(edge => edge.node);
       } catch (err) {
         error = err;
       } finally {
@@ -114,7 +113,7 @@
 {:else if error}
   <p>Error loading to-do list: {error.message}</p>
 {:else}
-  <h1>{todoList.name}</h1>
+  <!-- <h1>{todoList.name}</h1> -->
   {#if listItems.length === 0}
     <p>No items yet.</p>
     <button on:click={createListItem}>Create a New List Item</button>
