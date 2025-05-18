@@ -31,7 +31,7 @@
         body: JSON.stringify({
           query: `
             mutation RenameTodoList($id: UUID!, $name: String!) {
-              updateTodo_listCollection(
+              updatetodo_listCollection(
                 filter: { id: { eq: $id } },
                 set: { name: $name }
               ) {
@@ -78,7 +78,7 @@
         body: JSON.stringify({
           query: `
             mutation DeleteTodoList($id: UUID!) {
-              deleteFromTodo_listCollection(filter: { id: { eq: $id } }) {
+              deleteFromtodo_listCollection(filter: { id: { eq: $id } }) {
                 affectedCount
               }
             }
