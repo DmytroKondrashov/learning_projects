@@ -3,6 +3,7 @@
   import { supabase } from '$lib/supabaseClient';
   import { goto } from '$app/navigation';
   import { PUBLIC_PROJECT_REF, PUBLIC_SUPABASE_ANON_KEY } from '$env/static/public';
+  import List from '$lib/components/List.svelte';
 
   let todoLists = [];
   let loading = true;
@@ -34,16 +35,16 @@
                     id
                     name
                     created_at
+                    user_id
                   }
                 }
               }
             }
           `
         })
-      })
+      });
 
       const result = await response.json();
-      console.log(result);
       todoLists = result.data.todo_listCollection.edges.map(edge => edge.node);
     } catch (err) {
       error = err;
@@ -61,7 +62,6 @@
       const token = session?.access_token;
       const userId = session?.user?.id;
 
-
       const response = await fetch(`https://${PUBLIC_PROJECT_REF}.supabase.co/graphql/v1`, {
         method: 'POST',
         headers: {
@@ -71,7 +71,7 @@
         },
         body: JSON.stringify({
           query: `
-            mutation CreateTodoList($name: String!) {
+            mutation CreateTodoList($name: String!, $userId: UUID!) {
               insertIntotodo_listCollection(objects: { name: $name, user_id: $userId }) {
                 records {
                   id
@@ -90,12 +90,19 @@
       });
 
       const result = await response.json();
-      console.log(result);
       const newList = result.data.insertIntotodo_listCollection.records[0];
       todoLists = [...todoLists, newList];
     } catch (err) {
       error = err;
     }
+  }
+
+  function handleDelete(id: string) {
+    todoLists = todoLists.filter(list => list.id !== id);
+  }
+
+  function handleRename(id: string, newName: string) {
+    todoLists = todoLists.map(list => list.id === id ? { ...list, name: newName } : list);
   }
 </script>
 
@@ -111,10 +118,10 @@
     <ul>
       {#each todoLists as list}
         <li>
-          <a href={`/todo_list/${list.id}`}>{list.name}</a>
+          <List {list} onDelete={handleDelete} onRename={handleRename} />
         </li>
       {/each}
-    </ul>  
+    </ul>
     <button on:click={createTodoList}>Create a New To-Do List</button>
   {/if}
 {/if}
