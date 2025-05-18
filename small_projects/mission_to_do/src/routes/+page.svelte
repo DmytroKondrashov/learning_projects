@@ -1,4 +1,4 @@
-<script lang="ts">
+<!-- <script lang="ts">
   import { onMount } from 'svelte';
   import { supabase } from '$lib/supabaseClient';
   import { goto } from '$app/navigation';
@@ -20,5 +20,11 @@
   <h1>Welcome!</h1>
   <p>Your UID: {user.id}</p>
   <button on:click={logout}>Log Out</button>
-{/if}
+{/if} -->
+
+<script>
+	import Dashboard from "$lib/components/Dashboard.svelte";
+</script>
+
+<Dashboard />
 
