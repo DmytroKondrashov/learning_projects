@@ -59,6 +59,8 @@
     try {
       const { data: { session } } = await supabase.auth.getSession();
       const token = session?.access_token;
+      const userId = session?.user?.id;
+
 
       const response = await fetch(`https://${PUBLIC_PROJECT_REF}.supabase.co/graphql/v1`, {
         method: 'POST',
@@ -70,23 +72,26 @@
         body: JSON.stringify({
           query: `
             mutation CreateTodoList($name: String!) {
-              insertIntoTodo_listCollection(objects: { name: $name }) {
+              insertIntotodo_listCollection(objects: { name: $name, user_id: $userId }) {
                 records {
                   id
                   name
+                  user_id
                   created_at
                 }
               }
             }
           `,
           variables: {
-            name
+            name,
+            userId
           }
         })
       });
 
       const result = await response.json();
-      const newList = result.data.insertIntoTodo_listCollection.records[0];
+      console.log(result);
+      const newList = result.data.insertIntotodo_listCollection.records[0];
       todoLists = [...todoLists, newList];
     } catch (err) {
       error = err;
