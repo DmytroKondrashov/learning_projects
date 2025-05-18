@@ -2,6 +2,7 @@
   import { onMount } from 'svelte';
   import { supabase } from '$lib/supabaseClient';
   import { goto } from '$app/navigation';
+  import { PUBLIC_PROJECT_REF } from '$env/static/public';
 
   let todoLists = [];
   let loading = true;
@@ -17,7 +18,7 @@
         return;
       }
 
-      const response = await fetch('https://<your-project-ref>.supabase.co/graphql/v1', {
+      const response = await fetch(`https://${PUBLIC_PROJECT_REF}.supabase.co/graphql/v1`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -57,7 +58,7 @@
       const { data: { session } } = await supabase.auth.getSession();
       const token = session?.access_token;
 
-      const response = await fetch('https://<your-project-ref>.supabase.co/graphql/v1', {
+      const response = await fetch(`https://${PUBLIC_PROJECT_REF}.supabase.co/graphql/v1`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
