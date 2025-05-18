@@ -110,9 +110,11 @@
   {:else}
     <ul>
       {#each todoLists as list}
-        <li>{list.name}</li>
+        <li>
+          <a href={`/todo_list/${list.id}`}>{list.name}</a>
+        </li>
       {/each}
-    </ul>
+    </ul>  
     <button on:click={createTodoList}>Create a New To-Do List</button>
   {/if}
 {/if}
