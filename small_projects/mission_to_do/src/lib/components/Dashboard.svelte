@@ -64,7 +64,8 @@
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          'Authorization': `Bearer ${token}`,
+          'apikey': PUBLIC_SUPABASE_ANON_KEY,
         },
         body: JSON.stringify({
           query: `
