@@ -1,2 +1,24 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
+<script lang="ts">
+  import { onMount } from 'svelte';
+  import { supabase } from '$lib/supabaseClient';
+  import { goto } from '$app/navigation';
+
+  let user = null;
+
+  onMount(async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    user = session?.user;
+  });
+
+  const logout = async () => {
+    await supabase.auth.signOut();
+    goto('/auth');
+  };
+</script>
+
+{#if user}
+  <h1>Welcome!</h1>
+  <p>Your UID: {user.id}</p>
+  <button on:click={logout}>Log Out</button>
+{/if}
+
