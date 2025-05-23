@@ -29,17 +29,47 @@
             'Authorization': `Bearer ${token}`,
             'apikey': PUBLIC_SUPABASE_ANON_KEY,
           },
-          body: JSON.stringify({
+        //   body: JSON.stringify({
+        //     query: `
+        //       query GetListItems($id: UUID!) {
+        //         list_itemCollection(filter: { todo_list_id: { eq: $id } }) {
+        //           edges {
+        //             node {
+        //               id
+        //               name
+        //               description
+        //               done
+        //               due_date
+        //             }
+        //           }
+        //         }
+        //       }
+        //     `,
+        //     variables: { id }
+        //   })
+        // });
+
+        // const result = await response.json();
+        // listItems = result.data.list_itemCollection.edges.map(edge => edge.node);
+        body: JSON.stringify({
             query: `
-              query GetListItems($id: UUID!) {
-                list_itemCollection(filter: { todo_list_id: { eq: $id } }) {
+              query GetTodoList($id: UUID!) {
+                todo_listCollection(filter: { id: { eq: $id } }) {
                   edges {
                     node {
                       id
                       name
-                      description
-                      done
-                      due_date
+                      list_itemsCollection {
+                        edges {
+                          node {
+                            id
+                            name
+                            description
+                            done
+                            due_date
+                          }
+                        }
+                      }
                     }
                   }
                 }
@@ -50,7 +80,9 @@
         });
 
         const result = await response.json();
-        listItems = result.data.list_itemCollection.edges.map(edge => edge.node);
+        console.log(result);
+        todoList = result.data.todo_list;
+        listItems = todoList.list_items;
       } catch (err) {
         error = err;
       } finally {
