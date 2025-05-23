@@ -26,6 +26,8 @@
 	},
 	"dependencies": {
 		"@supabase/auth-helpers-sveltekit": "^0.13.0",
-		"@supabase/supabase-js": "^2.49.4"
+		"@supabase/supabase-js": "^2.49.4",
+		"@urql/exchange-auth": "^2.2.1",
+		"@urql/svelte": "^4.2.3"
 	}
 }
