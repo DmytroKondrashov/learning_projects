@@ -10,9 +10,9 @@
     user = session?.user;
 
     // FIXME: globalThis. might be wrong
-    if (!user && globalThis.$page.url.pathname !== '/auth') {
-      goto('/auth');
-    }
+    // if (!user && globalThis.$page.url.pathname !== '/auth') {
+    //   goto('/auth');
+    // }
   });
 </script>
 
