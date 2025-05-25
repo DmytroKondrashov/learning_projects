@@ -1,0 +1,47 @@
+services:
+  mission-to-do:
+    build: .
+    command: ["node", "build"]
+    environment:
+      PORT: 5173
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: mission_to_do
+      POSTGRES_HOST: postgres
+    ports:
+      - 5173:5173
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:17
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: mission_to_do
+    ports:
+      - 5432:5432
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+    configs:            
+      - source: init_sql
+        target: /docker-entrypoint-initdb.d/01_init.sql              
+        mode: 292
+
+configs:
+    init_sql:
+        name: init_sql
+        content: |
+            CREATE TABLE todo_list (
+                id SERIAL PRIMARY KEY,
+                name TEXT NOT NULL
+            );
+
+            CREATE TABLE list_item (
+                id SERIAL PRIMARY KEY,
+                todo_list_id INTEGER NOT NULL REFERENCES todo_list(id) ON DELETE CASCADE,
+                name TEXT NOT NULL,
+                description TEXT,
+                done BOOLEAN DEFAULT FALSE,
+                due_date DATE
+            );
