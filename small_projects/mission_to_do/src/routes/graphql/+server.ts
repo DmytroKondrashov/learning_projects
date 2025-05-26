@@ -1,5 +1,4 @@
 import { json } from '@sveltejs/kit';
-import type { RequestHandler } from './$types';
 import { Pool } from 'pg';
 
 const pool = new Pool({
@@ -10,7 +9,7 @@ const pool = new Pool({
   database: process.env.POSTGRES_DB || 'mission_to_do'
 });
 
-export const POST: RequestHandler = async ({ request }) => {
+export const POST = async ({ request }) => {
   const { query, variables } = await request.json();
 
   try {
