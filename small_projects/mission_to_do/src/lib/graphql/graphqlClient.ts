@@ -1,4 +1,4 @@
-import { createClient } from '@urql/svelte';
+import { cacheExchange, createClient, fetchExchange } from '@urql/svelte';
 
 export const client = createClient({
   url: '/graphql',
@@ -7,5 +7,8 @@ export const client = createClient({
     headers: {
       'Content-Type': 'application/json'
     }
-  }
+  },
+  exchanges: [
+    fetchExchange
+  ]
 });
