@@ -1,5 +1,5 @@
 services:
-  mission-to-do:
+  small-to-do:
     build: .
     command: ["node", "build"]
     environment:
