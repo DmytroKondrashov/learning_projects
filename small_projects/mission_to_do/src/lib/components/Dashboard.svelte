@@ -4,48 +4,60 @@
   import { goto } from '$app/navigation';
   import { PUBLIC_PROJECT_REF, PUBLIC_SUPABASE_ANON_KEY } from '$env/static/public';
   import List from '$lib/components/List.svelte';
+  import { client } from '$lib/graphql/graphqlClient';
+  import { gql } from '@urql/svelte';
+  import { GetUserTodoLists } from '$lib/queries/GetUserTodoLists';
 
   let todoLists = [];
   let loading = true;
   let error = null;
 
   onMount(async () => {
+    // try {
+    //   const { data: { session } } = await supabase.auth.getSession();
+    //   const token = session?.access_token;
+
+    //   if (!token) {
+    //     goto('/auth');
+    //     return;
+    //   }
+
+    //   const response = await fetch(`https://${PUBLIC_PROJECT_REF}.supabase.co/graphql/v1`, {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //       'Authorization': `Bearer ${token}`,
+    //       'apikey': PUBLIC_SUPABASE_ANON_KEY,
+    //     },
+    //     body: JSON.stringify({
+    //       query: `
+    //         query GetUserTodoLists {
+    //           todo_listCollection {
+    //             edges {
+    //               node {
+    //                 id
+    //                 name
+    //                 created_at
+    //                 user_id
+    //               }
+    //             }
+    //           }
+    //         }
+    //       `
+    //     })
+    //   });
+
+    //   const result = await response.json();
+    //   todoLists = result.data.todo_listCollection.edges.map(edge => edge.node);
+    // } catch (err) {
+    //   error = err;
+    // } finally {
+    //   loading = false;
+    // }
+
     try {
-      const { data: { session } } = await supabase.auth.getSession();
-      const token = session?.access_token;
-
-      if (!token) {
-        goto('/auth');
-        return;
-      }
-
-      const response = await fetch(`https://${PUBLIC_PROJECT_REF}.supabase.co/graphql/v1`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-          'apikey': PUBLIC_SUPABASE_ANON_KEY,
-        },
-        body: JSON.stringify({
-          query: `
-            query GetUserTodoLists {
-              todo_listCollection {
-                edges {
-                  node {
-                    id
-                    name
-                    created_at
-                    user_id
-                  }
-                }
-              }
-            }
-          `
-        })
-      });
-
-      const result = await response.json();
-      todoLists = result.data.todo_listCollection.edges.map(edge => edge.node);
+      const result = await client.query(GetUserTodoLists, {}, { requestPolicy: 'network-only' }).toPromise();
+      todoLists = result.data.todo_listCollection.edges.map((edge: any) => edge.node);
     } catch (err) {
       error = err;
     } finally {
@@ -115,6 +127,7 @@
     <p>No To-Do Lists yet.</p>
     <button on:click={createTodoList}>Create a New To-Do List</button>
   {:else}
+    <p>Todo Lists</p>
     <ul>
       {#each todoLists as list}
         <li>
