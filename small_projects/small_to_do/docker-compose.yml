@@ -1,0 +1,28 @@
+services:
+  mission-to-do:
+    build: .
+    command: ["node", "build"]
+    environment:
+      PORT: 5173
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: small_to_do
+      POSTGRES_HOST: postgres
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/small_to_do
+    ports:
+      - 5173:5173
+    depends_on:
+      - postgres
+
+  postgres:
+    image: supabase/postgres:17.4.1.036
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: small_to_do
+    ports:
+      - 5432:5432
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+      - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    command: postgres -c shared_preload_libraries=pg_graphql
