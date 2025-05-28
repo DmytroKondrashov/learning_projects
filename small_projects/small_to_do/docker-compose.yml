@@ -36,4 +36,3 @@ services:
     volumes:
       - ./postgres_data:/var/lib/postgresql/data
       - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
-    command: postgres -c shared_preload_libraries=pg_graphql
