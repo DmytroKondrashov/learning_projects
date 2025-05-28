@@ -13,6 +13,17 @@ services:
       - 5173:5173
     depends_on:
       - postgres
+      - postgraphile
+
+  postgraphile:
+    image: graphile/postgraphile:latest
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/small_to_do
+      POSTGRAPHILE_OPTIONS: --watch --enhance-graphiql --cors
+    ports:
+      - 5000:5000
+    depends_on:
+      - postgres
 
   postgres:
     image: postgres:latest
