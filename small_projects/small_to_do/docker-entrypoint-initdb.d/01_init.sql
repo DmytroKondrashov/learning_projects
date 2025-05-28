@@ -1,7 +1,5 @@
 CREATE ROLE supabase_admin WITH SUPERUSER LOGIN PASSWORD 'postgres';
 
-CREATE EXTENSION IF NOT EXISTS "pg_graphql";
-
 CREATE TABLE todo_list (
     id SERIAL PRIMARY KEY,
     name TEXT NOT NULL
