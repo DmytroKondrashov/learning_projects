@@ -1,5 +1,3 @@
-CREATE ROLE supabase_admin WITH SUPERUSER LOGIN PASSWORD 'postgres';
-
 CREATE TABLE todo_list (
     id SERIAL PRIMARY KEY,
     name TEXT NOT NULL
