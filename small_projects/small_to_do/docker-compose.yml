@@ -5,34 +5,29 @@ services:
     environment:
       PORT: 5173
       POSTGRES_PASSWORD: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_DB: small_to_do
+      POSTGRES_USER: supabase_admin
+      POSTGRES_DB: postgres
       POSTGRES_HOST: postgres
-      DATABASE_URL: postgres://postgres:postgres@postgres:5432/small_to_do
+      DATABASE_URL: postgres://supabase_admin:postgres@postgres:5432/postgres
     ports:
       - 5173:5173
     depends_on:
-      - postgres
-      - postgraphile
-
-  postgraphile:
-    image: graphile/postgraphile:latest
-    environment:
-      DATABASE_URL: postgres://postgres:postgres@postgres:5432/small_to_do
-      POSTGRAPHILE_OPTIONS: --watch --enhance-graphiql --cors
-    ports:
-      - 5000:5000
-    depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
 
   postgres:
-    image: postgres:latest
+    image: supabase/postgres:17.4.1.037_arm64
     environment:
       POSTGRES_PASSWORD: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_DB: small_to_do
     ports:
       - 5432:5432
     volumes:
       - ./postgres_data:/var/lib/postgresql/data
-      - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+      - ${PWD}/docker-entrypoint-initdb.d/empty.sql:/docker-entrypoint-initdb.d/init-scripts/99-roles.sql
+      - ${PWD}/docker-entrypoint-initdb.d/01_init.sql:/docker-entrypoint-initdb.d/init-scripts/999_init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
