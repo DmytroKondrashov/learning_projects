@@ -9,16 +9,18 @@
   let errors = $state([]);
 
   onMount(async () => {
+    console.log('onMount');
     const { data, error } = await urql.query(gql`
     query {
-      todos {
+      todo_list {
         id
       }
     }
   `, {}).toPromise();
 
     if (data) {
-      todos = data.todos;
+      console.log(data);
+      todos = data.todo_list;
     }
 
     if (error) {
@@ -26,7 +28,20 @@
     }
   });
 
-  
+  async function fetchTodos() {
+    const { data, error } = await urql.query(gql`
+    query {
+      todo_list {
+        id
+      }
+    }
+  `, {}).toPromise();
+
+    if (data) {
+      console.log(data);
+      todos = data.todo_list;
+    }
+  }
 </script>
 
 <h1>Welcome to SvelteKit</h1>
@@ -46,3 +61,4 @@
   </ul>
 {/if}
 
+<button onclick={fetchTodos}>Fetch Todos</button>
