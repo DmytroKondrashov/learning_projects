@@ -1,5 +1,7 @@
 GRANT ALL PRIVILEGES ON SCHEMA public TO supabase_admin;
 
+CREATE EXTENSION IF NOT EXISTS "pg_graphql";
+
 CREATE TABLE todo_list (
     id SERIAL PRIMARY KEY,
     name TEXT NOT NULL
