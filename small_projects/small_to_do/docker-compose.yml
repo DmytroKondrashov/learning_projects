@@ -1,7 +1,7 @@
 services:
   small-to-do:
     build: .
-    command: ["node", "build"]
+    command: ['node', 'build']
     environment:
       PORT: 5173
       POSTGRES_PASSWORD: postgres
@@ -29,8 +29,7 @@ services:
       - ${PWD}/docker-entrypoint-initdb.d/empty.sql:/docker-entrypoint-initdb.d/init-scripts/99-roles.sql
       - ${PWD}/docker-entrypoint-initdb.d/01_init.sql:/docker-entrypoint-initdb.d/init-scripts/999_init.sql
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
       interval: 5s
       timeout: 5s
       retries: 5
-

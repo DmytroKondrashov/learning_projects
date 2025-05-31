@@ -1,15 +1,14 @@
-
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-  import '../app.css';
+	import '../app.css';
 
-  interface Props extends Record<string, unknown> {
-    children?: Snippet
-  }
+	interface Props extends Record<string, unknown> {
+		children?: Snippet;
+	}
 
-  let { children }: Props = $props();
+	let { children }: Props = $props();
 </script>
 
 <div class="container">
-  {@render children?.()}
+	{@render children?.()}
 </div>

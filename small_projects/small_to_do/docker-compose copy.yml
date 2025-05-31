@@ -1,7 +1,7 @@
 services:
   small-to-do:
     build: .
-    command: ["node", "build"]
+    command: ['node', 'build']
     environment:
       PORT: 5173
       POSTGRES_PASSWORD: postgres
