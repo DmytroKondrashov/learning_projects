@@ -9,7 +9,7 @@
   let { anime, class: className }: Props = $props();
 </script>
 
-<div class={['card', className]}>
+<a class={['card', className]} href="/{anime.id}">
   <div class="card-image">
     <figure class="image">
       <img
@@ -26,4 +26,4 @@
       {@html anime.descriptionHtml}
     </div> -->
   </div>
-</div>
+</a>
