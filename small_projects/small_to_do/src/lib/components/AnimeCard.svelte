@@ -1,10 +1,15 @@
 <script lang="ts">
 	import type Anime from "$lib/interfaces/Anime";
 
-  let { anime }: { anime: Anime } = $props();
+  interface Props extends Record<string, unknown> {
+    anime: Anime;
+    class: string;
+  }
+
+  let { anime, class: className }: Props = $props();
 </script>
 
-<div class="card">
+<div class={['card', className]}>
   <div class="card-image">
     <figure class="image is-4by3">
       <img
@@ -22,7 +27,7 @@
     </div>
 
     <div class="content" style:text-overflow="ellipsis">
-      {anime.description}
+      {@html anime.descriptionHtml}
     </div>
   </div>
 </div>

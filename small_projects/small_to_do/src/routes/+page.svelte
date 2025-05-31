@@ -3,6 +3,7 @@
 	import { setContextClient, gql } from '@urql/svelte';
 	import { onMount } from 'svelte';
 	import { getAnimeList } from '$lib/queries/getAnimeList';
+	import AnimeCard from '$lib/components/AnimeCard.svelte';
 
 	setContextClient(urql);
 
@@ -31,15 +32,19 @@
 <h1>Anime List</h1>
 <ul>
 	{#if loading}
-		<li>Loading...</li>
+		<span>Loading...</span>
 	{:else if animes}
-		{#each animes as anime}
-			<li>{anime.name}</li>
-		{:else}
-			<li>No animes found</li>
-		{/each}
+		<section class="fixed-grid has-4-cols">
+      <div class="grid">
+			{#each animes as anime}
+				<AnimeCard class='cell' {anime} />
+			{:else}
+				<span>No animes found</span>
+			{/each}
+		  </div>
+    </section>
 	{:else}
-		<li>No animes found</li>
+		<span>No animes found</span>
 	{/if}
 </ul>
 
