@@ -11,23 +11,19 @@
 
 <div class={['card', className]}>
   <div class="card-image">
-    <figure class="image is-4by3">
+    <figure class="image">
       <img
         src={anime.poster.mainUrl}
         alt="Placeholder image"
       />
     </figure>
   </div>
-  <div class="card-content">
-    <div class="media">
-      <div class="media-content">
-        <p class="title is-4">{anime.name}</p>
-        <p class="subtitle is-6">{anime.russian}</p>
-      </div>
-    </div>
+    <div class="p-2 is-flex is-flex-direction-column is-align-items-center ">
+      <p class="is-5 has-text-centered">{anime.name}</p>
+      <p class="is-6 has-text-centered">{anime.russian}</p>
 
-    <div class="content" style:text-overflow="ellipsis">
+    <!-- <div class="content" style="text-overflow: ellipsis; max-height: 300px; overflow: hidden;">
       {@html anime.descriptionHtml}
-    </div>
+    </div> -->
   </div>
 </div>
