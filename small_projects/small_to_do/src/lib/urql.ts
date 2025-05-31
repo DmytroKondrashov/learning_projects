@@ -1,7 +1,7 @@
 import { Client, cacheExchange, fetchExchange } from '@urql/svelte';
 
 const urql = new Client({
-  url: '/graphql',
+  url: 'https://anilist.co/graphql',
   exchanges: [cacheExchange, fetchExchange],
 });
 
