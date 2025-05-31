@@ -14,7 +14,7 @@
 	onMount(async () => {
 		console.log('onMount');
 		loading = true;
-		const { data, error } = await urql.query(getAnimeList, {}).toPromise();
+		const { data, error } = await urql.query(getAnimeList, { limit: 12 }).toPromise();
 
 		if (data?.animes) {
 			console.log(data);
@@ -29,7 +29,6 @@
 	});
 </script>
 
-<h1>Anime List</h1>
 <ul>
 	{#if loading}
 		<span>Loading...</span>
