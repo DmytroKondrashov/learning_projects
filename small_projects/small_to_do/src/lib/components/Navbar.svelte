@@ -42,5 +42,13 @@
 		<div class="navbar-start">
 			<a class="navbar-item"> Home </a>
 		</div>
+    <div class="field has-addons p-2">
+      <p class="control">
+        <input class="input" type="text" placeholder="Find an anime" />
+      </p>
+      <p class="control">
+        <button class="button">Search</button>
+      </p>
+    </div>
 	</div>
 </nav>
