@@ -1,49 +1,34 @@
 <script lang="ts">
+	import type Anime from '$lib/interfaces/Anime';
 	import { getAnime } from '$lib/queries/getAnime.js';
 	import urql from '$lib/urql.js';
 	import { onMount, type Snippet } from 'svelte';
+	import type { PageData } from '../$types';
 
-  let { data, children }: { data: { id: string }, children: Snippet<[content: Record<string, any>]> } = $props();
+  interface Props extends Record<string, unknown> {
+    data: PageData,
+    children: Snippet
+  }
 
-  let loading = $state(false);
-  let errors = $state([]);
-  let anime = $state(null);
-  let { id } = data;
-
-  onMount(async () => {
-    loading = true;
-		const { data, error } = await urql.query(getAnime, { id }).toPromise();
-
-		if (data?.animes) {
-			anime = data?.animes[0];
-		}
-
-		if (error?.message) {
-			errors.push(error.message);
-		}
-
-		loading = false;
-  });
+  let { data, children }: Props = $props();
 </script>
 
 <ul>
-	{#if loading}
+	{#if data.loading}
 		<span>Loading...</span>
-	{:else if anime}
-  {@const content = Object.entries(anime)}
-  {console.log(content)}
+	{:else if data.anime}
   <div class="fixed-grid has-4-cols">
 		<div class="grid ">
       <div class="cell">
         <figure class="image">
           <img
-            src={anime.poster.mainUrl}
+            src={data.anime.poster.mainUrl}
             alt="Placeholder image"
           />
         </figure>
       </div>
       <div class="cell is-col-span-3">
-        {@render children?.(content)}
+        {@render children?.()}
       </div>
     </div>
   </div>
@@ -52,9 +37,9 @@
 	{/if}
 </ul>
 
-{#if errors.length > 0}
+{#if data.errors.length > 0}
 	<ul>
-		{#each errors as error}
+		{#each data.errors as error}
 			<li>{error}</li>
 		{/each}
 	</ul>
