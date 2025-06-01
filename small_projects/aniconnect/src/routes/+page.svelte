@@ -34,14 +34,14 @@
 		<span>Loading...</span>
 	{:else if animes}
 		<section class="fixed-grid has-4-cols">
-      <div class="grid">
-			{#each animes as anime}
-				<AnimeCard class='cell' {anime} />
-			{:else}
-				<span>No animes found</span>
-			{/each}
-		  </div>
-    </section>
+			<div class="grid">
+				{#each animes as anime}
+					<AnimeCard class="cell" {anime} />
+				{:else}
+					<span>No animes found</span>
+				{/each}
+			</div>
+		</section>
 	{:else}
 		<span>No animes found</span>
 	{/if}

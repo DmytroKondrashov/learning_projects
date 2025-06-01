@@ -5,12 +5,12 @@
 	import { onMount, type Snippet } from 'svelte';
 	import type { PageData } from '../$types';
 
-  interface Props extends Record<string, unknown> {
-    data: PageData,
-    children: Snippet
-  }
+	interface Props extends Record<string, unknown> {
+		data: PageData;
+		children: Snippet;
+	}
 
-  let { data, children }: Props = $props();
+	let { data, children }: Props = $props();
 </script>
 
 <!-- TODO: make an array of fields to show on the left -->
@@ -18,21 +18,18 @@
 	{#if data.loading}
 		<span>Loading...</span>
 	{:else if data.anime}
-  <div class="fixed-grid has-4-cols">
-		<div class="grid ">
-      <div class="cell">
-        <figure class="image">
-          <img
-            src={data.anime.poster.mainUrl}
-            alt="Placeholder image"
-          />
-        </figure>
-      </div>
-      <div class="cell is-col-span-3">
-        {@render children?.()}
-      </div>
-    </div>
-  </div>
+		<div class="fixed-grid has-4-cols">
+			<div class="grid">
+				<div class="cell">
+					<figure class="image">
+						<img src={data.anime.poster.mainUrl} alt="Placeholder image" />
+					</figure>
+				</div>
+				<div class="cell is-col-span-3">
+					{@render children?.()}
+				</div>
+			</div>
+		</div>
 	{:else}
 		<span>Anime not found</span>
 	{/if}
