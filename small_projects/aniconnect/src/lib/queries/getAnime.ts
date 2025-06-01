@@ -17,28 +17,7 @@ query getAnime($id: String!) {
 
     genres { id name russian kind }
     studios { id name imageUrl }
-
-    externalLinks {
-      id
-      kind
-      url
-      createdAt
-      updatedAt
-    }
-
-    personRoles {
-      id
-      rolesRu
-      rolesEn
-      person { id name poster { id } }
-    }
-    characterRoles {
-      id
-      rolesRu
-      rolesEn
-      character { id name poster { id } }
-    }
-
+    
     related {
       id
       anime {
@@ -56,12 +35,7 @@ query getAnime($id: String!) {
     videos { id url name kind playerUrl imageUrl }
     screenshots { id originalUrl x166Url x332Url }
 
-    scoresStats { score count }
-    statusesStats { status count }
-
-    description
     descriptionHtml
-    descriptionSource
   }
 }
 `;
