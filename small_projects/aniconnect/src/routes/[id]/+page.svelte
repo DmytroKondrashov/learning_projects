@@ -3,6 +3,8 @@
   import type { PageData } from '../$types';
 
   let { data }: { data: PageData } = $props();
+
+  const omittedFields = new Set(['id', 'poster', 'kind', 'rating', '__typename', 'synonyms']);
 </script>
 
 {#snippet valueFormatter(key: string, value: unknown)}
@@ -35,8 +37,8 @@
 
 <dl>
   {#each Object.entries(data.anime) as [key, value]}
-    {#if key !== 'poster'}
-      <dt>{key}</dt>
+    {#if !omittedFields.has(key)}
+      <dt class="mt-4 subtitle is-capitalized">{key !== 'descriptionHtml' ? key : 'Description'}</dt>
       <dd>{@render valueFormatter(key, value)}</dd>
     {/if}
   {/each}
