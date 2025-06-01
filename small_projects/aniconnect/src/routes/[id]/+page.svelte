@@ -4,6 +4,7 @@
 
   let { data }: { data: PageData } = $props();
 
+  // TODO: make an array of fields to show on the right
   const omittedFields = new Set(['id', 'poster', 'kind', 'rating', '__typename', 'synonyms']);
 </script>
 
@@ -15,6 +16,7 @@
     {@const studios = value as Anime['studios']}
     <span>{studios.map(({ name }) => name).join(', ')}</span>
   {:else if key === 'videos'}
+    <!-- TODO: find and clear broken videos -->
     {@const videos = value as Anime['videos']}
     <div class="is-flex is-flex-wrap-nowrap is-flex-direction-row" style="overflow-x: scroll;">
         {#each videos as { id, playerUrl, imageUrl } (id)}

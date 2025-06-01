@@ -13,6 +13,7 @@
   let { data, children }: Props = $props();
 </script>
 
+<!-- TODO: make an array of fields to show on the left -->
 <ul>
 	{#if data.loading}
 		<span>Loading...</span>
