@@ -14,9 +14,11 @@
     <span>{studios.map(({ name }) => name).join(', ')}</span>
   {:else if key === 'videos'}
     {@const videos = value as Anime['videos']}
-    {#each videos as { id, url, name, kind, playerUrl, imageUrl } (id)}
-      <span>{name} - {kind} - {playerUrl} - {imageUrl}</span>
-    {/each}
+    <div class="is-flex is-flex-wrap-nowrap is-flex-direction-row" style="overflow-x: scroll;">
+        {#each videos as { id, url, name, kind, playerUrl, imageUrl } (id)}
+          <video class="mr-2" src={playerUrl} poster={imageUrl} controls></video>
+        {/each}
+      </div>
   {:else if key === 'screenshots'}
     {@const screenshots = value as Anime['screenshots']}
     {#each screenshots as { id, originalUrl, x166Url, x332Url } (id)}
