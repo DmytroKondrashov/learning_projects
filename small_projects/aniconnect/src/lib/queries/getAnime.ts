@@ -2,10 +2,8 @@ export const getAnime = `
 query getAnime($id: String!) { 
   animes(ids: $id) {
     id
-    malId
     name
     russian
-    licenseNameRu
     english
     japanese
     synonyms
@@ -14,22 +12,8 @@ query getAnime($id: String!) {
     score
     status
     episodes
-    episodesAired
-    duration
-    airedOn { year month day date }
-    releasedOn { year month day date }
-    url
-    season
 
     poster { id originalUrl mainUrl }
-
-    fansubbers
-    fandubbers
-    licensors
-    createdAt,
-    updatedAt,
-    nextEpisodeAt,
-    isCensored
 
     genres { id name russian kind }
     studios { id name imageUrl }
