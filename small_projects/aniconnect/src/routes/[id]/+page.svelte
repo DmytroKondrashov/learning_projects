@@ -8,12 +8,10 @@
 {#snippet valueFormatter(key: string, value: unknown)}
   {#if key === 'genres'}
     {@const genres = value as Anime['genres']}
-    {#each genres as { id, name, russian, kind } (id)}
-      <span>{name} - {russian} - {kind}</span>
-    {/each}
+    <span>{genres.map(({ russian }) => russian).join(', ')}</span>
   {:else if key === 'studios'}
     {@const studios = value as Anime['studios']}
-    {studios.map(({ name }) => name).join(', ')}
+    <span>{studios.map(({ name }) => name).join(', ')}</span>
   {:else if key === 'videos'}
     {@const videos = value as Anime['videos']}
     {#each videos as { id, url, name, kind, playerUrl, imageUrl } (id)}
