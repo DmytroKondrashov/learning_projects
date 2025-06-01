@@ -15,15 +15,17 @@
   {:else if key === 'videos'}
     {@const videos = value as Anime['videos']}
     <div class="is-flex is-flex-wrap-nowrap is-flex-direction-row" style="overflow-x: scroll;">
-        {#each videos as { id, url, name, kind, playerUrl, imageUrl } (id)}
+        {#each videos as { id, playerUrl, imageUrl } (id)}
           <video class="mr-2" src={playerUrl} poster={imageUrl} controls></video>
         {/each}
       </div>
   {:else if key === 'screenshots'}
     {@const screenshots = value as Anime['screenshots']}
-    {#each screenshots as { id, originalUrl, x166Url, x332Url } (id)}
-      <span>{originalUrl} - {x166Url} - {x332Url}</span>
-    {/each}
+    <div class="is-flex is-flex-wrap-nowrap is-flex-direction-row" style="overflow-x: scroll;">
+        {#each screenshots as { id, x332Url } (id)}
+          <img class="mr-2" src={x332Url} />
+        {/each}
+    </div>
   {:else if key === 'descriptionHtml'}
     <span>{@html value}</span>
   {:else}
