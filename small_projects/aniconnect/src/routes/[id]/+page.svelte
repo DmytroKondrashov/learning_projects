@@ -24,9 +24,6 @@
 		{#each genres as { id, name, russian } (id)}
 			<span class="tag is-light mr-2">{russian}</span>
 		{/each}
-	{:else if key === 'studios'}
-		{@const studios = value as Anime['studios']}
-		<span>{studios.map(({ name }) => name).join(', ')}</span>
 	{:else if key === 'videos'}
 		{@const videos = value as Anime['videos']}
 		<div class="is-flex is-flex-wrap-nowrap is-flex-direction-row" style="overflow-x: scroll;">

@@ -35,6 +35,9 @@
 							<figure class="image mb-4">
 								<img src={data.anime[key].mainUrl} alt="Placeholder image" />
 							</figure>
+						{:else if key === 'studios'}
+							{@const studios = data.anime[key] as Anime['studios']}
+							<span class="mb-2"><b class="is-capitalized">{fieldNames[key]}:</b> {studios.map(({ name }) => name).join(', ')}</span>
 						{:else}
 							<div class="is-flex is-flex-direction-column">
 								<span class="mb-2"><b class="is-capitalized">{fieldNames[key]}:</b> {data.anime[key]}</span>
