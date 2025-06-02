@@ -27,14 +27,16 @@
 	{:else if key === 'videos'}
 		{@const videos = value as Anime['videos']}
 		<div class="is-flex is-flex-wrap-nowrap is-flex-direction-row" style="overflow-x: scroll;">
+			<!-- TODO: show imageUrl thumbnail and "full" video on click -->
 			{#each videos as { id, playerUrl, imageUrl } (id)}
-				{#if !playerUrl.includes('vk.com') && !playerUrl.includes('video.sibnet.ru')}
+				{#if playerUrl.includes('youtube.com')}
 					<iframe class="mr-2" src={playerUrl.replace('watch?v=', 'embed/')} 
 					frameborder="0" allowfullscreen loading="lazy" title="Anime Video"></iframe>
 				{/if}
 			{/each}
 		</div>
 	{:else if key === 'screenshots'}
+			<!-- TODO: show  "full" image on click -->
 		{@const screenshots = value as Anime['screenshots']}
 		<div class="is-flex is-flex-wrap-nowrap is-flex-direction-row" style="overflow-x: scroll;">
 			{#each screenshots as { id, x332Url } (id)}
