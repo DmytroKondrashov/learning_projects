@@ -29,7 +29,8 @@
 		<div class="is-flex is-flex-wrap-nowrap is-flex-direction-row" style="overflow-x: scroll;">
 			{#each videos as { id, playerUrl, imageUrl } (id)}
 				{#if !playerUrl.includes('vk.com') && !playerUrl.includes('video.sibnet.ru')}
-					<iframe class="mr-2" src={playerUrl.replace('watch?v=', 'embed/')} frameborder="0" allowfullscreen loading="lazy"></iframe>
+					<iframe class="mr-2" src={playerUrl.replace('watch?v=', 'embed/')} 
+					frameborder="0" allowfullscreen loading="lazy" title="Anime Video"></iframe>
 				{/if}
 			{/each}
 		</div>
@@ -37,7 +38,7 @@
 		{@const screenshots = value as Anime['screenshots']}
 		<div class="is-flex is-flex-wrap-nowrap is-flex-direction-row" style="overflow-x: scroll;">
 			{#each screenshots as { id, x332Url } (id)}
-				<img class="mr-2" src={x332Url} loading="lazy" />
+				<img class="mr-2" src={x332Url} loading="lazy" alt="Anime Screenshot" />
 			{/each}
 		</div>
 	{:else if key === 'descriptionHtml'}
