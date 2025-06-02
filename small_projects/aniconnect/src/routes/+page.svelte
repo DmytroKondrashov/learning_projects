@@ -4,7 +4,7 @@
 	import { onMount } from 'svelte';
 	import { getAnimeList } from '$lib/queries/getAnimeList';
 	import AnimeCard from '$lib/components/AnimeCard.svelte';
-
+	import Pagination from '$lib/components/Pagination.svelte';
 	setContextClient(urql);
 
 	let animes = $state([]);
@@ -14,7 +14,7 @@
 	onMount(async () => {
 		console.log('onMount');
 		loading = true;
-		const { data, error } = await urql.query(getAnimeList, { limit: 12 }).toPromise();
+		const { data, error } = await urql.query(getAnimeList, { limit: 12, page: 1 }).toPromise();
 
 		if (data?.animes) {
 			console.log(data);
@@ -64,3 +64,5 @@
 		{/each}
 	</ul>
 {/if}
+
+<Pagination />
