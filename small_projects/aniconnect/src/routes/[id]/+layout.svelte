@@ -9,7 +9,18 @@
 
 	let { data, children }: Props = $props();
 	data.anime = { poster: data.anime.poster, ...data.anime };
-	const permittedFields = new Set(['poster', 'name', 'russian', 'english', 'japanese', 'episodes']);
+
+	const permittedFields = ['poster', 'name', 'russian', 'english', 'japanese', 'episodes', 'studios'];
+
+	const fieldNames: Record<typeof permittedFields[number], string> = {
+		poster: '',
+		name: 'Name',
+		russian: 'Russian',
+		english: 'English',
+		japanese: 'Japanese',
+		episodes: 'Episodes',
+		studios: 'Studios',
+	}
 </script>
 
 <ul>
@@ -19,17 +30,15 @@
 		<div class="fixed-grid has-4-cols">
 			<div class="grid">
 				<div class="cell">
-					{#each Object.entries(data.anime) as [key, value]}
-						{#if permittedFields.has(key)}
-							{#if key === 'poster'}
-								<figure class="image mb-4">
-									<img src={value.mainUrl} alt="Placeholder image" />
-								</figure>
-							{:else}
-								<div class="is-flex is-flex-direction-column">
-									<span class="mb-2"><b class="is-capitalized">{key}:</b> {value}</span>
-								</div>
-							{/if}
+					{#each permittedFields as key}
+						{#if key === 'poster'}
+							<figure class="image mb-4">
+								<img src={data.anime[key].mainUrl} alt="Placeholder image" />
+							</figure>
+						{:else}
+							<div class="is-flex is-flex-direction-column">
+								<span class="mb-2"><b class="is-capitalized">{fieldNames[key]}:</b> {data.anime[key]}</span>
+							</div>
 						{/if}
 					{/each}
 				</div>

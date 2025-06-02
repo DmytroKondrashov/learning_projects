@@ -4,11 +4,22 @@
 
 	let { data }: { data: PageData } = $props();
 
-	const permittedFields = new Set(['genres', 'studios', 'videos', 'screenshots', 'descriptionHtml']);
+	const permittedFieldsList = ['name', 'genres', 'descriptionHtml', 'screenshots', 'videos', ];
+
+	const fieldNames: Record<typeof permittedFieldsList[number], string> = {
+		name: '',
+		genres: '',
+		studios: 'Studios',
+		videos: 'Videos',
+		screenshots: 'Screenshots',
+		descriptionHtml: ''
+	}
 </script>
 
 {#snippet valueFormatter(key: string, value: unknown)}
-	{#if key === 'genres'}
+	{#if key === 'name'}
+		<span class='title'>{value}</span>
+	{:else if key === 'genres'}
 		{@const genres = value as Anime['genres']}
 		{#each genres as { id, name, russian } (id)}
 			<span class="tag is-light mr-2">{russian}</span>
@@ -40,12 +51,12 @@
 {/snippet}
 
 <dl>
-	{#each Object.entries(data.anime) as [key, value]}
-		{#if permittedFields.has(key)}
+	{#each permittedFieldsList as key}
+		{#if permittedFieldsList.includes(key)}
 			<dt class="mt-4 subtitle is-capitalized">
-				{key !== 'descriptionHtml' ? key : 'Description'}
+				{fieldNames[key]}
 			</dt>
-			<dd>{@render valueFormatter(key, value)}</dd>
+			<dd>{@render valueFormatter(key, data.anime[key])}</dd>
 		{/if}
 	{/each}
 </dl>
