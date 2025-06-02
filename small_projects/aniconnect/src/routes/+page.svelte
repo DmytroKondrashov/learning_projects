@@ -13,23 +13,22 @@
 	let errors = $state<string[]>([]);
 	let loading = $state(false);
 
-	async function fetchAnimes(variables: { limit: number, page: number }) {
-		loading = true;
-		const { data, error } = await urql.query(getAnimeList, variables).toPromise();
-
-		if (data?.animes) {
-			animes = data.animes;
-		}
-
-		if (error?.message) {
-			errors.push(error.message);
-		}
-
-		loading = false;
-	}
-
 	$effect(() => {
-		fetchAnimes({ limit: $limit, page: $page });
+		loading = true;
+		urql
+		.query(getAnimeList, { limit: $limit, page: $page })
+		.toPromise()
+		.then(({ data, error }) => {
+			if (data?.animes) {
+				animes = data.animes;
+			}
+
+			if (error?.message) {
+				errors.push(error.message);
+			}
+		})
+		.catch((error) => errors.push(error.toString()))
+		.finally(() => loading = false);
 	});
 </script>
 
