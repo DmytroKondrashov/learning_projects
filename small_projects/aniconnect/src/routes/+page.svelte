@@ -1,23 +1,23 @@
-<script>
+<script lang="ts">
 	import urql from '$lib/urql';
 	import { setContextClient, gql } from '@urql/svelte';
 	import { onMount } from 'svelte';
 	import { getAnimeList } from '$lib/queries/getAnimeList';
 	import AnimeCard from '$lib/components/AnimeCard.svelte';
 	import Pagination from '$lib/components/Pagination.svelte';
+	import { page, limit } from '$lib/stores';
+	import type Anime from '$lib/interfaces/Anime';
 	setContextClient(urql);
 
-	let animes = $state([]);
-	let errors = $state([]);
+	let animes = $state<Anime[]>([]);
+	let errors = $state<string[]>([]);
 	let loading = $state(false);
 
-	onMount(async () => {
-		console.log('onMount');
+	async function fetchAnimes(variables: { limit: number, page: number }) {
 		loading = true;
-		const { data, error } = await urql.query(getAnimeList, { limit: 12, page: 1 }).toPromise();
+		const { data, error } = await urql.query(getAnimeList, variables).toPromise();
 
 		if (data?.animes) {
-			console.log(data);
 			animes = data.animes;
 		}
 
@@ -26,6 +26,10 @@
 		}
 
 		loading = false;
+	}
+
+	$effect(() => {
+		fetchAnimes({ limit: $limit, page: $page });
 	});
 </script>
 
