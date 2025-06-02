@@ -10,7 +10,9 @@
 {#snippet valueFormatter(key: string, value: unknown)}
 	{#if key === 'genres'}
 		{@const genres = value as Anime['genres']}
-		<span>{genres.map(({ russian }) => russian).join(', ')}</span>
+		{#each genres as { id, name, russian } (id)}
+			<span class="tag is-light mr-2">{russian}</span>
+		{/each}
 	{:else if key === 'studios'}
 		{@const studios = value as Anime['studios']}
 		<span>{studios.map(({ name }) => name).join(', ')}</span>
