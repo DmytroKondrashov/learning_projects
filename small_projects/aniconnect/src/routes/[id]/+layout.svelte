@@ -1,7 +1,4 @@
 <script lang="ts">
-	import type Anime from '$lib/interfaces/Anime';
-	import { getAnime } from '$lib/queries/getAnime.js';
-	import urql from '$lib/urql.js';
 	import { onMount, type Snippet } from 'svelte';
 	import type { PageData } from '../$types';
 
@@ -11,9 +8,10 @@
 	}
 
 	let { data, children }: Props = $props();
+	data.anime = { poster: data.anime.poster, ...data.anime };
+	const permittedFields = new Set(['poster', 'name', 'russian', 'english', 'japanese', 'episodes']);
 </script>
 
-<!-- TODO: make an array of fields to show on the left -->
 <ul>
 	{#if data.loading}
 		<span>Loading...</span>
@@ -21,9 +19,19 @@
 		<div class="fixed-grid has-4-cols">
 			<div class="grid">
 				<div class="cell">
-					<figure class="image">
-						<img src={data.anime.poster.mainUrl} alt="Placeholder image" />
-					</figure>
+					{#each Object.entries(data.anime) as [key, value]}
+						{#if permittedFields.has(key)}
+							{#if key === 'poster'}
+								<figure class="image mb-4">
+									<img src={value.mainUrl} alt="Placeholder image" />
+								</figure>
+							{:else}
+								<div class="is-flex is-flex-direction-column">
+									<span class="mb-2"><b class="is-capitalized">{key}:</b> {value}</span>
+								</div>
+							{/if}
+						{/if}
+					{/each}
 				</div>
 				<div class="cell is-col-span-3">
 					{@render children?.()}
