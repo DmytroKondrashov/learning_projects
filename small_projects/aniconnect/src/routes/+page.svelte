@@ -29,6 +29,16 @@
 	});
 </script>
 
+<div class="mb-6 is-flex is-justify-content-center">
+	<div class="field has-addons p-2" style="width: 100%; max-width: 600px;">
+		<p class="control" style="flex-grow: 1;">
+			<input class="input" type="text" placeholder="Find your anime" style="width: 100%;" />
+		</p>
+		<p class="control">
+			<button class="button">Search</button>
+		</p>
+	</div>
+</div>
 <ul>
 	{#if loading}
 		<span>Loading...</span>
