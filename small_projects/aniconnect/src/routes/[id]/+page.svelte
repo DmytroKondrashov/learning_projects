@@ -16,12 +16,11 @@
 		{@const studios = value as Anime['studios']}
 		<span>{studios.map(({ name }) => name).join(', ')}</span>
 	{:else if key === 'videos'}
-		<!-- TODO: find and clear broken videos -->
 		{@const videos = value as Anime['videos']}
 		<div class="is-flex is-flex-wrap-nowrap is-flex-direction-row" style="overflow-x: scroll;">
 			{#each videos as { id, playerUrl, imageUrl } (id)}
 				{#if !playerUrl.includes('vk.com')}
-					<video class="mr-2" src={playerUrl} poster={imageUrl} controls></video>
+					<iframe class="mr-2" src={playerUrl.replace('watch?v=', 'embed/')} frameborder="0" allowfullscreen></iframe>
 				{/if}
 			{/each}
 		</div>
