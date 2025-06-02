@@ -4,8 +4,7 @@
 
 	let { data }: { data: PageData } = $props();
 
-	// TODO: make an array of fields to show on the right
-	const omittedFields = new Set(['id', 'poster', 'kind', 'rating', '__typename', 'synonyms']);
+	const permittedFields = new Set(['genres', 'studios', 'videos', 'screenshots', 'descriptionHtml']);
 </script>
 
 {#snippet valueFormatter(key: string, value: unknown)}
@@ -19,7 +18,7 @@
 		{@const videos = value as Anime['videos']}
 		<div class="is-flex is-flex-wrap-nowrap is-flex-direction-row" style="overflow-x: scroll;">
 			{#each videos as { id, playerUrl, imageUrl } (id)}
-				{#if !playerUrl.includes('vk.com')}
+				{#if !playerUrl.includes('vk.com') && !playerUrl.includes('video.sibnet.ru')}
 					<iframe class="mr-2" src={playerUrl.replace('watch?v=', 'embed/')} frameborder="0" allowfullscreen></iframe>
 				{/if}
 			{/each}
@@ -40,7 +39,7 @@
 
 <dl>
 	{#each Object.entries(data.anime) as [key, value]}
-		{#if !omittedFields.has(key)}
+		{#if permittedFields.has(key)}
 			<dt class="mt-4 subtitle is-capitalized">
 				{key !== 'descriptionHtml' ? key : 'Description'}
 			</dt>
