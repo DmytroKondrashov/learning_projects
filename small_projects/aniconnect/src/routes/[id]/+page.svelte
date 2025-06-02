@@ -20,7 +20,9 @@
 		{@const videos = value as Anime['videos']}
 		<div class="is-flex is-flex-wrap-nowrap is-flex-direction-row" style="overflow-x: scroll;">
 			{#each videos as { id, playerUrl, imageUrl } (id)}
-				<video class="mr-2" src={playerUrl} poster={imageUrl} controls></video>
+				{#if !playerUrl.includes('vk.com')}
+					<video class="mr-2" src={playerUrl} poster={imageUrl} controls></video>
+				{/if}
 			{/each}
 		</div>
 	{:else if key === 'screenshots'}
