@@ -1,8 +1,11 @@
 <script lang="ts">
+	import FullScreenshot from '$lib/components/FullScreenshot.svelte';
 	import type Anime from '$lib/interfaces/Anime';
 	import type { PageData } from '../$types';
 
 	let { data }: { data: PageData } = $props();
+
+	let visible = $state(null);
 
 	const permittedFieldsList = ['name', 'genres', 'descriptionHtml', 'screenshots', 'videos', ];
 
@@ -39,8 +42,9 @@
 			<!-- TODO: show  "full" image on click -->
 		{@const screenshots = value as Anime['screenshots']}
 		<div class="is-flex is-flex-wrap-nowrap is-flex-direction-row" style="overflow-x: scroll;">
-			{#each screenshots as { id, x332Url } (id)}
-				<img class="mr-2" src={x332Url} loading="lazy" alt="Anime Screenshot" />
+			{#each screenshots as { id, x332Url, originalUrl } (id)}
+				<img class="mr-2" src={x332Url} loading="lazy" alt="Anime Screenshot" onclick={() => visible = id} />
+				<FullScreenshot src={originalUrl} alt="Anime Screenshot" visible={visible === id} onclick={() => visible = null} />
 			{/each}
 		</div>
 	{:else if key === 'descriptionHtml'}
