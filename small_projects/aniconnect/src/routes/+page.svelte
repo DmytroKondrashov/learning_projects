@@ -11,6 +11,7 @@
 	let animes = $state<Anime[]>([]);
 	let errors = $state<string[]>([]);
 	let loading = $state(false);
+	let searchQuery = $state('');
 
 	const searchAnime = () => {
 		loading = true;
@@ -38,10 +39,15 @@
 <div class="mb-6 is-flex is-justify-content-center">
 	<div class="field has-addons p-2" style="width: 100%; max-width: 600px;">
 		<p class="control" style="flex-grow: 1;">
-			<input class="input" type="text" placeholder="Find your anime" style="width: 100%;" bind:value={$search} />
+			<input class="input" type="text" placeholder="Find your anime" style="width: 100%;" bind:value={searchQuery} 
+				onkeydown={(e) => {
+					if (e.key === 'Enter') {
+						$search = searchQuery;
+					}
+				}} />
 		</p>
 		<p class="control">
-			<button class="button" onclick={searchAnime}>Search</button>
+			<button class="button" onclick={() => $search = searchQuery}>Search</button>
 		</p>
 	</div>
 </div>
