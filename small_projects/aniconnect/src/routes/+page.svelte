@@ -1,11 +1,10 @@
 <script lang="ts">
 	import urql from '$lib/urql';
 	import { setContextClient, gql } from '@urql/svelte';
-	import { onMount } from 'svelte';
 	import { getAnimeList } from '$lib/queries/getAnimeList';
 	import AnimeCard from '$lib/components/AnimeCard.svelte';
 	import Pagination from '$lib/components/Pagination.svelte';
-	import { page, limit } from '$lib/stores';
+	import { page, limit, search } from '$lib/stores';
 	import type Anime from '$lib/interfaces/Anime';
 	setContextClient(urql);
 
@@ -13,10 +12,10 @@
 	let errors = $state<string[]>([]);
 	let loading = $state(false);
 
-	$effect(() => {
+	const searchAnime = () => {
 		loading = true;
 		urql
-		.query(getAnimeList, { limit: $limit, page: $page })
+		.query(getAnimeList, { limit: $limit, page: $page, search: $search })
 		.toPromise()
 		.then(({ data, error }) => {
 			if (data?.animes) {
@@ -29,16 +28,20 @@
 		})
 		.catch((error) => errors.push(error.toString()))
 		.finally(() => loading = false);
+	};
+
+	$effect(() => {
+		searchAnime();
 	});
 </script>
 
 <div class="mb-6 is-flex is-justify-content-center">
 	<div class="field has-addons p-2" style="width: 100%; max-width: 600px;">
 		<p class="control" style="flex-grow: 1;">
-			<input class="input" type="text" placeholder="Find your anime" style="width: 100%;" />
+			<input class="input" type="text" placeholder="Find your anime" style="width: 100%;" bind:value={$search} />
 		</p>
 		<p class="control">
-			<button class="button">Search</button>
+			<button class="button" onclick={searchAnime}>Search</button>
 		</p>
 	</div>
 </div>
