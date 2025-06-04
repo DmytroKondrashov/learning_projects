@@ -1,12 +1,13 @@
 <script lang="ts">
 	import FullScreenshot from '$lib/components/FullScreenshot.svelte';
+	import FullVideo from '$lib/components/FullVideo.svelte';
 	import type Anime from '$lib/interfaces/Anime';
 	import type { PageData } from '../$types';
 
 	let { data }: { data: PageData } = $props();
 
-	let visible = $state(null);
-
+	let visibleVideo = $state(null);
+	let visibleScreenshot = $state(null);
 	const permittedFieldsList = ['name', 'genres', 'descriptionHtml', 'screenshots', 'videos', ];
 
 	const fieldNames: Record<typeof permittedFieldsList[number], string> = {
@@ -33,8 +34,10 @@
 			<!-- TODO: show imageUrl thumbnail and "full" video on click -->
 			{#each videos as { id, playerUrl, imageUrl } (id)}
 				{#if playerUrl.includes('youtube.com')}
-					<iframe class="mr-2" src={playerUrl.replace('watch?v=', 'embed/')} 
-					frameborder="0" allowfullscreen loading="lazy" title="Anime Video"></iframe>
+					<!-- <iframe class="mr-2" src={playerUrl.replace('watch?v=', 'embed/')} 
+					frameborder="0" allowfullscreen loading="lazy" title="Anime Video"></iframe> -->
+					<img class="mr-2" src={imageUrl} loading="lazy" alt="Anime Video Preview" onclick={() => visibleVideo = id} />
+					<FullVideo src={playerUrl} alt="Anime Video" visible={visibleVideo === id} onclick={() => visibleVideo = null} />
 				{/if}
 			{/each}
 		</div>
@@ -43,8 +46,8 @@
 		{@const screenshots = value as Anime['screenshots']}
 		<div class="is-flex is-flex-wrap-nowrap is-flex-direction-row" style="overflow-x: scroll;">
 			{#each screenshots as { id, x332Url, originalUrl } (id)}
-				<img class="mr-2" src={x332Url} loading="lazy" alt="Anime Screenshot" onclick={() => visible = id} />
-				<FullScreenshot src={originalUrl} alt="Anime Screenshot" visible={visible === id} onclick={() => visible = null} />
+				<img class="mr-2" src={x332Url} loading="lazy" alt="Anime Screenshot" onclick={() => visibleScreenshot = id} />
+				<FullScreenshot src={originalUrl} alt="Anime Screenshot" visible={visibleScreenshot === id} onclick={() => visibleScreenshot = null} />
 			{/each}
 		</div>
 	{:else if key === 'descriptionHtml'}
