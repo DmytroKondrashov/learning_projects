@@ -10,18 +10,23 @@
     </p>
     <button class="modal-prev" onclick={onPrev}>
       <span class="icon">
-        <i class="fas fa-chevron-left"></i>
+        <p class='arrow'>&larr;</p>
       </span>
     </button>
     <button class="modal-next" onclick={onNext}>
       <span class="icon">
-        <i class="fas fa-chevron-right"></i>
+        <p class='arrow'>&rarr;</p>
       </span>
     </button>
   </div>
 </div>
 
 <style>
+  .arrow {
+    font-size: 2rem;
+    color: white;
+  }
+
   .modal-content {
     position: relative;
   }
@@ -37,7 +42,13 @@
     padding: 1rem;
     cursor: pointer;
     border-radius: 50%;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, opacity 0.3s;
+    opacity: 0;
+  }
+
+  .modal-content:hover .modal-prev,
+  .modal-content:hover .modal-next {
+    opacity: 1;
   }
 
   .modal-prev:hover,
