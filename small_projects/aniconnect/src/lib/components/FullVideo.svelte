@@ -1,10 +1,9 @@
 <script lang="ts">
-  let { src, alt, visible = false, onclick } = $props();
-  console.log(src);
+  let { src = $bindable(), alt } = $props();
 </script>
 
-<div class="modal" class:is-active={visible}>
-  <div class="modal-background" {onclick}></div>
+<div class="modal" class:is-active={src !== null} onclick={() => src = null}>
+  <div class="modal-background"></div>
   <div class="modal-content is-full-height is-full-width">
     <div class="iframe-container">
       <iframe {src} title={alt} loading="lazy" frameborder="0" allowfullscreen></iframe>
@@ -13,13 +12,7 @@
 </div>
 
 <style>
-  .modal {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .iframe-container {
+.iframe-container {
     width: 100%;
     height: 50vh;
     display: flex;
