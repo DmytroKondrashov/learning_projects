@@ -10,6 +10,8 @@
 	let visibleScreenshot = $state<string | null>(null);
 	const permittedFieldsList = ['name', 'genres', 'descriptionHtml', 'screenshots', 'videos', ];
 
+	$inspect(visibleScreenshot)
+
 	const fieldNames: Record<typeof permittedFieldsList[number], string> = {
 		name: '',
 		genres: '',
@@ -60,7 +62,7 @@
 		{@const screenshots = value as Anime['screenshots']}
 		<div class="is-flex is-flex-wrap-nowrap is-flex-direction-row" style="overflow-x: scroll;">
 			{#each screenshots as { id, x332Url, originalUrl } (id)}
-				<img class="mr-2" src={x332Url} loading="lazy" alt="Anime Screenshot" onclick={() => visibleScreenshot = originalUrl} />
+				<img class="mr-2" src={x332Url} loading="lazy" alt="Anime Screenshot" onclick={() => visibleScreenshot = originalUrl}/>
 			{/each}
 		</div>
 	{:else if key === 'descriptionHtml'}
@@ -81,8 +83,8 @@
 	{/each}
 </dl>
 
-<FullVideo src={visibleVideo} alt="Anime Video" />
+<FullVideo bind:src={visibleVideo} alt="Anime Video" />
 <FullScreenshot 
-	src={visibleScreenshot} 
+	bind:src={visibleScreenshot} 
 	alt="Anime Screenshot" 
 />
