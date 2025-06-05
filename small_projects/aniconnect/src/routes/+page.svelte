@@ -33,6 +33,9 @@
 
 	$effect(() => {
 		searchAnime();
+		if ($search !== '') {
+			searchQuery = $search;
+		}
 	});
 </script>
 
