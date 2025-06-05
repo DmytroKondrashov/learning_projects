@@ -4,11 +4,8 @@
 
 <div class="modal" class:is-active={src !== null} onclick={() => src = null}>
   <div class="modal-background"></div>
-  <div class="modal-content is-full-height is-full-width">
-    <div class="iframe-container">
-      <iframe {src} title={alt} loading="lazy" frameborder="0" allowfullscreen></iframe>
-    </div>
-  </div>
+    <iframe {src} title={alt} loading="lazy" frameborder="0" 
+    allowfullscreen width='1280px' height='720px'></iframe>
 </div>
 
 <style>
@@ -21,8 +18,6 @@
   }
 
   iframe {
-    width: 100%;
-    height: 100%;
-    max-width: 800px;
+    z-index: 1000;
   }
 </style>
