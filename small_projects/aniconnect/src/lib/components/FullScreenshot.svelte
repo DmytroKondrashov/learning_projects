@@ -4,11 +4,7 @@
 
 <div class="modal" class:is-active={src !== null} onclick={() => src = null}>
   <div class="modal-background"></div>
-  <div class="modal-content">
-    <p class="image">
-      <img {src} {alt} />
-    </p>
-  </div>
+    <img {src} {alt} width='1280px' height='720px' style="z-index: 1000;" />
 </div>
 
 <style>
