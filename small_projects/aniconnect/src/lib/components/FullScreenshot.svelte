@@ -6,10 +6,3 @@
   <div class="modal-background"></div>
     <img {src} {alt} width='1280px' height='720px' style="z-index: 1000;" />
 </div>
-
-<style>
-
-  .modal-content {
-    position: relative;
-  }
-</style>
