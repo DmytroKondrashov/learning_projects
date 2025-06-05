@@ -1,35 +1,7 @@
 services:
-  small-to-do:
+  app:
+    hostname: aniconnect
+    container_name: aniconnect
     build: .
-    command: ['node', 'build']
-    environment:
-      PORT: 5173
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_USER: supabase_admin
-      POSTGRES_DB: postgres
-      POSTGRES_HOST: postgres
-      DATABASE_URL: postgres://supabase_admin:postgres@postgres:5432/postgres
     ports:
-      - 5173:5173
-    depends_on:
-      postgres:
-        condition: service_healthy
-
-  postgres:
-    hostname: postgres
-    container_name: postgres
-    image: supabase/postgres:17.4.1.037_arm64
-    environment:
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_USER: supabase_admin
-    ports:
-      - 5432:5432
-    volumes:
-      - ./postgres_data:/var/lib/postgresql/data
-      - ${PWD}/docker-entrypoint-initdb.d/empty.sql:/docker-entrypoint-initdb.d/init-scripts/99-roles.sql
-      - ${PWD}/docker-entrypoint-initdb.d/01_init.sql:/docker-entrypoint-initdb.d/init-scripts/999_init.sql
-    healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U postgres']
-      interval: 5s
-      timeout: 5s
-      retries: 5
+      - 5173:80

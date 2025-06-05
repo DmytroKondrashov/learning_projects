@@ -1,15 +1,16 @@
-FROM node:20
+FROM oven/bun:1-alpine AS build
 
-WORKDIR /app
+WORKDIR /app 
 
-COPY package.json .
-
-RUN npm install
+COPY package.json bun.lock ./
+RUN bun install --frozen-lockfile
 
 COPY . .
+RUN bun run build
 
-ENV DATABASE_URL=postgres://postgres:postgres@postgres:5432/small_to_do
+FROM nginx:1-alpine AS serve
 
-RUN npm run build
+COPY --from=build /app/nginx.conf /etc/nginx/nginx.conf
+COPY --from=build /app/build /app
 
-EXPOSE 5173
+EXPOSE 80
