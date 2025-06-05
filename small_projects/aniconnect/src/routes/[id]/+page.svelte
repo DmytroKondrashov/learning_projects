@@ -6,8 +6,8 @@
 
 	let { data }: { data: PageData } = $props();
 
-	let visibleVideo = $state(null);
-	let visibleScreenshot = $state(null);
+	let visibleVideo = $state<string | null>(null);
+	let visibleScreenshot = $state<string | null>(null);
 	const permittedFieldsList = ['name', 'genres', 'descriptionHtml', 'screenshots', 'videos', ];
 
 	const fieldNames: Record<typeof permittedFieldsList[number], string> = {
@@ -17,6 +17,22 @@
 		videos: 'Videos',
 		screenshots: 'Screenshots',
 		descriptionHtml: ''
+	}
+
+	function handlePrevScreenshot(screenshots: Anime['screenshots']) {
+		if (!visibleScreenshot) return;
+		const currentIndex = screenshots.findIndex(s => s.id === visibleScreenshot);
+		if (currentIndex > 0) {
+			visibleScreenshot = screenshots[currentIndex - 1].id;
+		}
+	}
+
+	function handleNextScreenshot(screenshots: Anime['screenshots']) {
+		if (!visibleScreenshot) return;
+		const currentIndex = screenshots.findIndex(s => s.id === visibleScreenshot);
+		if (currentIndex < screenshots.length - 1) {
+			visibleScreenshot = screenshots[currentIndex + 1].id;
+		}
 	}
 </script>
 
@@ -42,12 +58,18 @@
 			{/each}
 		</div>
 	{:else if key === 'screenshots'}
-			<!-- TODO: show  "full" image on click -->
 		{@const screenshots = value as Anime['screenshots']}
 		<div class="is-flex is-flex-wrap-nowrap is-flex-direction-row" style="overflow-x: scroll;">
 			{#each screenshots as { id, x332Url, originalUrl } (id)}
 				<img class="mr-2" src={x332Url} loading="lazy" alt="Anime Screenshot" onclick={() => visibleScreenshot = id} />
-				<FullScreenshot src={originalUrl} alt="Anime Screenshot" visible={visibleScreenshot === id} onclick={() => visibleScreenshot = null} />
+				<FullScreenshot 
+					src={screenshots.find(s => s.id === visibleScreenshot)?.originalUrl ?? ''} 
+					alt="Anime Screenshot" 
+					visible={visibleScreenshot === id} 
+					onclick={() => visibleScreenshot = null}
+					onPrev={() => handlePrevScreenshot(screenshots)}
+					onNext={() => handleNextScreenshot(screenshots)}
+				/>
 			{/each}
 		</div>
 	{:else if key === 'descriptionHtml'}
