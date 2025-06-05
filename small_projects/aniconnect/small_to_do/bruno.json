@@ -1,6 +1,0 @@
-{
-	"version": "1",
-	"name": "small_to_do",
-	"type": "collection",
-	"ignore": ["node_modules", ".git"]
-}
