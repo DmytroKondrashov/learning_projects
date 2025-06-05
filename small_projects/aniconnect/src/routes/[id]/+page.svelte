@@ -52,8 +52,7 @@
 				{#if playerUrl.includes('youtube.com')}
 					<!-- <iframe class="mr-2" src={playerUrl.replace('watch?v=', 'embed/')} 
 					frameborder="0" allowfullscreen loading="lazy" title="Anime Video"></iframe> -->
-					<img class="mr-2" src={imageUrl} loading="lazy" alt="Anime Video Preview" onclick={() => visibleVideo = id} />
-					<FullVideo src={playerUrl} alt="Anime Video" visible={visibleVideo === id} onclick={() => visibleVideo = null} />
+					<img class="mr-2" src={imageUrl} loading="lazy" alt="Anime Video Preview" onclick={() => visibleVideo = playerUrl} />
 				{/if}
 			{/each}
 		</div>
@@ -61,15 +60,7 @@
 		{@const screenshots = value as Anime['screenshots']}
 		<div class="is-flex is-flex-wrap-nowrap is-flex-direction-row" style="overflow-x: scroll;">
 			{#each screenshots as { id, x332Url, originalUrl } (id)}
-				<img class="mr-2" src={x332Url} loading="lazy" alt="Anime Screenshot" onclick={() => visibleScreenshot = id} />
-				<FullScreenshot 
-					src={screenshots.find(s => s.id === visibleScreenshot)?.originalUrl ?? ''} 
-					alt="Anime Screenshot" 
-					visible={visibleScreenshot === id} 
-					onclick={() => visibleScreenshot = null}
-					onPrev={() => handlePrevScreenshot(screenshots)}
-					onNext={() => handleNextScreenshot(screenshots)}
-				/>
+				<img class="mr-2" src={x332Url} loading="lazy" alt="Anime Screenshot" onclick={() => visibleScreenshot = originalUrl} />
 			{/each}
 		</div>
 	{:else if key === 'descriptionHtml'}
@@ -89,3 +80,9 @@
 		{/if}
 	{/each}
 </dl>
+
+<FullVideo src={visibleVideo} alt="Anime Video" />
+<FullScreenshot 
+	src={visibleScreenshot} 
+	alt="Anime Screenshot" 
+/>
