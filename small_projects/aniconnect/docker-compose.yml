@@ -1,7 +1,0 @@
-services:
-  app:
-    hostname: aniconnect
-    container_name: aniconnect
-    build: .
-    ports:
-      - 5173:80
