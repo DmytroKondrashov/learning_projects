@@ -6,7 +6,7 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-router.get('/', (req, res) => {
+router.get('/stream-chat', (req, res) => {
   res.render('stream-chat');
 });
 
