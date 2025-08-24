@@ -17,6 +17,7 @@ html
     script.
       const messages = document.getElementById('messages');
       const input = document.getElementById('input');
+
       document.getElementById('send').onclick = async () => {
         messages.textContent = '';
         const msg = input.value;
@@ -38,3 +39,27 @@ html
           messages.scrollTop = messages.scrollHeight;
         }
       };
+
+      document.getElementById('input').addEventListener('keydown', function(event) {
+        if (event.keyCode === 13) {
+          messages.textContent = '';
+          const msg = input.value;
+          if (!msg) return;
+
+          const resp = await fetch('/stream-chat/stream', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: msg })
+          });
+
+          const reader = resp.body.getReader();
+          const decoder = new TextDecoder();
+
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            messages.textContent += decoder.decode(value);
+            messages.scrollTop = messages.scrollHeight;
+          }
+        }
+      });
