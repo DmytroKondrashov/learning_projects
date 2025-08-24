@@ -6,6 +6,11 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
+router.get('/', (req, res) => {
+  res.render('stream-chat');
+});
+
+
 router.post('/stream', async (req, res) => {
   res.set({
     'Content-Type': 'text/event-stream',
