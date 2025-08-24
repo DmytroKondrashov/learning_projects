@@ -3,63 +3,11 @@ html
   head
     meta(charset='UTF-8')
     title AI Streaming Chat
-    style.
-      body { font-family: Arial, sans-serif; padding: 20px; }
-      #messages { border: 1px solid #ccc; padding: 10px; height: 300px; overflow-y: auto; white-space: pre-wrap; }
-      #input { width: 80%; padding: 8px; }
-      #send { width: 18%; padding: 8px; }
+    link(rel='stylesheet', href='/stylesheets/stream-chat.css')
   body
     h1 AI Chat
     #messages
     .input-group
       input#input(type='text', placeholder='Type a message...')
       button#send Send
-    script.
-      const messages = document.getElementById('messages');
-      const input = document.getElementById('input');
-
-      document.getElementById('send').onclick = async () => {
-        messages.textContent = '';
-        const msg = input.value;
-        if (!msg) return;
-
-        const resp = await fetch('/stream-chat/stream', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: msg })
-        });
-
-        const reader = resp.body.getReader();
-        const decoder = new TextDecoder();
-
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) break;
-          messages.textContent += decoder.decode(value);
-          messages.scrollTop = messages.scrollHeight;
-        }
-      };
-
-      document.getElementById('input').addEventListener('keydown', function(event) {
-        if (event.keyCode === 13) {
-          messages.textContent = '';
-          const msg = input.value;
-          if (!msg) return;
-
-          const resp = await fetch('/stream-chat/stream', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ message: msg })
-          });
-
-          const reader = resp.body.getReader();
-          const decoder = new TextDecoder();
-
-          while (true) {
-            const { done, value } = await reader.read();
-            if (done) break;
-            messages.textContent += decoder.decode(value);
-            messages.scrollTop = messages.scrollHeight;
-          }
-        }
-      });
+    script(src='/javascripts/stream-chat.js')
