@@ -28,7 +28,7 @@ router.post('/stream', async (req, res) => {
   for await (const chunk of response) {
     const text = chunk.choices[0]?.delta?.content;
     if (text) {
-      res.write(`data: ${text}\n\n`);
+      res.write(`${text}`);
     }
   }
   res.write(`data: [DONE]\n\n`);
