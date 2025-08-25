@@ -5,6 +5,7 @@ class StreamChat {
     this.sendButton = document.getElementById('send');
     
     this.isStreaming = false;
+    this.currentAIResponse = null;
     this.init();
   }
 
@@ -26,7 +27,8 @@ class StreamChat {
 
     try {
       this.setStreamingState(true);
-      this.clearMessages();
+      this.displayUserMessage(message);
+      this.input.value = '';
       await this.streamResponse(message);
     } catch (error) {
       this.displayError(`Error: ${error.message}`);
@@ -42,30 +44,58 @@ class StreamChat {
     
     if (streaming) {
       this.sendButton.textContent = 'Sending...';
-      this.displayLoading();
     } else {
       this.sendButton.textContent = 'Send';
       this.input.focus();
     }
   }
 
-  clearMessages() {
-    this.messages.textContent = '';
+  displayUserMessage(message) {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = 'message user-message';
+    messageDiv.innerHTML = `
+      <div class="message-content">
+        <div class="message-text">${this.escapeHtml(message)}</div>
+        <div class="message-time">${this.getCurrentTime()}</div>
+      </div>
+    `;
+    this.messages.appendChild(messageDiv);
+    this.scrollToBottom();
   }
 
-  displayLoading() {
-    this.messages.textContent = 'Loading response...';
+  createAIMessage() {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = 'message ai-message';
+    messageDiv.innerHTML = `
+      <div class="message-content">
+        <div class="message-text"></div>
+        <div class="message-time">${this.getCurrentTime()}</div>
+      </div>
+    `;
+    this.messages.appendChild(messageDiv);
+    this.currentAIResponse = messageDiv.querySelector('.message-text');
+    this.scrollToBottom();
+    return messageDiv;
   }
 
   displayError(message) {
-    this.messages.innerHTML = `<span class="error">${message}</span>`;
+    const messageDiv = document.createElement('div');
+    messageDiv.className = 'message error-message';
+    messageDiv.innerHTML = `
+      <div class="message-content">
+        <div class="message-text">${this.escapeHtml(message)}</div>
+        <div class="message-time">${this.getCurrentTime()}</div>
+      </div>
+    `;
+    this.messages.appendChild(messageDiv);
+    this.scrollToBottom();
   }
 
-  async streamResponse(message) {
+  async streamResponse(userMessage) {
     const response = await fetch('/stream-chat/stream', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message })
+      body: JSON.stringify({ message: userMessage })
     });
 
     if (!response.ok) {
@@ -75,7 +105,8 @@ class StreamChat {
     const reader = response.body.getReader();
     const decoder = new TextDecoder();
 
-    this.clearMessages();
+    // Create AI message container
+    this.createAIMessage();
 
     try {
       while (true) {
@@ -84,16 +115,34 @@ class StreamChat {
         if (done) break;
         
         const chunk = decoder.decode(value, { stream: true });
-        this.appendMessage(chunk);
+        // Remove the [DONE] marker if present
+        const cleanChunk = chunk.replace(' [DONE]', '');
+        if (cleanChunk) {
+          this.appendToAIResponse(cleanChunk);
+        }
       }
     } finally {
       reader.releaseLock();
+      this.currentAIResponse = null;
     }
   }
 
-  appendMessage(text) {
-    this.messages.textContent += text;
-    this.scrollToBottom();
+  appendToAIResponse(text) {
+    if (this.currentAIResponse) {
+      this.currentAIResponse.textContent += text;
+      this.scrollToBottom();
+    }
+  }
+
+  escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
+  getCurrentTime() {
+    const now = new Date();
+    return now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   }
 
   scrollToBottom() {
