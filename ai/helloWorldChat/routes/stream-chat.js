@@ -31,7 +31,7 @@ router.post('/stream', async (req, res) => {
       res.write(`${text}`);
     }
   }
-  res.write(`data: [DONE]\n\n`);
+  res.write(` [DONE]\n\n`);
   res.end();
 });
 
