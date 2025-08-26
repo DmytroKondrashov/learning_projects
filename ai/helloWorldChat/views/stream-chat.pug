@@ -4,10 +4,10 @@ html
     meta(charset='UTF-8')
     title AI Streaming Chat
     link(rel='stylesheet', href='/stylesheets/stream-chat.css')
-  body
-    h1 AI Chat
+  body.chat-body
+    h1.chat-title AI Chat
     #messages
-    .input-group
+    .input-group.chat-input
       input#input(type='text', placeholder='Type a message...')
       button#send Send
     script(src='/javascripts/stream-chat.js')
