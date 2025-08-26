@@ -3,9 +3,17 @@ body {
   padding: 20px;
   margin: 0;
   background-color: #f0f2f5;
-  height: 100vh;
+}
+
+.chat-body {
   display: flex;
   flex-direction: column;
+  height: calc(100vh - 40px);
+}
+
+#messages {
+  flex-grow: 1 !important;
+  overflow: auto;
 }
 
 h1 {
