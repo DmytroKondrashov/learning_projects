@@ -24,6 +24,111 @@ h1 {
   font-weight: 600;
 }
 
+/* System Prompt Section */
+.system-prompt-section {
+  background-color: white;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.system-prompt-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #e1e5e9;
+}
+
+.system-prompt-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.toggle-btn {
+  background-color: #0084ff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.toggle-btn:hover {
+  background-color: #0073e6;
+}
+
+.system-prompt-content {
+  padding: 20px;
+}
+
+#systemPrompt {
+  width: 100%;
+  min-height: 80px;
+  padding: 12px;
+  border: 1px solid #e1e5e9;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  background-color: #f8f9fa;
+}
+
+#systemPrompt:focus {
+  border-color: #0084ff;
+  box-shadow: 0 0 0 3px rgba(0, 132, 255, 0.1);
+  background-color: white;
+}
+
+.system-prompt-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.save-btn, .clear-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.save-btn {
+  background-color: #28a745;
+  color: white;
+}
+
+.save-btn:hover {
+  background-color: #218838;
+  transform: translateY(-1px);
+}
+
+.clear-btn {
+  background-color: #6c757d;
+  color: white;
+}
+
+.clear-btn:hover {
+  background-color: #5a6268;
+  transform: translateY(-1px);
+}
+
+.save-btn:active, .clear-btn:active {
+  transform: translateY(0);
+}
+
 #messages {
   flex: 1;
   padding: 20px;
