@@ -19,9 +19,22 @@ router.post('/stream', async (req, res) => {
   });
   res.flushHeaders();
 
+  const { message, systemPrompt } = req.body;
+  
+  // Build messages array
+  const messages = [];
+  
+  // Add system prompt if provided
+  if (systemPrompt && systemPrompt.trim()) {
+    messages.push({ role: 'system', content: systemPrompt.trim() });
+  }
+  
+  // Add user message
+  messages.push({ role: 'user', content: message });
+
   const response = await openai.chat.completions.create({
     model: 'gpt-4o-mini',
-    messages: [{ role: 'user', content: req.body.message }],
+    messages: messages,
     stream: true,
   });
 
