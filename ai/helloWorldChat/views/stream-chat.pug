@@ -6,6 +6,17 @@ html
     link(rel='stylesheet', href='/stylesheets/stream-chat.css')
   body.chat-body
     h1.chat-title AI Chat
+    
+    .system-prompt-section
+      .system-prompt-header
+        h3 System Prompt
+        button#toggleSystemPrompt.toggle-btn(type='button') Show
+      .system-prompt-content#systemPromptContent(style='display: none;')
+        textarea#systemPrompt(placeholder='Enter a system prompt to guide the AI behavior...')
+        .system-prompt-actions
+          button#saveSystemPrompt.save-btn(type='button') Save
+          button#clearSystemPrompt.clear-btn(type='button') Clear
+    
     #messages
     .input-group.chat-input
       input#input(type='text', placeholder='Type a message...')
