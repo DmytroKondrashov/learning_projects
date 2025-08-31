@@ -4,8 +4,17 @@ class StreamChat {
     this.input = document.getElementById('input');
     this.sendButton = document.getElementById('send');
     
+    // System prompt elements
+    this.systemPrompt = document.getElementById('systemPrompt');
+    this.toggleSystemPrompt = document.getElementById('toggleSystemPrompt');
+    this.systemPromptContent = document.getElementById('systemPromptContent');
+    this.saveSystemPrompt = document.getElementById('saveSystemPrompt');
+    this.clearSystemPrompt = document.getElementById('clearSystemPrompt');
+    
     this.isStreaming = false;
     this.currentAIResponse = null;
+    this.currentSystemPrompt = '';
+    
     this.init();
   }
 
@@ -17,6 +26,59 @@ class StreamChat {
         this.handleSend();
       }
     });
+    
+    // System prompt event listeners
+    this.toggleSystemPrompt.addEventListener('click', () => this.toggleSystemPromptVisibility());
+    this.saveSystemPrompt.addEventListener('click', () => this.saveSystemPromptText());
+    this.clearSystemPrompt.addEventListener('click', () => this.clearSystemPromptText());
+    
+    // Load saved system prompt from localStorage
+    this.loadSystemPrompt();
+  }
+
+  toggleSystemPromptVisibility() {
+    const isVisible = this.systemPromptContent.style.display !== 'none';
+    this.systemPromptContent.style.display = isVisible ? 'none' : 'block';
+    this.toggleSystemPrompt.textContent = isVisible ? 'Show' : 'Hide';
+  }
+
+  saveSystemPromptText() {
+    this.currentSystemPrompt = this.systemPrompt.value.trim();
+    localStorage.setItem('systemPrompt', this.currentSystemPrompt);
+    
+    // Show feedback
+    const originalText = this.saveSystemPrompt.textContent;
+    this.saveSystemPrompt.textContent = 'Saved!';
+    this.saveSystemPrompt.style.backgroundColor = '#28a745';
+    
+    setTimeout(() => {
+      this.saveSystemPrompt.textContent = originalText;
+      this.saveSystemPrompt.style.backgroundColor = '';
+    }, 1500);
+  }
+
+  clearSystemPromptText() {
+    this.systemPrompt.value = '';
+    this.currentSystemPrompt = '';
+    localStorage.removeItem('systemPrompt');
+    
+    // Show feedback
+    const originalText = this.clearSystemPrompt.textContent;
+    this.clearSystemPrompt.textContent = 'Cleared!';
+    this.clearSystemPrompt.style.backgroundColor = '#6c757d';
+    
+    setTimeout(() => {
+      this.clearSystemPrompt.textContent = originalText;
+      this.clearSystemPrompt.style.backgroundColor = '';
+    }, 1500);
+  }
+
+  loadSystemPrompt() {
+    const savedPrompt = localStorage.getItem('systemPrompt');
+    if (savedPrompt) {
+      this.systemPrompt.value = savedPrompt;
+      this.currentSystemPrompt = savedPrompt;
+    }
   }
 
   async handleSend() {
@@ -92,10 +154,15 @@ class StreamChat {
   }
 
   async streamResponse(userMessage) {
+    const requestBody = {
+      message: userMessage,
+      systemPrompt: this.currentSystemPrompt
+    };
+
     const response = await fetch('/stream-chat/stream', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: userMessage })
+      body: JSON.stringify(requestBody)
     });
 
     if (!response.ok) {
