@@ -262,17 +262,31 @@
             
             neuralNetwork.predict(inputs, (error, result) => {
                 if (error) {
-                    console.error(error);
+                    console.error('Prediction error:', error);
                     return;
                 }
                 
-                const prediction = result[0].value;
-                const confidence = result[0].confidence || 'N/A';
+                console.log('Prediction result:', result); // Debug log
+                
+                // Handle the result array properly
+                const prediction = Array.isArray(result) ? result[0].value : result.value;
+                const label = Array.isArray(result) ? result[0].label : result.label;
+                
+                // Determine expected output for comparison
+                let expected = 'Unknown';
+                if ((input1 === 0 && input2 === 0) || (input1 === 1 && input2 === 1)) {
+                    expected = '0 (XOR rule)';
+                } else if ((input1 === 0 && input2 === 1) || (input1 === 1 && input2 === 0)) {
+                    expected = '1 (XOR rule)';
+                }
                 
                 document.getElementById('prediction').style.display = 'block';
                 document.getElementById('prediction').innerHTML = `
-                    <strong>Prediction:</strong> ${prediction.toFixed(4)}<br>
-                    <small>Input: [${input1}, ${input2}] → Output: ${prediction.toFixed(4)}</small>
+                    <strong>🔮 Network Prediction:</strong> ${prediction.toFixed(4)}<br>
+                    <strong>📊 Rounded:</strong> ${Math.round(prediction)}<br>
+                    <strong>📋 Expected:</strong> ${expected}<br>
+                    <small>Input: [${input1}, ${input2}] → Raw Output: ${prediction.toFixed(6)}</small><br>
+                    <small>Accuracy: ${prediction < 0.5 && Math.round(prediction) === 0 ? '✅ Correct!' : prediction >= 0.5 && Math.round(prediction) === 1 ? '✅ Correct!' : '⚠️ Needs more training'}</small>
                 `;
             });
         }
