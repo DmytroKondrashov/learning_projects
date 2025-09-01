@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ML5.js Neural Network - XOR Example</title>
+    <script src="https://unpkg.com/ml5@latest/dist/ml5.min.js"></script>
+    <script src="https://unpkg.com/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        button {
+            padding: 12px 20px;
+            background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+        
+        button:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .status {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .test-section {
+            margin-top: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+        }
+        
+        .test-inputs {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+            align-items: center;
+        }
+        
+        input[type="number"] {
+            width: 60px;
+            padding: 8px;
+            border: none;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+        }
+        
+        .prediction {
+            background: rgba(76, 175, 80, 0.3);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .training-data {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .data-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧠 Neural Network with ML5.js</h1>
+        
+        <div class="training-data">
+            <h3>Training Data (XOR Logic Gate):</h3>
+            <div class="data-row"><span>Input: [0, 0]</span> <span>→ Output: [0]</span></div>
+            <div class="data-row"><span>Input: [0, 1]</span> <span>→ Output: [1]</span></div>
+            <div class="data-row"><span>Input: [1, 0]</span> <span>→ Output: [1]</span></div>
+            <div class="data-row"><span>Input: [1, 1]</span> <span>→ Output: [0]</span></div>
+        </div>
+        
+        <div class="controls">
+            <button id="trainBtn" onclick="startTraining()" disabled>🚀 Train Network</button>
+            <button id="saveBtn" onclick="saveModel()" disabled>💾 Save Model</button>
+            <button id="loadBtn" onclick="loadModel()">📁 Load Model</button>
+        </div>
+        
+        <div class="status" id="status">Initializing ML5.js and TensorFlow...</div>
+        
+        <div class="test-section">
+            <h3>Test Your Trained Network:</h3>
+            <div class="test-inputs">
+                <label>Input 1:</label>
+                <input type="number" id="input1" value="0" min="0" max="1" step="0.1">
+                <label>Input 2:</label>
+                <input type="number" id="input2" value="0" min="0" max="1" step="0.1">
+                <button onclick="makePrediction()">🔮 Predict</button>
+            </div>
+            <div class="prediction" id="prediction" style="display: none;"></div>
+        </div>
+    </div>
+
+    <script>
+        let neuralNetwork;
+        let isTraining = false;
+        let ml5Ready = false;
+        
+        // Wait for ML5 and TensorFlow to be ready
+        async function waitForML5() {
+            try {
+                // Wait for TensorFlow backend to initialize
+                await tf.ready();
+                console.log('TensorFlow.js backend ready:', tf.getBackend());
+                ml5Ready = true;
+                document.getElementById('status').textContent = '✅ ML5.js and TensorFlow ready! Click "Train Network" to start.';
+                document.getElementById('trainBtn').disabled = false;
+            } catch (error) {
+                console.error('Error initializing ML5/TensorFlow:', error);
+                document.getElementById('status').textContent = '❌ Error initializing ML5/TensorFlow. Please refresh.';
+            }
+        }
+        
+        // Initialize the neural network
+        function initNetwork() {
+            if (!ml5Ready) {
+                alert('Please wait for ML5.js to initialize completely.');
+                return false;
+            }
+            
+            const options = {
+                inputs: 2,
+                outputs: 1,
+                task: 'regression',
+                debug: true
+            };
+            neuralNetwork = ml5.neuralNetwork(options);
+            console.log('Neural network initialized');
+            return true;
+        }
+        
+        // Training data for XOR logic gate
+        const trainingData = [
+            { inputs: [0, 0], outputs: [0] },
+            { inputs: [0, 1], outputs: [1] },
+            { inputs: [1, 0], outputs: [1] },
+            { inputs: [1, 1], outputs: [0] }
+        ];
+        
+        function startTraining() {
+            if (isTraining) return;
+            if (!ml5Ready) {
+                alert('ML5.js is still initializing. Please wait.');
+                return;
+            }
+            
+            isTraining = true;
+            document.getElementById('trainBtn').disabled = true;
+            document.getElementById('status').textContent = 'Initializing network...';
+            
+            // Initialize network
+            if (!initNetwork()) {
+                isTraining = false;
+                document.getElementById('trainBtn').disabled = false;
+                return;
+            }
+            
+            // Add training data
+            trainingData.forEach(data => {
+                neuralNetwork.addData(data.inputs, data.outputs);
+            });
+            
+            // Normalize data
+            neuralNetwork.normalizeData();
+            
+            document.getElementById('status').textContent = 'Training in progress...';
+            
+            // Training options
+            const trainingOptions = {
+                epochs: 100,
+                batchSize: 4,
+                learningRate: 0.2
+            };
+            
+            // Start training
+            neuralNetwork.train(trainingOptions, finishedTraining);
+        }
+        
+        function finishedTraining() {
+            console.log('Training completed!');
+            document.getElementById('status').textContent = '✅ Training completed! Ready for predictions.';
+            document.getElementById('trainBtn').disabled = false;
+            document.getElementById('saveBtn').disabled = false;
+            isTraining = false;
+        }
+        
+        function makePrediction() {
+            if (!neuralNetwork || isTraining) {
+                alert('Please train the network first!');
+                return;
+            }
+            
+            const input1 = parseFloat(document.getElementById('input1').value);
+            const input2 = parseFloat(document.getElementById('input2').value);
+            
+            const inputs = [input1, input2];
+            
+            neuralNetwork.predict(inputs, (error, result) => {
+                if (error) {
+                    console.error(error);
+                    return;
+                }
+                
+                const prediction = result[0].value;
+                const confidence = result[0].confidence || 'N/A';
+                
+                document.getElementById('prediction').style.display = 'block';
+                document.getElementById('prediction').innerHTML = `
+                    <strong>Prediction:</strong> ${prediction.toFixed(4)}<br>
+                    <small>Input: [${input1}, ${input2}] → Output: ${prediction.toFixed(4)}</small>
+                `;
+            });
+        }
+        
+        function saveModel() {
+            if (!neuralNetwork) {
+                alert('No trained model to save!');
+                return;
+            }
+            
+            neuralNetwork.save('myXORModel');
+            document.getElementById('status').textContent = '💾 Model saved successfully!';
+        }
+        
+        function loadModel() {
+            const modelInfo = {
+                model: 'model/myXORModel.json',
+                metadata: 'model/myXORModel_meta.json',
+                weights: 'model/myXORModel.weights.bin'
+            };
+            
+            neuralNetwork = ml5.neuralNetwork(modelInfo, modelLoaded);
+        }
+        
+        function modelLoaded() {
+            console.log('Model loaded successfully');
+            document.getElementById('status').textContent = '📁 Model loaded! Ready for predictions.';
+            document.getElementById('saveBtn').disabled = false;
+        }
+        
+        // Initialize on page load - wait for ML5 to load
+        window.addEventListener('load', async () => {
+            // Check if ml5 is loaded
+            if (typeof ml5 !== 'undefined') {
+                console.log('ML5.js loaded successfully, version:', ml5.version);
+                console.log('ML5.js Neural Network Demo Ready');
+                
+                // Wait for TensorFlow to initialize
+                await waitForML5();
+            } else {
+                console.error('ML5.js failed to load');
+                document.getElementById('status').textContent = '❌ ML5.js failed to load. Please refresh the page.';
+            }
+        });
+    </script>
+</body>
+</html>
