@@ -260,17 +260,30 @@
             
             const inputs = [input1, input2];
             
-            neuralNetwork.predict(inputs, (error, result) => {
+            neuralNetwork.predict(inputs, (result, error) => {
                 if (error) {
                     console.error('Prediction error:', error);
+                    document.getElementById('prediction').innerHTML = `❌ Error: ${error.message}`;
+                    document.getElementById('prediction').style.display = 'block';
                     return;
                 }
                 
                 console.log('Prediction result:', result); // Debug log
                 
-                // Handle the result array properly
-                const prediction = Array.isArray(result) ? result[0].value : result.value;
-                const label = Array.isArray(result) ? result[0].label : result.label;
+                // Handle different result structures from ML5.js
+                let prediction;
+                if (Array.isArray(result) && result.length > 0) {
+                    prediction = result[0].value || result[0];
+                } else if (result && typeof result === 'object') {
+                    prediction = result.value || result;
+                } else {
+                    prediction = result;
+                }
+                
+                // Ensure we have a numeric value
+                if (typeof prediction === 'object' && prediction.value !== undefined) {
+                    prediction = prediction.value;
+                }
                 
                 // Determine expected output for comparison
                 let expected = 'Unknown';
@@ -280,13 +293,18 @@
                     expected = '1 (XOR rule)';
                 }
                 
+                // Check accuracy
+                const rounded = Math.round(prediction);
+                const expectedNum = expected.charAt(0) === '0' ? 0 : expected.charAt(0) === '1' ? 1 : -1;
+                const isCorrect = expectedNum !== -1 && rounded === expectedNum;
+                
                 document.getElementById('prediction').style.display = 'block';
                 document.getElementById('prediction').innerHTML = `
                     <strong>🔮 Network Prediction:</strong> ${prediction.toFixed(4)}<br>
-                    <strong>📊 Rounded:</strong> ${Math.round(prediction)}<br>
+                    <strong>📊 Rounded:</strong> ${rounded}<br>
                     <strong>📋 Expected:</strong> ${expected}<br>
                     <small>Input: [${input1}, ${input2}] → Raw Output: ${prediction.toFixed(6)}</small><br>
-                    <small>Accuracy: ${prediction < 0.5 && Math.round(prediction) === 0 ? '✅ Correct!' : prediction >= 0.5 && Math.round(prediction) === 1 ? '✅ Correct!' : '⚠️ Needs more training'}</small>
+                    <small>${isCorrect ? '✅ Correct!' : '⚠️ Needs more training'}</small>
                 `;
             });
         }
