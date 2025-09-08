@@ -1054,75 +1054,676 @@
             input.click();
         }
         
-        async function initializeWithSyntheticData() {
-            // Quick synthetic training for fallback
-            const syntheticData = [];
-            const syntheticLabels = [];
-            
-            for (let digit = 0; digit < 10; digit++) {
-                for (let i = 0; i < 5; i++) {
-                    const image = generateSimplePattern(digit);
-                    const label = new Array(10).fill(0);
-                    label[digit] = 1;
-                    
-                    syntheticData.push(image);
-                    syntheticLabels.push(label);
-                }
-            }
-            
-            const xs = tf.tensor2d(syntheticData);
-            const ys = tf.tensor2d(syntheticLabels);
-            
-            await model.fit(xs, ys, { epochs: 10, verbose: 0 });
-            
-            xs.dispose();
-            ys.dispose();
-        }
+// let model;
+// let canvas;
+// let isModelLoaded = false;
+// let currentMode = null;
+// let trainingData = null;
+// let currentSampleIndex = 0;
+// let currentBatch = 0;
+// let trainingStartTime = null;
+
+// P5.js setup
+function setup() {
+    canvas = createCanvas(280, 280);
+    canvas.parent('canvas-container');
+    
+    background(0);
+    stroke(255);
+    strokeWeight(20);
+    strokeCap(ROUND);
+    strokeJoin(ROUND);
+    
+    initializePredictionDisplay();
+}
+
+function draw() {
+    if (mouseIsPressed && mouseX >= 0 && mouseX <= width && mouseY >= 0 && mouseY <= height) {
+        line(pmouseX, pmouseY, mouseX, mouseY);
+    }
+}
+
+function selectMode(mode) {
+    currentMode = mode;
+    
+    // Update UI
+    document.querySelectorAll('.mode-card').forEach(card => card.classList.remove('active'));
+    event.target.closest('.mode-card').classList.add('active');
+    
+    // Show/hide training section
+    if (mode === 'train') {
+        document.getElementById('trainSection').classList.add('active');
+        document.getElementById('status').textContent = 'Training mode selected. Generate training data to begin!';
+        document.getElementById('modelInfo').textContent = 'Training mode - Model will be created after training';
+    } else {
+        document.getElementById('trainSection').classList.remove('active');
+        loadPretrainedModel();
+    }
+}
+
+async function loadPretrainedModel() {
+    try {
+        await tf.ready();
+        document.getElementById('status').textContent = 'Creating pre-trained CNN model...';
         
-        function generateSimplePattern(digit) {
-            const image = new Array(784).fill(0);
-            const w = 28;
+        await createPretrainedFallback();
+        
+    } catch (error) {
+        console.error('Error loading model:', error);
+        document.getElementById('status').textContent = 'Error loading model. Please try training mode instead.';
+    }
+}
+
+async function createPretrainedFallback() {
+    document.getElementById('status').textContent = 'Creating CNN model architecture...';
+    
+    model = tf.sequential({
+        layers: [
+            tf.layers.reshape({ inputShape: [784], targetShape: [28, 28, 1] }),
+            tf.layers.conv2d({
+                kernelSize: 3,
+                filters: 32,
+                activation: 'relu',
+                kernelInitializer: 'glorotNormal'
+            }),
+            tf.layers.maxPooling2d({ poolSize: [2, 2] }),
+            tf.layers.conv2d({
+                kernelSize: 3,
+                filters: 64,
+                activation: 'relu',
+                kernelInitializer: 'glorotNormal'
+            }),
+            tf.layers.maxPooling2d({ poolSize: [2, 2] }),
+            tf.layers.flatten(),
+            tf.layers.dense({
+                units: 128,
+                activation: 'relu',
+                kernelInitializer: 'glorotNormal'
+            }),
+            tf.layers.dropout({ rate: 0.2 }),
+            tf.layers.dense({
+                units: 10,
+                activation: 'softmax',
+                kernelInitializer: 'glorotNormal'
+            })
+        ]
+    });
+    
+    model.compile({
+        optimizer: tf.train.adam(0.001),
+        loss: 'categoricalCrossentropy',
+        metrics: ['accuracy']
+    });
+    
+    // Initialize with some synthetic data
+    document.getElementById('status').textContent = 'Initializing model with synthetic patterns...';
+    await initializeWithSyntheticData();
+    
+    isModelLoaded = true;
+    document.getElementById('status').textContent = 'Pre-trained CNN model ready!';
+    document.getElementById('classifyBtn').disabled = false;
+    document.getElementById('saveBtn').disabled = false;
+    document.getElementById('modelInfo').textContent = 'Pre-trained CNN model (Pattern-initialized)';
+}
+
+async function generateTrainingData() {
+    document.getElementById('status').textContent = 'Generating synthetic MNIST-style training data...';
+    document.getElementById('generateDataBtn').disabled = true;
+    
+    trainingData = {
+        images: [],
+        labels: [],
+        getBatch: function(batchSize = 32, startIndex = 0) {
+            const endIndex = Math.min(startIndex + batchSize, this.images.length);
+            return {
+                images: this.images.slice(startIndex, endIndex),
+                labels: this.labels.slice(startIndex, endIndex)
+            };
+        }
+    };
+    
+    // Generate comprehensive synthetic data
+    for (let digit = 0; digit < 10; digit++) {
+        for (let variation = 0; variation < 200; variation++) {
+            const image = generateDigitImage(digit, variation);
+            const label = new Array(10).fill(0);
+            label[digit] = 1;
             
-            // Very basic patterns
-            switch (digit) {
-                case 0:
-                    for (let i = 6; i < 22; i++) {
-                        image[8 * w + i] = 1;
-                        image[20 * w + i] = 1;
-                        image[i * w + 8] = 1;
-                        image[i * w + 20] = 1;
-                    }
-                    break;
-                case 1:
-                    for (let i = 4; i < 24; i++) {
-                        image[i * w + 14] = 1;
-                    }
-                    break;
-                default:
-                    for (let i = 0; i < 50; i++) {
-                        const x = Math.floor(Math.random() * 20) + 4;
-                        const y = Math.floor(Math.random() * 20) + 4;
+            trainingData.images.push(image);
+            trainingData.labels.push(label);
+            
+            // Update progress occasionally
+            if ((digit * 200 + variation) % 100 === 0) {
+                const progress = ((digit * 200 + variation) / 2000) * 100;
+                document.getElementById('status').textContent = 
+                    `Generating data... ${progress.toFixed(0)}%`;
+                await new Promise(resolve => setTimeout(resolve, 1));
+            }
+        }
+    }
+    
+    // Shuffle the data
+    for (let i = trainingData.images.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [trainingData.images[i], trainingData.images[j]] = [trainingData.images[j], trainingData.images[i]];
+        [trainingData.labels[i], trainingData.labels[j]] = [trainingData.labels[j], trainingData.labels[i]];
+    }
+    
+    document.getElementById('status').textContent = 'Training dataset generated! 2,000 samples ready.';
+    document.getElementById('dataInfo').textContent = 'Synthetic Dataset: 2,000 training samples (200 per digit)';
+    document.getElementById('startTrainBtn').disabled = false;
+    document.getElementById('dataPreview').style.display = 'block';
+    
+    showRandomSample();
+}
+
+function generateDigitImage(digit, variation) {
+    const image = new Float32Array(784);
+    const canvas = document.createElement('canvas');
+    canvas.width = 28;
+    canvas.height = 28;
+    const ctx = canvas.getContext('2d');
+    
+    // Black background
+    ctx.fillStyle = 'black';
+    ctx.fillRect(0, 0, 28, 28);
+    
+    // White digit with variations
+    ctx.fillStyle = 'white';
+    ctx.font = `bold ${18 + Math.random() * 6}px Arial`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    
+    // Add variations
+    const x = 14 + (Math.random() - 0.5) * 6;
+    const y = 14 + (Math.random() - 0.5) * 6;
+    const rotation = (Math.random() - 0.5) * 0.6;
+    const skew = (Math.random() - 0.5) * 0.2;
+    
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(rotation);
+    ctx.transform(1, skew, 0, 1, 0, 0);
+    ctx.fillText(digit.toString(), 0, 0);
+    ctx.restore();
+    
+    // Add some noise
+    for (let i = 0; i < 5; i++) {
+        const noiseX = Math.floor(Math.random() * 28);
+        const noiseY = Math.floor(Math.random() * 28);
+        const noiseSize = Math.random() * 2;
+        ctx.fillStyle = Math.random() > 0.5 ? 'white' : 'black';
+        ctx.fillRect(noiseX, noiseY, noiseSize, noiseSize);
+    }
+    
+    // Extract pixel data
+    const imageData = ctx.getImageData(0, 0, 28, 28);
+    for (let i = 0; i < imageData.data.length; i += 4) {
+        const gray = imageData.data[i]; // Red channel
+        image[i / 4] = gray / 255.0;
+    }
+    
+    return image;
+}
+
+function showRandomSample() {
+    if (!trainingData || !trainingData.images.length) return;
+    
+    const randomIndex = Math.floor(Math.random() * trainingData.images.length);
+    currentSampleIndex = randomIndex;
+    
+    displaySample(randomIndex);
+}
+
+function showNextBatch() {
+    currentBatch++;
+    if (currentBatch * 32 >= trainingData.images.length) {
+        currentBatch = 0;
+    }
+    
+    const batchStartIndex = currentBatch * 32;
+    displaySample(batchStartIndex);
+}
+
+function displaySample(index) {
+    if (!trainingData || !trainingData.images.length) return;
+    
+    const imageData = trainingData.images[index];
+    const label = trainingData.labels[index];
+    const labelValue = label.indexOf(1);
+    
+    // Display in preview canvas
+    const canvas = document.getElementById('previewCanvas');
+    const ctx = canvas.getContext('2d');
+    
+    // Clear canvas
+    ctx.fillStyle = 'black';
+    ctx.fillRect(0, 0, 280, 280);
+    
+    // Draw image (scale up from 28x28 to 280x280)
+    const imageCanvas = document.createElement('canvas');
+    imageCanvas.width = 28;
+    imageCanvas.height = 28;
+    const imageCtx = imageCanvas.getContext('2d');
+    
+    const imgData = imageCtx.createImageData(28, 28);
+    for (let i = 0; i < 784; i++) {
+        const pixelValue = Math.floor(imageData[i] * 255);
+        imgData.data[i * 4] = pixelValue;     // R
+        imgData.data[i * 4 + 1] = pixelValue; // G
+        imgData.data[i * 4 + 2] = pixelValue; // B
+        imgData.data[i * 4 + 3] = 255;        // A
+    }
+    
+    imageCtx.putImageData(imgData, 0, 0);
+    ctx.drawImage(imageCanvas, 0, 0, 280, 280);
+    
+    // Update info
+    document.getElementById('sampleInfo').textContent = 
+        `Sample: ${index + 1}/${trainingData.images.length} | Label: ${labelValue} | Batch: ${Math.floor(index / 32) + 1}`;
+}
+
+async function startTraining() {
+    if (!trainingData || !trainingData.images.length) {
+        alert('Please generate training data first!');
+        return;
+    }
+    
+    document.getElementById('status').textContent = 'Creating CNN architecture and starting training...';
+    document.getElementById('trainingProgress').style.display = 'block';
+    document.getElementById('startTrainBtn').disabled = true;
+    trainingStartTime = Date.now();
+    
+    // Create CNN model architecture
+    model = tf.sequential({
+        layers: [
+            // Input layer
+            tf.layers.reshape({ inputShape: [784], targetShape: [28, 28, 1] }),
+            
+            // First convolutional block
+            tf.layers.conv2d({
+                kernelSize: 3,
+                filters: 32,
+                activation: 'relu',
+                padding: 'same'
+            }),
+            tf.layers.maxPooling2d({ poolSize: [2, 2] }),
+            
+            // Second convolutional block
+            tf.layers.conv2d({
+                kernelSize: 3,
+                filters: 64,
+                activation: 'relu',
+                padding: 'same'
+            }),
+            tf.layers.maxPooling2d({ poolSize: [2, 2] }),
+            
+            // Third convolutional block
+            tf.layers.conv2d({
+                kernelSize: 3,
+                filters: 64,
+                activation: 'relu',
+                padding: 'same'
+            }),
+            
+            // Flatten and dense layers
+            tf.layers.flatten(),
+            tf.layers.dense({
+                units: 64,
+                activation: 'relu'
+            }),
+            tf.layers.dropout({ rate: 0.3 }),
+            tf.layers.dense({
+                units: 10,
+                activation: 'softmax'
+            })
+        ]
+    });
+    
+    // Compile model
+    model.compile({
+        optimizer: tf.train.adam(0.001),
+        loss: 'categoricalCrossentropy',
+        metrics: ['accuracy']
+    });
+    
+    // Prepare training data
+    const totalSamples = trainingData.images.length;
+    const batchSize = 64;
+    const epochs = 15;
+    const validationSplit = 0.2;
+    
+    // Convert to tensors
+    const allImages = tf.tensor2d(trainingData.images);
+    const allLabels = tf.tensor2d(trainingData.labels);
+    
+    // Split into train and validation
+    const numValidation = Math.floor(totalSamples * validationSplit);
+    const numTraining = totalSamples - numValidation;
+    
+    const trainImages = allImages.slice([0, 0], [numTraining, 784]);
+    const trainLabels = allLabels.slice([0, 0], [numTraining, 10]);
+    const valImages = allImages.slice([numTraining, 0], [numValidation, 784]);
+    const valLabels = allLabels.slice([numTraining, 0], [numValidation, 10]);
+    
+    document.getElementById('batchInfo').textContent = 
+        `Batch size: ${batchSize} | Training samples: ${numTraining} | Validation samples: ${numValidation}`;
+    
+    // Training loop with detailed progress
+    await model.fit(trainImages, trainLabels, {
+        batchSize: batchSize,
+        epochs: epochs,
+        validationData: [valImages, valLabels],
+        shuffle: true,
+        callbacks: {
+            onEpochEnd: (epoch, logs) => {
+                const progress = ((epoch + 1) / epochs) * 100;
+                document.getElementById('progressFill').style.width = `${progress}%`;
+                
+                document.getElementById('trainingInfo').innerHTML = `
+                    <strong>Epoch ${epoch + 1}/${epochs}</strong><br>
+                    Loss: ${logs.loss.toFixed(4)} | Accuracy: ${(logs.acc * 100).toFixed(1)}%<br>
+                    Val Loss: ${logs.val_loss.toFixed(4)} | Val Accuracy: ${(logs.val_acc * 100).toFixed(1)}%
+                `;
+                
+                const elapsed = ((Date.now() - trainingStartTime) / 1000).toFixed(1);
+                document.getElementById('timeInfo').textContent = `Training time: ${elapsed}s`;
+            }
+        }
+    });
+    
+    // Clean up tensors
+    allImages.dispose();
+    allLabels.dispose();
+    trainImages.dispose();
+    trainLabels.dispose();
+    valImages.dispose();
+    valLabels.dispose();
+    
+    // Training complete
+    isModelLoaded = true;
+    const totalTime = ((Date.now() - trainingStartTime) / 1000).toFixed(1);
+    
+    document.getElementById('status').textContent = 
+        `Training completed in ${totalTime}s! Your custom MNIST model is ready.`;
+    document.getElementById('classifyBtn').disabled = false;
+    document.getElementById('saveBtn').disabled = false;
+    document.getElementById('modelInfo').textContent = 
+        `Custom CNN trained on ${totalSamples} synthetic samples (${totalTime}s training time)`;
+}
+
+function preprocessCanvasForTraining() {
+    const canvas = document.querySelector('#canvas-container canvas');
+    const ctx = canvas.getContext('2d');
+    
+    // Create 28x28 version
+    const tempCanvas = document.createElement('canvas');
+    tempCanvas.width = 28;
+    tempCanvas.height = 28;
+    const tempCtx = tempCanvas.getContext('2d');
+    
+    tempCtx.drawImage(canvas, 0, 0, 28, 28);
+    const imageData = tempCtx.getImageData(0, 0, 28, 28);
+    
+    // Convert to normalized array
+    const data = new Float32Array(784);
+    for (let i = 0; i < imageData.data.length; i += 4) {
+        const gray = (imageData.data[i] + imageData.data[i + 1] + imageData.data[i + 2]) / 3;
+        data[i / 4] = gray / 255.0;
+    }
+    
+    return data;
+}
+
+function clearCanvas() {
+    background(0);
+    document.getElementById('predictionResult').style.display = 'none';
+}
+
+async function classifyDrawing() {
+    if (!isModelLoaded) {
+        alert('Model is not ready. Please wait or select a mode.');
+        return;
+    }
+    
+    const imageData = preprocessCanvasForTraining();
+    const prediction = await model.predict(tf.tensor2d([imageData])).data();
+    
+    displayPrediction(Array.from(prediction));
+}
+
+function displayPrediction(predictions) {
+    const maxIndex = predictions.indexOf(Math.max(...predictions));
+    const confidence = (predictions[maxIndex] * 100).toFixed(1);
+    
+    document.getElementById('predictionResult').style.display = 'block';
+    document.getElementById('predictedDigit').textContent = maxIndex;
+    document.getElementById('confidenceScore').textContent = `Confidence: ${confidence}%`;
+    
+    // Update all predictions
+    for (let i = 0; i < 10; i++) {
+        const item = document.getElementById(`pred-${i}`);
+        const percentage = (predictions[i] * 100).toFixed(1);
+        
+        item.innerHTML = `<strong>${i}</strong><br>${percentage}%`;
+        item.className = i === maxIndex ? 'prediction-item top' : 'prediction-item';
+    }
+}
+
+function initializePredictionDisplay() {
+    const container = document.getElementById('allPredictions');
+    container.innerHTML = '';
+    
+    for (let i = 0; i < 10; i++) {
+        const item = document.createElement('div');
+        item.className = 'prediction-item';
+        item.id = `pred-${i}`;
+        item.innerHTML = `<strong>${i}</strong><br>0.0%`;
+        container.appendChild(item);
+    }
+}
+
+async function saveModel() {
+    if (!model) {
+        alert('No model to save!');
+        return;
+    }
+    
+    await model.save('downloads://my-mnist-model');
+    document.getElementById('status').textContent = 'Model saved to downloads!';
+}
+
+async function loadModel() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json';
+    input.multiple = true;
+    
+    input.onchange = async (e) => {
+        try {
+            model = await tf.loadLayersModel(tf.io.browserFiles(e.target.files));
+            isModelLoaded = true;
+            document.getElementById('status').textContent = 'Model loaded from file!';
+            document.getElementById('classifyBtn').disabled = false;
+            document.getElementById('modelInfo').textContent = 'Loaded custom model';
+        } catch (error) {
+            alert('Error loading model: ' + error.message);
+        }
+    };
+    
+    input.click();
+}
+
+async function initializeWithSyntheticData() {
+    // Quick synthetic training for fallback
+    const syntheticData = [];
+    const syntheticLabels = [];
+    
+    for (let digit = 0; digit < 10; digit++) {
+        for (let i = 0; i < 10; i++) {
+            const image = generateSimplePattern(digit);
+            const label = new Array(10).fill(0);
+            label[digit] = 1;
+            
+            syntheticData.push(image);
+            syntheticLabels.push(label);
+        }
+    }
+    
+    const xs = tf.tensor2d(syntheticData);
+    const ys = tf.tensor2d(syntheticLabels);
+    
+    await model.fit(xs, ys, { epochs: 20, verbose: 0 });
+    
+    xs.dispose();
+    ys.dispose();
+}
+
+function generateSimplePattern(digit) {
+    const image = new Array(784).fill(0);
+    const w = 28;
+    
+    // Very basic patterns for different digits
+    switch (digit) {
+        case 0:
+            // Circle pattern
+            for (let y = 8; y < 20; y++) {
+                for (let x = 8; x < 20; x++) {
+                    const dx = x - 14;
+                    const dy = y - 14;
+                    if (dx*dx + dy*dy > 16 && dx*dx + dy*dy < 49) {
                         image[y * w + x] = 1;
                     }
-            }
-            
-            return image;
-        }
-        
-        // Touch support
-        function touchStarted() { return false; }
-        function touchMoved() {
-            if (touches.length > 0) {
-                stroke(255);
-                strokeWeight(20);
-                if (pmouseX !== mouseX && pmouseY !== mouseY) {
-                    line(pmouseX, pmouseY, mouseX, mouseY);
                 }
-                return false;
             }
+            break;
+        case 1:
+            // Vertical line
+            for (let y = 4; y < 24; y++) {
+                image[y * w + 14] = 1;
+                image[y * w + 13] = 1;
+            }
+            break;
+        case 2:
+            // Z pattern
+            for (let x = 8; x < 20; x++) {
+                image[8 * w + x] = 1;
+                image[20 * w + x] = 1;
+                image[(8 + (x-8)) * w + (20-x+8)] = 1;
+            }
+            break;
+        case 3:
+            // E pattern
+            for (let y = 8; y < 20; y++) {
+                image[y * w + 18] = 1;
+            }
+            for (let x = 10; x < 18; x++) {
+                image[8 * w + x] = 1;
+                image[14 * w + x] = 1;
+                image[20 * w + x] = 1;
+            }
+            break;
+        case 4:
+            // T pattern
+            for (let x = 8; x < 20; x++) {
+                image[8 * w + x] = 1;
+            }
+            for (let y = 8; y < 24; y++) {
+                image[y * w + 14] = 1;
+            }
+            break;
+        case 5:
+            // S pattern
+            for (let x = 8; x < 18; x++) {
+                image[8 * w + x] = 1;
+                image[14 * w + x] = 1;
+                image[20 * w + x] = 1;
+            }
+            for (let y = 8; y < 14; y++) {
+                image[y * w + 8] = 1;
+            }
+            for (let y = 14; y < 20; y++) {
+                image[y * w + 18] = 1;
+            }
+            break;
+        case 6:
+            // P pattern
+            for (let y = 8; y < 20; y++) {
+                image[y * w + 8] = 1;
+            }
+            for (let x = 8; x < 16; x++) {
+                image[8 * w + x] = 1;
+                image[14 * w + x] = 1;
+            }
+            for (let y = 8; y < 14; y++) {
+                image[y * w + 16] = 1;
+            }
+            break;
+        case 7:
+            // L pattern
+            for (let y = 8; y < 20; y++) {
+                image[y * w + 8] = 1;
+            }
+            for (let x = 8; x < 18; x++) {
+                image[20 * w + x] = 1;
+            }
+            break;
+        case 8:
+            // Double O pattern
+            for (let y = 8; y < 20; y++) {
+                for (let x = 8; x < 20; x++) {
+                    const dx = x - 14;
+                    const dy1 = y - 10;
+                    const dy2 = y - 18;
+                    if ((dx*dx + dy1*dy1 > 9 && dx*dx + dy1*dy1 < 25) ||
+                        (dx*dx + dy2*dy2 > 9 && dx*dx + dy2*dy2 < 25)) {
+                        image[y * w + x] = 1;
+                    }
+                }
+            }
+            break;
+        case 9:
+            // Q pattern
+            for (let y = 8; y < 20; y++) {
+                for (let x = 8; x < 20; x++) {
+                    const dx = x - 14;
+                    const dy = y - 14;
+                    if (dx*dx + dy*dy > 16 && dx*dx + dy*dy < 49) {
+                        image[y * w + x] = 1;
+                    }
+                }
+            }
+            // Add tail
+            for (let i = 16; i < 22; i++) {
+                image[i * w + i] = 1;
+            }
+            break;
+        default:
+            // Random pattern
+            for (let i = 0; i < 30; i++) {
+                const x = Math.floor(Math.random() * 20) + 4;
+                const y = Math.floor(Math.random() * 20) + 4;
+                image[y * w + x] = 1;
+            }
+    }
+    
+    return image;
+}
+
+// Touch support for mobile devices
+function touchStarted() { return false; }
+function touchMoved() {
+    if (touches.length > 0) {
+        stroke(255);
+        strokeWeight(20);
+        if (pmouseX !== mouseX && pmouseY !== mouseY) {
+            line(pmouseX, pmouseY, mouseX, mouseY);
         }
-        
-        console.log('MNIST Train vs Pre-trained loaded!');
+        return false;
+    }
+}
+
+console.log('MNIST Train vs Pre-trained loaded!');
     </script>
 </body>
 </html>
