@@ -16,3 +16,13 @@ class_names = ['T-shirt/top', 'Trouser', 'Pullover', 'Dress', 'Coat', 'Sandal', 
 train_images.shape
 
 print(train_images.shape)
+
+# Plot the first image
+# plt.figure()
+# plt.imshow(train_images[0])
+# plt.colorbar()
+# plt.grid(False)
+# plt.show()
+
+train_images = train_images / 255.0
+test_images = test_images / 255.0
