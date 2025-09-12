@@ -118,3 +118,27 @@ def plot_value_array(i, predictions_array, true_label):
 #   plot_value_array(i, predictions[i], test_labels)
 # plt.tight_layout()
 # plt.show()
+
+
+# Grab an image from the test dataset.
+img = test_images[1]
+# Add the image to a batch where it's the only member.
+img_batch = (np.expand_dims(img,0))
+print(img_batch.shape)
+predictions_single = probability_model.predict(img_batch)
+print(predictions_single)
+
+# Display the image and prediction
+plt.figure(figsize=(12, 4))
+plt.subplot(1, 2, 1)
+plt.imshow(img, cmap=plt.cm.binary)
+plt.title(f'True label: {class_names[test_labels[1]]}')
+plt.xticks([])
+plt.yticks([])
+plt.grid(False)
+
+plt.subplot(1, 2, 2)
+plot_value_array(1, predictions_single[0], test_labels)
+_ = plt.xticks(range(10), class_names, rotation=45)
+plt.tight_layout()
+plt.show()
