@@ -4,6 +4,10 @@ import tensorflow as tf
 
 print(tf.__version__)
 
+# ===============================
+# Part 1 - Data Preprocessing
+# ===============================
+
 dataset = pd.read_csv('datasets/Part 1 - Artificial Neural Networks (ANN)/Churn_Modelling.csv')
 X = dataset.iloc[:, 3:-1].values
 y = dataset.iloc[:, -1].values
