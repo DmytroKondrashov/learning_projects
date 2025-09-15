@@ -2,4 +2,5 @@
 bin/
 include/
 lib/
+datasets/
 pyvenv.cfg
