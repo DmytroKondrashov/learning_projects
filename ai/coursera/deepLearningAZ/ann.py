@@ -15,4 +15,7 @@ from sklearn.preprocessing import LabelEncoder
 le = LabelEncoder()
 X[:, 2] = le.fit_transform(X[:, 2])
 
-print(X)
+from sklearn.compose import ColumnTransformer
+from sklearn.preprocessing import OneHotEncoder
+ct = ColumnTransformer(transformers=[('encoder', OneHotEncoder(), [1])], remainder='passthrough')
+X = np.array(ct.fit_transform(X))
