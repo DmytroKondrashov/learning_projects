@@ -37,3 +37,4 @@ X_test = sc.transform(X_test)
 # ===============================
 
 ann = tf.keras.models.Sequential()
+ann.add(tf.keras.layers.Dense(units=6, activation='relu'))
