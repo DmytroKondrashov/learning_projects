@@ -16,6 +16,11 @@ test_set = test_datagen.flow_from_directory('/datasets/Part 2 - Convolutional Ne
 # ===============================
 # Part 2 - Building the CNN
 # ===============================
-
 cnn = tf.keras.models.Sequential()
 cnn.add(tf.keras.layers.Conv2D(filters=32, kernel_size=3, activation='relu', input_shape=[64, 64, 3]))
+
+cnn.add(tf.keras.layers.MaxPool2D(pool_size=2, strides=2))
+
+cnn.add(tf.keras.layers.Conv2D(filters=32, kernel_size=3, activation='relu'))
+
+cnn.add(tf.keras.layers.MaxPool2D(pool_size=2, strides=2))
