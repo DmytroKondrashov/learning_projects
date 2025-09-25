@@ -38,3 +38,10 @@ cnn.add(tf.keras.layers.Dense(units=1, activation='sigmoid'))
 cnn.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = ['accuracy'])
 
 cnn.fit(x = training_set, validation_data = test_set, epochs = 25)
+
+# ===============================
+# Part 4 - Making the predictions
+# ===============================
+
+import numpy as np
+from keras.preprocessing import image
