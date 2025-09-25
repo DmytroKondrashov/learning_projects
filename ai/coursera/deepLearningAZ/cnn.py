@@ -50,3 +50,9 @@ test_image = image.load_img('/datasets/Part 2 - Convolutional Neural Networks (C
 test_image = image.img_to_array(test_image)
 test_image = np.expand_dims(test_image, axis = 0)
 result = cnn.predict(test_image)
+
+training_set.class_indices
+if result[0][0] == 1:
+  prediction = 'dog'
+else:
+  prediction = 'cat'
