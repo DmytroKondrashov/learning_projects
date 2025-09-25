@@ -30,3 +30,9 @@ cnn.add(tf.keras.layers.Flatten())
 cnn.add(tf.keras.layers.Dense(units=128, activation='relu'))
 
 cnn.add(tf.keras.layers.Dense(units=1, activation='sigmoid'))
+
+# ===============================
+# Part 3 - Training the CNN
+# ===============================
+
+cnn.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = ['accuracy'])
