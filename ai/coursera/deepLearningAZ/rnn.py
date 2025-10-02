@@ -32,3 +32,6 @@ from keras.layers import Dropout
 
 # Initializing the RNN
 regressor = Sequential()
+
+# Adding the first LSTM layer and some Dropout regularisation
+regressor.add(LSTM(units = 50, return_sequences = True, input_shape = (X_train.shape[1], 1)))
