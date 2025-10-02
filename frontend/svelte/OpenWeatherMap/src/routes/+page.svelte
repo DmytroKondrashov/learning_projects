@@ -1,6 +1,6 @@
 <script lang="ts">
 	let city = 'Lviv';
-	let weather = null;
+	let weather: { name: any; sys: { country: any; }; main: { temp: number; feels_like: number; humidity: any; pressure: any; }; weather: { description: any; }[]; wind: { speed: any; }; } | null = null;
 	let loading = false;
 	let error = '';
 
