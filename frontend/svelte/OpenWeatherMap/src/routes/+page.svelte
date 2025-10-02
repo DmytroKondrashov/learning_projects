@@ -41,3 +41,12 @@
     return '🌤️';
   }
 </script>
+
+<div class="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center p-5">
+  <div class="bg-white rounded-3xl shadow-2xl p-10 max-w-lg w-full">
+    <h1 class="text-4xl font-bold text-gray-800 text-center mb-8">
+      🌤️ Weather App
+    </h1>
+  </div>
+</div>
+
