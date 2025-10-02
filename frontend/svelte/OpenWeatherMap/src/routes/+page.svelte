@@ -4,7 +4,7 @@
   let loading = false;
   let error = '';
 
-  async function fetchWeatche() {
+  async function fetchWeather() {
     loading = true;
     error = '';
 
@@ -22,6 +22,12 @@
       error = 'Failed to fetch weather';
     } finally {
       loading = false;
+    }
+  }
+
+  function handleKeyPress(event: any) {
+    if (event.key === 'Enter') {
+      fetchWeather();
     }
   }
 </script>
