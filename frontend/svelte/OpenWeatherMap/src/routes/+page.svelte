@@ -1,8 +1,8 @@
 <script lang="ts">
-	let city = 'Lviv';
-	let weather: { name: any; sys: { country: any; }; main: { temp: number; feels_like: number; humidity: any; pressure: any; }; weather: { description: any; }[]; wind: { speed: any; }; } | null = null;
-	let loading = false;
-	let error = '';
+	let city = $state('Lviv');
+	let weather = $state(null) as { name: any; sys: { country: any; }; main: { temp: number; feels_like: number; humidity: any; pressure: any; }; weather: { description: any; }[]; wind: { speed: any; }; } | null;
+	let loading = $state(false);
+	let error = $state('');
 
 	async function fetchWeather() {
 		loading = true;
@@ -14,18 +14,18 @@
 			);
 			const data = await response.json();
 
-			if (data.error) {
-				error = data.error;
-				weather = null;
-			} else {
-				weather = data;
-			}
-		} catch (error) {
-			error = 'Failed to fetch weather';
+    if (data.cod !== 200) {
+      throw new Error(data.message);
+    }
+			weather = data;
+		} catch (error: any) {
+			error = error;;
 		} finally {
 			loading = false;
 		}
 	}
+
+  $inspect(error);
 
 	function handleKeyPress(event: any) {
 		if (event.key === 'Enter') {
@@ -53,14 +53,14 @@
 		<input
 			type="text"
 			bind:value={city}
-			on:keypress={handleKeyPress}
+			onkeypress={handleKeyPress}
 			placeholder="Enter city name"
       disabled={loading}
 			class="flex-1 rounded-xl border-2 border-gray-200 px-5 py-3 text-base transition-colors focus:border-indigo-500 focus:outline-none disabled:cursor-not-allowed disabled:bg-gray-100"
 		/>
 
   <button 
-    on:click={fetchWeather} 
+    onclick={fetchWeather} 
     disabled={loading}
     class="px-6 py-3 bg-indigo-500 text-white rounded-xl text-base font-semibold hover:bg-indigo-600 disabled:opacity-60 disabled:cursor-not-allowed transition-all hover:-translate-y-0.5"
   >
