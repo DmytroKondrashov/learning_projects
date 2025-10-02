@@ -58,5 +58,13 @@
       disabled={loading}
 			class="flex-1 rounded-xl border-2 border-gray-200 px-5 py-3 text-base transition-colors focus:border-indigo-500 focus:outline-none disabled:cursor-not-allowed disabled:bg-gray-100"
 		/>
+
+  <button 
+    on:click={fetchWeather} 
+    disabled={loading}
+    class="px-6 py-3 bg-indigo-500 text-white rounded-xl text-base font-semibold hover:bg-indigo-600 disabled:opacity-60 disabled:cursor-not-allowed transition-all hover:-translate-y-0.5"
+  >
+    {loading ? '⏳ Loading...' : '🔍 Search'}
+  </button>
 	</div>
 </div>
