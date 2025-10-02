@@ -18,8 +18,8 @@
       throw new Error(data.message);
     }
 			weather = data;
-		} catch (error: any) {
-			error = error;;
+		} catch (callError: any) {
+			error = callError;
 		} finally {
 			loading = false;
 		}
