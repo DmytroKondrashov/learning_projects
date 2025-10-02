@@ -66,5 +66,11 @@
   >
     {loading ? '⏳ Loading...' : '🔍 Search'}
   </button>
+
+  {#if error}
+    <div class="bg-red-50 border-2 border-red-200 text-red-700 px-4 py-4 rounded-xl mb-5 text-center">
+      ⚠️ {error}
+    </div>
+  {/if}
 	</div>
 </div>
