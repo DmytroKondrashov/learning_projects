@@ -10,9 +10,10 @@
 
 		try {
 			const response = await fetch(
-				`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${import.meta.env.VITE_OPENWEATHERMAP_API_KEY}`
+				`http://api.weatherstack.com/current?access_key=${import.meta.env.VITE_OPEN_WEATHERSTACK_API_KEY}&query=${city}`
 			);
 			const data = await response.json();
+      console.log(data);
 
     if (data.cod !== 200) {
       throw new Error(data.message);
