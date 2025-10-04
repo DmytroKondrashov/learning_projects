@@ -12,21 +12,19 @@
 			const response = await fetch(
 				`http://api.weatherstack.com/current?access_key=${import.meta.env.VITE_OPEN_WEATHERSTACK_API_KEY}&query=${city}`
 			);
-			const data = await response.json();
-      console.log(data);
 
-    if (data.cod !== 200) {
-      throw new Error(data.message);
-    }
-			weather = data;
+      if (response.status !== 200) {
+        throw new Error(response.statusText);
+      }
+      
+			weather = await response.json();
+
 		} catch (callError: any) {
 			error = callError;
 		} finally {
 			loading = false;
 		}
 	}
-
-  $inspect(error);
 
 	function handleKeyPress(event: any) {
 		if (event.key === 'Enter') {
@@ -90,6 +88,12 @@
         </div>
 
         <div class="grid grid-cols-2 gap-4">
+          <div class="bg-blue-50 p-5 rounded-xl text-center">
+            <div class="text-sm text-gray-600 mb-2">Feels like</div>
+            <div class="text-2xl font-bold text-gray-800">
+              {weather.current.feelslike}°C
+            </div>
+          </div>
           <div class="bg-blue-50 p-5 rounded-xl text-center">
             <div class="text-sm text-gray-600 mb-2">Humidity</div>
             <div class="text-2xl font-bold text-gray-800">
