@@ -1,6 +1,6 @@
 <script lang="ts">
 	let city = $state('Lviv');
-	let weather = $state(null) as { request: { query: string; }; location: { name: string; country: string; }; current: { temperature: number; feelslike: number; humidity: number; pressure: number; wind_speed: number; }; } | null;
+	let weather = $state(null) as { request: { query: string; }; location: { name: string; country: string; }; current: { weather_descriptions: string[]; temperature: number; feelslike: number; humidity: number; pressure: number; wind_speed: number; }; } | null;
 	let loading = $state(false);
 	let error = $state('');
 
@@ -78,40 +78,34 @@
       <div class="mt-8">
         <div class="text-center p-5 bg-gradient-to-br from-indigo-50 to-purple-50 rounded-2xl mb-5">
           <h2 class="text-3xl font-bold text-gray-800 mb-3">
-            {weather.name}, {weather.sys.country}
+            {weather.location.name}, {weather.location.country}
           </h2>
           <div class="text-6xl font-bold text-indigo-600 my-3">
-            {Math.round(weather.main.temp)}°C
+            {weather.current.temperature}°C
           </div>
           <div class="flex items-center justify-center gap-3 text-xl text-gray-600 capitalize">
-            <span class="text-4xl">{getWeatherIcon(weather.weather[0].description)}</span>
-            <span>{weather.weather[0].description}</span>
+            <span class="text-4xl">{getWeatherIcon(weather.current.weather_descriptions[0])}</span>
+            <span>{weather.current.weather_descriptions[0]}</span>
           </div>
         </div>
 
         <div class="grid grid-cols-2 gap-4">
           <div class="bg-blue-50 p-5 rounded-xl text-center">
-            <div class="text-sm text-gray-600 mb-2">Feels Like</div>
-            <div class="text-2xl font-bold text-gray-800">
-              {Math.round(weather.main.feels_like)}°C
-            </div>
-          </div>
-          <div class="bg-blue-50 p-5 rounded-xl text-center">
             <div class="text-sm text-gray-600 mb-2">Humidity</div>
             <div class="text-2xl font-bold text-gray-800">
-              {weather.main.humidity}%
+              {weather.current.humidity}%
             </div>
           </div>
           <div class="bg-blue-50 p-5 rounded-xl text-center">
             <div class="text-sm text-gray-600 mb-2">Wind Speed</div>
             <div class="text-2xl font-bold text-gray-800">
-              {weather.wind.speed} m/s
+              {weather.current.wind_speed} m/s
             </div>
           </div>
           <div class="bg-blue-50 p-5 rounded-xl text-center">
             <div class="text-sm text-gray-600 mb-2">Pressure</div>
             <div class="text-2xl font-bold text-gray-800">
-              {weather.main.pressure} hPa
+              {weather.current.pressure} hPa
             </div>
           </div>
         </div>
