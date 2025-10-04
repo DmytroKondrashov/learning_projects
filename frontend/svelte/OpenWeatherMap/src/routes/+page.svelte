@@ -1,6 +1,6 @@
 <script lang="ts">
 	let city = $state('Lviv');
-	let weather = $state(null) as { name: any; sys: { country: any; }; main: { temp: number; feels_like: number; humidity: any; pressure: any; }; weather: { description: any; }[]; wind: { speed: any; }; } | null;
+	let weather = $state(null)
 	let loading = $state(false);
 	let error = $state('');
 
