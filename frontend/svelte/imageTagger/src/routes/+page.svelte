@@ -1,2 +1,12 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
+<script lang="ts">
+  let image = null;
+  let preview = null;
+  let tags = [];
+  let loading = false;
+  let error = null;
+  let apiKey = '';
+  let apiSecret = '';
+  let showApiForm = true;
+
+  
+</script>
