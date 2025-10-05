@@ -23,5 +23,16 @@
       error = 'Please provide API credentials and select an image';
       return;
     }
+
+    loading = true;
+    error = null;
+
+    try {
+      
+    } catch (error) {
+      error = 'Error connecting to Imagga API: ' + error.message;
+    } finally {
+      loading = false;
+    }
   }
 </script>
