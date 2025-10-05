@@ -1,5 +1,5 @@
 <script lang="ts">
-  let image = null;
+  let image: any = null;
   let preview = null;
   let tags = [];
   let loading = false;
@@ -16,5 +16,12 @@
       tags = [];
       error = null;
     }
-  }  
+  }
+
+  async function handleAnalyze() {
+    if (!image || !apiKey || !apiSecret) {
+      error = 'Please provide API credentials and select an image';
+      return;
+    }
+  }
 </script>
