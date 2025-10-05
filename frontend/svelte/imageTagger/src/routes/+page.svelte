@@ -3,7 +3,7 @@
   let preview = null;
   let tags = [];
   let loading = false;
-  let error = null;
+  let error: unknown = null;
   let apiKey = '';
   let apiSecret = '';
   let showApiForm = true;
@@ -28,7 +28,7 @@
     error = null;
 
     try {
-      
+      const formData = new FormData();
     } catch (error) {
       error = 'Error connecting to Imagga API: ' + error.message;
     } finally {
