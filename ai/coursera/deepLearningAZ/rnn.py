@@ -49,3 +49,5 @@ regressor.add(Dropout(0.2))
 # Adding the output layer
 regressor.add(Dense(units = 1))
 
+# Compiling the RNN
+regressor.compile(optimizer = 'adam', loss = 'mean_squared_error')
