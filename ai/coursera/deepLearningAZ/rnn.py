@@ -45,3 +45,7 @@ regressor.add(Dropout(0.2))
 
 regressor.add(LSTM(units = 50))
 regressor.add(Dropout(0.2))
+
+# Adding the output layer
+regressor.add(Dense(units = 1))
+
