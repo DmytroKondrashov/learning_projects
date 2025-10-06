@@ -63,4 +63,11 @@ real_stock_price = dataset_test.iloc[:, 1:2].values
 # Getting the predicted stock price of 2017
 predicted_stock_price = regressor.predict(X_test)
 
-
+# Visualising the results
+plt.plot(real_stock_price, color = 'red', label = 'Real Google Stock Price')
+plt.plot(predicted_stock_price, color = 'blue', label = 'Predicted Google Stock Price')
+plt.title('Google Stock Price Prediction')
+plt.xlabel('Time')
+plt.ylabel('Google Stock Price')
+plt.legend()
+plt.show()
