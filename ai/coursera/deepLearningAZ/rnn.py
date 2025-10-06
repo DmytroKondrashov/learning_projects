@@ -60,3 +60,7 @@ regressor.fit(X_train, y_train, epochs = 100, batch_size = 32)
 dataset_test = pd.read_csv('datasets/Part 3 - Recurrent Neural Networks (RNN)/Google_Stock_Price_Test.csv')
 real_stock_price = dataset_test.iloc[:, 1:2].values
 
+# Getting the predicted stock price of 2017
+predicted_stock_price = regressor.predict(X_test)
+
+
