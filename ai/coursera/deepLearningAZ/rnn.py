@@ -64,6 +64,7 @@ real_stock_price = dataset_test.iloc[:, 1:2].values
 predicted_stock_price = regressor.predict(X_test)
 
 dataset_total = pd.concat((dataset_train['Open'], dataset_test['Open']), axis = 0)
+inputs = dataset_total[len(dataset_total) - len(dataset_test) - 60:].values
 
 # Visualising the results
 plt.plot(real_stock_price, color = 'red', label = 'Real Google Stock Price')
