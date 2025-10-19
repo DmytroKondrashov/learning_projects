@@ -8,3 +8,4 @@ y = dataset.iloc[:, -1].values
 
 from sklearn.preprocessing import MinMaxScaler
 sc = MinMaxScaler(feature_range = (0, 1))
+X = sc.fit_transform(X)
