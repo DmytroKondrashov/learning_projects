@@ -18,3 +18,4 @@ som.train_random(data = X, num_iteration = 100)
 from pylab import bone, pcolor, colorbar, plot, show
 bone()
 pcolor(som.distance_map().T)
+colorbar()
