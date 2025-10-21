@@ -33,6 +33,12 @@ for i, x in enumerate(X):
 show()
 
 mappings = som.win_map(X)
+
+print("Nodes with data:")
+for key, value in mappings.items():
+    if len(value) > 0:
+        print(f"Node {key}: {len(value)} samples")
+
 frauds = np.concatenate((mappings[(8,3)], mappings[(8,4)]), axis = 0)
 frauds = sc.inverse_transform(frauds)
 print(frauds)
