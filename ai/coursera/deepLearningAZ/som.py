@@ -33,3 +33,4 @@ for i, x in enumerate(X):
 show()
 
 mappings = som.win_map(X)
+frauds = np.concatenate((mappings[(8,1)], mappings[(6,9)]), axis = 0)
