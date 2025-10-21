@@ -19,3 +19,5 @@ from pylab import bone, pcolor, colorbar, plot, show
 bone()
 pcolor(som.distance_map().T)
 colorbar()
+markers = ['o', 's']
+colors = ['r', 'g']
