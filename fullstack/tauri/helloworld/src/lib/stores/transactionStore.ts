@@ -1,5 +1,6 @@
 import { writable, derived } from "svelte/store";
 import type { Transaction } from "../types";
+import { format, startOfMonth } from "date-fns";
 
 function createTransactionStore() {
   const { subscribe, set, update } = writable<Transaction[]>([]);
@@ -35,3 +36,11 @@ export const totalBalance = derived(transactions, $transactions =>
     return transaction.type === 'income' ? total + transaction.amount : total - transaction.amount;
   }, 0)
 );
+
+export const monthlyExpences = derived(transactions, $transactions => {
+  const now = new Date();
+  const currantMonth = format(startOfMonth(now), 'yyyy-MM');
+  return $transactions
+    .filter(t => t.type === 'expense' && format(t.createdAt, 'yyyy-MM') === currantMonth)
+    .reduce((total, transaction) => total + transaction.amount, 0);
+})
