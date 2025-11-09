@@ -30,7 +30,7 @@ function createTransactionStore() {
 
 export const transactions = createTransactionStore();
 
-export const totalBalance = derived(transactions. $transactions => 
+export const totalBalance = derived(transactions, $transactions => 
   $transactions.reduce((total, transaction) => {
     return transaction.type === 'income' ? total + transaction.amount : total - transaction.amount;
   }, 0)
