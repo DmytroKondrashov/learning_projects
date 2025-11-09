@@ -9,3 +9,11 @@ export interface Transaction {
   category: string;
   createdAt: Date;
 }
+
+export interface Category {
+  id: string;
+  name: string;
+  type: TransitionType;
+  color: string;
+  icon?: string;
+}
