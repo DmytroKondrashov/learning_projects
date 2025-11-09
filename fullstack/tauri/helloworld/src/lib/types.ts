@@ -32,4 +32,8 @@ export interface CategoryStats {
   color: string;
 }
 
-
+export interface AppSettings {
+  currency: string;
+  darkMode: boolean;
+  defaultView: 'dashboard' | 'transactions';
+}
