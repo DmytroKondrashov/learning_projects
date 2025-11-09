@@ -31,3 +31,5 @@ export interface CategoryStats {
   percentage: number;
   color: string;
 }
+
+
