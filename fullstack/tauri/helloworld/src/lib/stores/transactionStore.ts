@@ -21,5 +21,9 @@ function createTransactionStore() {
         transactions.map(t => t.id === id ? {...t, ...updates} : t)
       )
     },
+    remove: (id: string) => {
+      update(transactions => transactions.filter(t => t.id !== id));
+    },
+    clear: () => set([]),
   }
 }
