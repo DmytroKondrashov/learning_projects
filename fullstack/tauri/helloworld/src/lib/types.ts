@@ -25,4 +25,9 @@ export interface MonthlyStats {
   balance: number;
 }
 
-
+export interface CategoryStats {
+  category: string;
+  amount: number;
+  percentage: number;
+  color: string;
+}
