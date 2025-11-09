@@ -17,3 +17,12 @@ export interface Category {
   color: string;
   icon?: string;
 }
+
+export interface MonthlyStats {
+  month: string;
+  income: number;
+  expenses: number;
+  balance: number;
+}
+
+
