@@ -15,6 +15,11 @@ function createTransactionStore() {
       }
       update(transactions => [...transactions, newTransaction]);
       return newTransaction;
-    }
+    },
+    update: (id: string, updates: Partial<Transaction>) => {
+      update(transactions => 
+        transactions.map(t => t.id === id ? {...t, ...updates} : t)
+      )
+    },
   }
 }
