@@ -1,4 +1,4 @@
-import { writable } from "svelte/store";
+import { writable, derived } from "svelte/store";
 import type { Transaction } from "../types";
 
 function createTransactionStore() {
@@ -27,3 +27,11 @@ function createTransactionStore() {
     clear: () => set([]),
   }
 }
+
+export const transactions = createTransactionStore();
+
+export const totalBalance = derived(transactions. $transactions => 
+  $transactions.reduce((total, transaction) => {
+    return transaction.type === 'income' ? total + transaction.amount : total - transaction.amount;
+  }, 0)
+);
