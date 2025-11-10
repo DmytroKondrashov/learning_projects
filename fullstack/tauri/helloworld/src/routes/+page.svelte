@@ -41,6 +41,24 @@
       </div>
 
       <button onclick={addTestData} class="bg-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-purple-700 transition">Add test data</button>
+
+      <div class="mt-8">
+        <h2 class="text-xl font-bold mb-4">Transactions ({$transactions.length})</h2>
+        <div class="space-y-2">
+          {#each $transactions as transaction}
+            <div class="flex justify-between items-center p-3 bg-gray-50 rounded">
+              <div>
+                <p class="font-semibold">{transaction.description}</p>
+                <p class="text-sm text-gray-600">{transaction.category} • {transaction.date}</p>
+              </div>
+              <p class="font-bold" class:text-green-600={transaction.type === 'income'} class:text-red-600={transaction.type === 'expense'}>
+                {transaction.type === 'income' ? '+' : '-'}${transaction.amount.toFixed(2)}
+              </p>
+            </div>
+          {/each}
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
