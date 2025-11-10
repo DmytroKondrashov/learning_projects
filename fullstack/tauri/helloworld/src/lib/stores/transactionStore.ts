@@ -39,8 +39,8 @@ export const totalBalance = derived(transactions, $transactions =>
 
 export const monthlyExpences = derived(transactions, $transactions => {
   const now = new Date();
-  const currantMonth = format(startOfMonth(now), 'yyyy-MM');
+  const currentMonth = format(startOfMonth(now), 'yyyy-MM');
   return $transactions
-    .filter(t => t.type === 'expense' && format(t.createdAt, 'yyyy-MM') === currantMonth)
+    .filter(t => t.type === 'expense' && format(t.createdAt, 'yyyy-MM') === currentMonth)
     .reduce((total, transaction) => total + transaction.amount, 0);
 })
