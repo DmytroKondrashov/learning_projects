@@ -34,6 +34,11 @@
         <p class="text-sm text-gray-600">Monthly Income</p>
         <p class="text-2xl font-bold text-green-600">${$monthlyIncome.toFixed(2)}</p>
       </div>
+
+      <div class="bg-red-50 p-4 rounded-lg">
+        <p class="text-sm text-gray-600">Monthly Expenses</p>
+        <p class="text-2xl font-bold text-red-600">${$monthlyExpenses.toFixed(2)}</p>
+      </div>
     </div>
   </div>
 </div>
