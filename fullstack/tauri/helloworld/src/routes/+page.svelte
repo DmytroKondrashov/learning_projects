@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { totalBalance, transactions } from "$lib/stores/transactionStore";
+  import { monthlyIncome, totalBalance, transactions } from "$lib/stores/transactionStore";
 
   function addTestData() {
     transactions.add({
@@ -28,6 +28,11 @@
       <div class="bg-blue-50 p-4 rounded-lg">
         <p class="text-sm text-gray-600">Total Balance</p>
         <p class="text-2xl font-bold text-blue-600">${$totalBalance.toFixed(2)}</p>
+      </div>
+
+      <div class="bg-green-50 p-4 rounded-lg">
+        <p class="text-sm text-gray-600">Monthly Income</p>
+        <p class="text-2xl font-bold text-green-600">${$monthlyIncome.toFixed(2)}</p>
       </div>
     </div>
   </div>
