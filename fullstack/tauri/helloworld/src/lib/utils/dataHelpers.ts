@@ -56,3 +56,19 @@ export function getMonthlyData(transactions: Transaction[], month: number = 6) {
     balance: (monthlyMap.get(month)?.income || 0) - (monthlyMap.get(month)?.expenses || 0),
   }));
 };
+
+export function exportToCSV(transactions: Transaction[]) {
+  const headers = ['Date', 'Type', 'Category', 'Description', 'Amount'];
+  const rows = transactions.map(t => [
+    t.date,
+    t.type,
+    t.category,
+    t.description,
+    t.amount.toFixed(2),
+  ])
+
+  return [
+    headers.join(','),
+    ...rows.map(row => row.join(',')),
+  ].join('\n');
+}
