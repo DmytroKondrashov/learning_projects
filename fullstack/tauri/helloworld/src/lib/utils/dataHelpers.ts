@@ -28,3 +28,15 @@ export function cathgoryStats(
 
   return stats.sort((a, b) => b.amount - a.amount);
 }
+
+export function getMonthlyData(transactions: Transaction[], month: number = 6) {
+  const monthlyMap = new Map<string, {income: number, expenses: number}>;
+
+  transactions.forEach(t => {
+    const dateObj = t.date instanceof Date ? t.date : new Date(t.date);
+    const year = dateObj.getFullYear();
+    const month = String(dateObj.getMonth() + 1).padStart(2, "0");
+    const monthKey = `${year}-${month}`;
+
+    const existing = monthlyMap.get(monthKey) || {income: 0, expences: 0};
+  })};
