@@ -38,5 +38,15 @@ export function getMonthlyData(transactions: Transaction[], month: number = 6) {
     const month = String(dateObj.getMonth() + 1).padStart(2, "0");
     const monthKey = `${year}-${month}`;
 
-    const existing = monthlyMap.get(monthKey) || {income: 0, expences: 0};
-  })};
+    const existing = monthlyMap.get(monthKey) || {income: 0, expenses: 0};
+    if (t.type === 'income') {
+      existing.income += t.amount;
+    } else {
+      existing.expenses += t.amount;
+    }
+
+    monthlyMap.set(monthKey, existing);
+  })
+
+  const sortedMonth = Array.from(monthlyMap.keys()).sort().slice(-month);
+};
