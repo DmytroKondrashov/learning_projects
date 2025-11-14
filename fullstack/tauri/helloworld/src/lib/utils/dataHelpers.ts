@@ -48,5 +48,11 @@ export function getMonthlyData(transactions: Transaction[], month: number = 6) {
     monthlyMap.set(monthKey, existing);
   })
 
-  const sortedMonth = Array.from(monthlyMap.keys()).sort().slice(-month);
+  const sortedMonths = Array.from(monthlyMap.keys()).sort().slice(-month);
+  return sortedMonths.map(month => ({
+    month,
+    income: monthlyMap.get(month)?.income || 0,
+    expenses: monthlyMap.get(month)?.expenses || 0,
+    balance: (monthlyMap.get(month)?.income || 0) - (monthlyMap.get(month)?.expenses || 0),
+  }));
 };
