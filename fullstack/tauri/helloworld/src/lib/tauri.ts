@@ -28,3 +28,12 @@ export async function loadData(): Promise<AppData | null> {
     return null;
   }
 }
+
+export async function exportCSV(csvData: string, fileName: string) {
+  try {
+    return await invoke('export_csv', { data: csvData, fileName });
+  } catch (error) {
+    console.error('Failed to export CSV:', error);
+    throw error;
+  }
+}
