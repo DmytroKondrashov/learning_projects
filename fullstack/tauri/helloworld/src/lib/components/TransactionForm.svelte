@@ -12,4 +12,20 @@
   let date = new Date().toISOString().split('T')[0];
 
   $: availableCategories = $categories.filter(c => c.type === type);
+
+  function handleSubmit() {
+    if (!amount || !category || !description) {
+      alert('Please fill in all fields');
+      return;
+    }
+
+    transactions.add({
+      type,
+      amount: Number(amount),
+      category,
+      description,
+      date: new Date(date),
+    });
+    onClose();
+  }
 </script>
