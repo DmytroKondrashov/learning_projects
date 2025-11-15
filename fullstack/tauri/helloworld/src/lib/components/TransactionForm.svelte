@@ -11,5 +11,5 @@
   let description = '';
   let date = new Date().toISOString().split('T')[0];
 
-  $: availableCategories = categories.filter(c => c.type === type);
+  $: availableCategories = $categories.filter(c => c.type === type);
 </script>
