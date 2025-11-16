@@ -2,9 +2,9 @@
   import { categories } from '$lib/stores/categoryStore';
   import { transactions } from '$lib/stores/transactionStore';
   import { onMount } from 'svelte';
-  import { categoryStats } from '../lib/utils/dataHelpers';
+  import { categoryStats, exportToCSV } from '../lib/utils/dataHelpers';
   import { settings } from '$lib/stores/settingsStore';
-  import { loadData } from '$lib/tauri';
+  import { exportCSV, loadData, saveData } from '$lib/tauri';
 
   let showAddForm = false;
   let activeTab: 'dashboard' | 'transactions' = 'dashboard';
@@ -29,5 +29,24 @@
       isLoading = false;
     }
   })
+
+  $: if (!isLoading) {
+    saveData({
+      transactions: $transactions,
+      categories: $categories,
+      settings: $settings,
+    }).catch(console.error);
+  }
+
+  async function handleExport() {
+    try {
+      const csv = exportToCSV($transactions);
+      const filename = `transactions-${new Date().toISOString().split('T')[0]}.csv`;
+      const path = await exportCSV(csv, filename);
+      alert(`Exported to: ${path}`);
+    } catch (error) {
+      alert('Failed to export: ' + error);
+    }
+  }
 </script>
 
