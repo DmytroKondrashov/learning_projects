@@ -1,6 +1,6 @@
 <script lang="ts">
   import { categories } from '$lib/stores/categoryStore';
-  import { monthlyIncome, totalBalance, transactions } from '$lib/stores/transactionStore';
+  import { monthlyIncome, monthlyExpences, totalBalance, transactions } from '$lib/stores/transactionStore';
   import { onMount } from 'svelte';
   import { categoryStats, exportToCSV } from '../lib/utils/dataHelpers';
   import { settings } from '$lib/stores/settingsStore';
@@ -129,7 +129,7 @@
           />
           <StatCard
             title="Monthly Expenses"
-            value={formatCurrency($monthlyExpenses)}
+            value={formatCurrency($monthlyExpences)}
             icon="📉"
             color="red"
           />
