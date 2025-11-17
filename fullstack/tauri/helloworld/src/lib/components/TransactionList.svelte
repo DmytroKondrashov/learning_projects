@@ -7,6 +7,8 @@
   export let filter: 'all' | 'income' | 'expense' = 'all';
   export let searchQuery = '';
 
+  let transactionToDelete: string | null = null;
+
   $: filteredTransactions = $transactions
     .filter(t => {
       if (filter !== 'all' && t.type !== filter) return false;
@@ -29,9 +31,18 @@
     return $categories.find(c => c.id === categoryId)?.color || '#gray';
   }
 
-  function deleteTransaction(id: string) {
-    if (confirm('Are you sure you want to delete this transaction?')) {
-      transactions.remove(id);
+  function confirmDelete(id: string) {
+    transactionToDelete = id;
+  }
+
+  function cancelDelete() {
+    transactionToDelete = null;
+  }
+
+  function confirmDeleteTransaction() {
+    if (transactionToDelete) {
+      transactions.remove(transactionToDelete);
+      transactionToDelete = null;
     }
   }
 </script>
@@ -57,7 +68,9 @@
               </span>
             </div>
             <p class="font-semibold text-gray-900 mb-1">{transaction.description}</p>
-            <p class="text-sm text-gray-500">{formatDate(transaction.date.toISOString().split('T')[0])}</p>
+            <!-- <p class="text-sm text-gray-500">{formatDate(transaction.date.toISOString().split('T')[0])}</p> -->
+             <!-- HERE -->
+            <p class="text-sm text-gray-500">'TEST'</p>
           </div>
 
           <div class="text-right flex items-start gap-3">
@@ -71,7 +84,7 @@
               </p>
             </div>
             <button
-              on:click={() => deleteTransaction(transaction.id)}
+              on:click={() => confirmDelete(transaction.id)}
               class="text-gray-400 hover:text-red-500 transition p-1"
               title="Delete"
             >
@@ -90,3 +103,39 @@
     {/each}
   {/if}
 </div>
+
+{#if transactionToDelete}
+  <div 
+    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4" 
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="delete-dialog-title"
+    on:click={cancelDelete}
+    on:keydown={(e) => e.key === 'Escape' && cancelDelete()}
+    tabindex="-1"
+  >
+    <div 
+      class="bg-white rounded-xl shadow-2xl w-full max-w-md p-6" 
+      role="presentation"
+      on:click|stopPropagation
+      on:keydown|stopPropagation
+    >
+      <h2 id="delete-dialog-title" class="text-2xl font-bold mb-4 text-gray-900">Delete Transaction</h2>
+      <p class="text-gray-600 mb-6">Are you sure you want to delete this transaction? This action cannot be undone.</p>
+      <div class="flex gap-3 justify-end">
+        <button
+          on:click={cancelDelete}
+          class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg font-medium hover:bg-gray-200 transition"
+        >
+          Cancel
+        </button>
+        <button
+          on:click={confirmDeleteTransaction}
+          class="px-4 py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition"
+        >
+          Delete
+        </button>
+      </div>
+    </div>
+  </div>
+{/if}
