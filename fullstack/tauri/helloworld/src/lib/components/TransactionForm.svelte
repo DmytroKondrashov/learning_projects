@@ -24,7 +24,7 @@
       amount: Number(amount),
       category,
       description,
-      date: date as unknown as Date,
+      date: new Date(date),
     });
     onClose();
   }

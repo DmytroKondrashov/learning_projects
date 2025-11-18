@@ -31,6 +31,17 @@
     return $categories.find(c => c.id === categoryId)?.color || '#gray';
   }
 
+  function getDateString(date: Date | string | undefined): string {
+    if (!date) return '';
+    if (date instanceof Date) {
+      return date.toISOString().split('T')[0];
+    }
+    if (typeof date === 'string') {
+      return date.split('T')[0];
+    }
+    return String(date);
+  }
+
   function confirmDelete(id: string) {
     transactionToDelete = id;
   }
@@ -68,7 +79,7 @@
               </span>
             </div>
             <p class="font-semibold text-gray-900 mb-1">{transaction.description}</p>
-            <p class="text-sm text-gray-500">{formatDate(transaction?.date?.toISOString().split('T')[0])}</p>
+            <p class="text-sm text-gray-500">{formatDate(getDateString(transaction?.date))}</p>
           </div>
 
           <div class="text-right flex items-start gap-3">

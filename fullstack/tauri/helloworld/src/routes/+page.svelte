@@ -24,7 +24,15 @@
     try {
       const data = await loadData();
       if (data) {
-        if (data.transactions) transactions.set(data.transactions);
+        if (data.transactions) {
+          // Convert date strings back to Date objects
+          const normalizedTransactions = data.transactions.map((t: any) => ({
+            ...t,
+            date: t.date instanceof Date ? t.date : new Date(t.date),
+            createdAt: t.createdAt instanceof Date ? t.createdAt : new Date(t.createdAt),
+          }));
+          transactions.set(normalizedTransactions);
+        }
         if (data.categories) categories.set(data.categories);
         if (data.settings) settings.set(data.settings);
       }
