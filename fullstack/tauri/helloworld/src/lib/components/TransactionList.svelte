@@ -68,9 +68,7 @@
               </span>
             </div>
             <p class="font-semibold text-gray-900 mb-1">{transaction.description}</p>
-            <!-- <p class="text-sm text-gray-500">{formatDate(transaction.date.toISOString().split('T')[0])}</p> -->
-             <!-- HERE -->
-            <p class="text-sm text-gray-500">'TEST'</p>
+            <p class="text-sm text-gray-500">{formatDate(transaction?.date?.toISOString().split('T')[0])}</p>
           </div>
 
           <div class="text-right flex items-start gap-3">
