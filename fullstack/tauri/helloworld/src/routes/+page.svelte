@@ -11,14 +11,14 @@
   import { formatCurrency } from '$lib/utils/formatters';
   import CategoryPieChart from '$lib/components/CategoryPieChart.svelte';
 
-  let showAddForm = false;
-  let activeTab: 'dashboard' | 'transactions' = 'dashboard';
-  let transactionsFilter: 'all' | 'income' | 'expense' = 'all';
-  let searchQuery = '';
-  let isLoading = true;
+  let showAddForm = $state(false);
+  let activeTab: 'dashboard' | 'transactions' = $state('dashboard');
+  let transactionsFilter: 'all' | 'income' | 'expense' = $state('all');
+  let searchQuery = $state('');
+  let isLoading = $state(true);
 
-  $: incomeStats = categoryStats($transactions, 'income', $categories);
-  $: expensesStats = categoryStats($transactions, 'expense', $categories);
+  const incomeStats = $derived(categoryStats($transactions, 'income', $categories));
+  const expensesStats = $derived(categoryStats($transactions, 'expense', $categories));
 
   onMount(async () => {
     try {
@@ -43,13 +43,15 @@
     }
   })
 
-  $: if (!isLoading) {
+  $effect(() => {
+    if (!isLoading) {
     saveData({
       transactions: $transactions,
       categories: $categories,
       settings: $settings,
     }).catch(console.error);
   }
+});
 
   async function handleExport() {
     try {
@@ -61,6 +63,8 @@
       alert('Failed to export: ' + error);
     }
   }
+
+  $inspect({expensesStats})
 </script>
 
 <svelte:head>
