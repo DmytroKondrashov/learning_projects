@@ -64,7 +64,6 @@
     }
   }
 
-  $inspect({expensesStats})
 </script>
 
 <svelte:head>

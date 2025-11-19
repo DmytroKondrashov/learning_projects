@@ -17,7 +17,7 @@ export function categoryStats(
 
   const stats: CategoryStats[] = [];
   categoryTotals.forEach((amount, categoryId) => {
-    const category = categories.find(c => c.id = categoryId);
+    const category = categories.find(c => c.id === categoryId);
     stats.push({
       category: category?.name || categoryId,
       amount,
