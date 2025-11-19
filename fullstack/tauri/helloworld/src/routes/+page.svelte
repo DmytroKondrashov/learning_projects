@@ -102,7 +102,7 @@
             on:click={() => (activeTab = 'dashboard')}
             class="px-4 py-2 rounded-lg font-medium transition {activeTab === 'dashboard'
               ? 'bg-white text-purple-600'
-              : 'text-white hover:bg-white hover:bg-opacity-10'}"
+              : 'text-gray-300 hover:text-gray-700 hover:bg-white hover:bg-opacity-10'}"
           >
             Dashboard
           </button>
@@ -110,7 +110,7 @@
             on:click={() => (activeTab = 'transactions')}
             class="px-4 py-2 rounded-lg font-medium transition {activeTab === 'transactions'
               ? 'bg-white text-purple-600'
-              : 'text-white hover:bg-white hover:bg-opacity-10'}"
+              : 'text-gray-300 hover:text-gray-700 hover:bg-white hover:bg-opacity-10'}"
           >
             Transactions
           </button>
