@@ -30,3 +30,9 @@ function applyTheme(theme: Theme) {
     document.documentElement.classList.remove('dark');
   }
 }
+
+export const theme = createThemeStore();
+
+if (typeof window !== 'undefined') {
+  applyTheme(localStorage.getItem('theme') as Theme || 'system')
+}
