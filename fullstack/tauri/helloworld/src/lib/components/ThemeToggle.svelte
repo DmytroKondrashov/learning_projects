@@ -9,4 +9,9 @@
     { value: 'dark', label: 'Dark', icon: '🌙' },
     { value: 'system', label: 'System', icon: '🖥️' },
   ];
+
+  function selectTheme(t: Theme) {
+    theme.set(t);
+    showDropdown = false;
+  }
 </script>
