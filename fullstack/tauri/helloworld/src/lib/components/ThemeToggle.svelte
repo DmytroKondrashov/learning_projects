@@ -55,6 +55,6 @@
 
 <style>
   :global(.dark) {
-    
+    color-scheme: dark;
   }
 </style>
