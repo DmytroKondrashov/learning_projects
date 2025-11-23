@@ -59,13 +59,13 @@
 
 <div class="space-y-2">
   {#if filteredTransactions.length === 0}
-    <div class="text-center py-12 text-gray-400">
+    <div class="text-center py-12 text-gray-400 dark:text-gray-500">
       <p class="text-lg">No transactions found</p>
       <p class="text-sm">Add your first transaction to get started!</p>
     </div>
   {:else}
     {#each filteredTransactions as transaction (transaction.id)}
-      <div class="bg-white border-2 border-gray-100 rounded-lg p-4 hover:border-gray-200 transition">
+    <div class="bg-white dark:bg-gray-700 border-2 border-gray-100 dark:border-gray-600 rounded-lg p-4 hover:border-gray-200 dark:hover:border-gray-500 transition">
         <div class="flex items-start justify-between">
           <div class="flex-1">
             <div class="flex items-center gap-2 mb-1">
@@ -73,27 +73,27 @@
                 class="w-3 h-3 rounded-full"
                 style="background-color: {getCategoryColor(transaction.category)}"
               ></span>
-              <span class="text-sm font-medium text-gray-600">
+              <span class="text-sm font-medium text-gray-600 dark:text-gray-400">
                 {getCategoryName(transaction.category)}
               </span>
             </div>
-            <p class="font-semibold text-gray-900 mb-1">{transaction.description}</p>
-            <p class="text-sm text-gray-500">{formatDate(getDateString(transaction?.date))}</p>
+            <p class="font-semibold text-gray-900 dark:text-white mb-1">{transaction.description}</p>
+            <p class="text-sm text-gray-500 dark:text-gray-400">{formatDate(getDateString(transaction?.date))}</p>
           </div>
 
           <div class="text-right flex items-start gap-3">
             <div>
               <p
                 class="text-xl font-bold {transaction.type === 'income'
-                  ? 'text-green-600'
-                  : 'text-red-600'}"
+                  ? 'text-green-600 dark:text-green-400'
+                  : 'text-red-600 dark:text-red-400'}"
               >
                 {transaction.type === 'income' ? '+' : '-'}{formatCurrency(transaction.amount)}
               </p>
             </div>
             <button
               on:click={() => confirmDelete(transaction.id)}
-              class="text-gray-400 hover:text-red-500 transition p-1"
+              class="text-gray-400 dark:text-gray-500 hover:text-red-500 dark:hover:text-red-400 transition p-1"
               title="Delete"
             >
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
