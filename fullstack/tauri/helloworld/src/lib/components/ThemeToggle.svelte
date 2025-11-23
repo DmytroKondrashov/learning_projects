@@ -15,3 +15,19 @@
     showDropdown = false;
   }
 </script>
+
+<div class="relative">
+  <button
+  onclick={() => showDropdown = !showDropdown}
+  class="p-2 rounded-lg bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition border border-gray-200 dark:border-gray-700"
+  title="Toggle theme"
+  >
+    {#if $theme === 'light'}
+    ☀️
+    {:else if $theme === 'dark'}
+      🌙
+    {:else}
+      🖥️
+    {/if}
+  </button>
+</div>
