@@ -1,6 +1,6 @@
 import type { Category, CategoryStats, Transaction, TransitionType } from "$lib/types";
 
-export function categoryStats(
+export function getCategoryStats(
   transactions: Transaction[],
   type: TransitionType,
   categories: Category[]

@@ -37,7 +37,7 @@ export const totalBalance = derived(transactions, $transactions =>
   }, 0)
 );
 
-export const monthlyExpences = derived(transactions, $transactions => {
+export const monthlyExpenses = derived(transactions, $transactions => {
   const now = new Date();
   const currentMonth = format(startOfMonth(now), 'yyyy-MM');
   return $transactions
