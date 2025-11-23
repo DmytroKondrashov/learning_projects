@@ -2,7 +2,6 @@
   import { transactions } from '../stores/transactionStore';
   import { categories } from '../stores/categoryStore';
   import { formatCurrency, formatDate } from '../utils/formatters';
-  import type { Transaction } from '../types';
 
   export let filter: 'all' | 'income' | 'expense' = 'all';
   export let searchQuery = '';
