@@ -52,3 +52,9 @@
     </div>
   {/if}
 </div>
+
+<style>
+  :global(.dark) {
+    
+  }
+</style>
