@@ -1,57 +1,50 @@
+<!-- src/routes/+page.svelte -->
 <script lang="ts">
-  import { categories } from '$lib/stores/categoryStore';
-  import { monthlyIncome, monthlyExpences, totalBalance, transactions } from '$lib/stores/transactionStore';
   import { onMount } from 'svelte';
-  import { categoryStats, exportToCSV } from '../lib/utils/dataHelpers';
-  import { settings } from '$lib/stores/settingsStore';
-  import { exportCSV, loadData, saveData } from '$lib/tauri';
-  import TransactionForm from '$lib/components/TransactionForm.svelte';
-  import TransactionList from '$lib/components/TransactionList.svelte';
-  import StatCard from '$lib/components/StatCard.svelte';
-  import { formatCurrency } from '$lib/utils/formatters';
-  import CategoryPieChart from '$lib/components/CategoryPieChart.svelte';
+  import { transactions, totalBalance, monthlyIncome, monthlyExpenses } from '../lib/stores/transactionStore';
+  import { categories } from '../lib/stores/categoryStore';
+  import { settings } from '../lib/stores/settingsStore';
+  import StatCard from '../lib/components/StatCard.svelte';
+  import TransactionForm from '../lib/components/TransactionForm.svelte';
+  import TransactionList from '../lib/components/TransactionList.svelte';
+  import CategoryPieChart from '../lib/components/CategoryPieChart.svelte';
+  import ThemeToggle from '../lib/components/ThemeToggle.svelte';
+  import { formatCurrency } from '../lib/utils/formatters';
+  import { getCategoryStats } from '../lib/utils/dataHelpers';
+  import { loadData, saveData, exportCSV } from '../lib/tauri';
+  import { exportToCSV } from '../lib/utils/dataHelpers';
 
-  let showAddForm = $state(false);
-  let activeTab: 'dashboard' | 'transactions' = $state('dashboard');
-  let transactionsFilter: 'all' | 'income' | 'expense' = $state('all');
-  let searchQuery = $state('');
-  let isLoading = $state(true);
+  let showAddForm = false;
+  let activeTab: 'dashboard' | 'transactions' = 'dashboard';
+  let transactionFilter: 'all' | 'income' | 'expense' = 'all';
+  let searchQuery = '';
+  let isLoading = true;
 
-  const incomeStats = $derived(categoryStats($transactions, 'income', $categories));
-  const expensesStats = $derived(categoryStats($transactions, 'expense', $categories));
+  $: expenseStats = getCategoryStats($transactions, 'expense', $categories);
+  $: incomeStats = getCategoryStats($transactions, 'income', $categories);
 
   onMount(async () => {
     try {
       const data = await loadData();
       if (data) {
-        if (data.transactions) {
-          // Convert date strings back to Date objects
-          const normalizedTransactions = data.transactions.map((t: any) => ({
-            ...t,
-            date: t.date instanceof Date ? t.date : new Date(t.date),
-            createdAt: t.createdAt instanceof Date ? t.createdAt : new Date(t.createdAt),
-          }));
-          transactions.set(normalizedTransactions);
-        }
+        if (data.transactions) transactions.set(data.transactions);
         if (data.categories) categories.set(data.categories);
         if (data.settings) settings.set(data.settings);
       }
     } catch (error) {
-      console.error('Error loading data:', error);
+      console.error('Failed to load data:', error);
     } finally {
       isLoading = false;
     }
-  })
+  });
 
-  $effect(() => {
-    if (!isLoading) {
+  $: if (!isLoading) {
     saveData({
       transactions: $transactions,
       categories: $categories,
       settings: $settings,
     }).catch(console.error);
   }
-});
 
   async function handleExport() {
     try {
@@ -63,7 +56,6 @@
       alert('Failed to export: ' + error);
     }
   }
-
 </script>
 
 <svelte:head>
@@ -71,28 +63,29 @@
 </svelte:head>
 
 {#if isLoading}
-  <div class="min-h-screen bg-gradient-to-br from-purple-500 via-pink-500 to-red-500 flex items-center justify-center">
+  <div class="min-h-screen bg-gradient-to-br from-purple-500 via-pink-500 to-red-500 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex items-center justify-center">
     <div class="text-white text-2xl font-bold">Loading...</div>
   </div>
 {:else}
-  <div class="min-h-screen bg-gradient-to-br from-purple-500 via-pink-500 to-red-500">
+  <div class="min-h-screen bg-gradient-to-br from-purple-500 via-pink-500 to-red-500 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-colors duration-300">
     <!-- Header -->
-    <header class="bg-white bg-opacity-10 backdrop-blur-md border-b border-white border-opacity-20">
+    <header class="bg-white bg-opacity-10 dark:bg-gray-900 dark:bg-opacity-40 backdrop-blur-md border-b border-white border-opacity-20 dark:border-gray-700 dark:border-opacity-50">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div class="flex items-center justify-between">
-          <h1 class="text-3xl font-bold flex items-center gap-2">
+          <h1 class="text-3xl font-bold text-white flex items-center gap-2">
             💰 Finance Tracker
           </h1>
-          <div class="flex gap-3">
+          <div class="flex gap-3 items-center">
+            <ThemeToggle />
             <button
-              onclick={handleExport}
-              class="px-4 py-2 bg-white bg-opacity-20 hover:bg-opacity-30 text-white rounded-lg font-medium transition backdrop-blur-sm"
+              on:click={handleExport}
+              class="px-4 py-2 bg-white bg-opacity-20 dark:bg-gray-700 dark:bg-opacity-50 hover:bg-opacity-30 dark:hover:bg-opacity-70 text-white rounded-lg font-medium transition backdrop-blur-sm"
             >
               Export CSV
             </button>
             <button
-              onclick={() => (showAddForm = true)}
-              class="px-6 py-2 bg-white text-purple-600 rounded-lg font-semibold hover:shadow-lg transition"
+              on:click={() => (showAddForm = true)}
+              class="px-6 py-2 bg-white dark:bg-purple-600 text-purple-600 dark:text-white rounded-lg font-semibold hover:shadow-lg transition"
             >
               + Add Transaction
             </button>
@@ -102,18 +95,18 @@
         <!-- Tabs -->
         <div class="flex gap-4 mt-4">
           <button
-            onclick={() => (activeTab = 'dashboard')}
+            on:click={() => (activeTab = 'dashboard')}
             class="px-4 py-2 rounded-lg font-medium transition {activeTab === 'dashboard'
-              ? 'bg-white text-purple-600'
-              : 'text-gray-300 hover:text-gray-700 hover:bg-white hover:bg-opacity-10'}"
+              ? 'bg-white text-purple-600 dark:bg-purple-600 dark:text-white'
+              : 'text-white hover:bg-white hover:bg-opacity-10 dark:hover:bg-gray-800'}"
           >
             Dashboard
           </button>
           <button
-            onclick={() => (activeTab = 'transactions')}
+            on:click={() => (activeTab = 'transactions')}
             class="px-4 py-2 rounded-lg font-medium transition {activeTab === 'transactions'
-              ? 'bg-white text-purple-600'
-              : 'text-gray-300 hover:text-gray-700 hover:bg-white hover:bg-opacity-10'}"
+              ? 'bg-white text-purple-600 dark:bg-purple-600 dark:text-white'
+              : 'text-white hover:bg-white hover:bg-opacity-10 dark:hover:bg-gray-800'}"
           >
             Transactions
           </button>
@@ -140,7 +133,7 @@
           />
           <StatCard
             title="Monthly Expenses"
-            value={formatCurrency($monthlyExpences)}
+            value={formatCurrency($monthlyExpenses)}
             icon="📉"
             color="red"
           />
@@ -148,42 +141,42 @@
 
         <!-- Charts -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-          <CategoryPieChart data={expensesStats} title="Expenses by Category" />
+          <CategoryPieChart data={expenseStats} title="Expenses by Category" />
           <CategoryPieChart data={incomeStats} title="Income by Category" />
         </div>
 
         <!-- Recent Transactions -->
-        <div class="bg-white rounded-xl shadow-lg p-6">
-          <h2 class="text-2xl font-bold mb-4">Recent Transactions</h2>
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <h2 class="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Recent Transactions</h2>
           <TransactionList filter="all" />
         </div>
       {:else}
         <!-- Transactions Tab -->
-        <div class="bg-white rounded-xl shadow-lg p-6">
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
           <div class="flex flex-col sm:flex-row gap-4 mb-6">
             <!-- Filter -->
             <div class="flex gap-2">
               <button
-                onclick={() => (transactionsFilter = 'all')}
-                class="px-4 py-2 rounded-lg font-medium transition {transactionsFilter === 'all'
+                on:click={() => (transactionFilter = 'all')}
+                class="px-4 py-2 rounded-lg font-medium transition {transactionFilter === 'all'
                   ? 'bg-purple-600 text-white'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}"
+                  : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'}"
               >
                 All
               </button>
               <button
-                onclick={() => (transactionsFilter = 'income')}
-                class="px-4 py-2 rounded-lg font-medium transition {transactionsFilter === 'income'
+                on:click={() => (transactionFilter = 'income')}
+                class="px-4 py-2 rounded-lg font-medium transition {transactionFilter === 'income'
                   ? 'bg-green-600 text-white'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}"
+                  : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'}"
               >
                 Income
               </button>
               <button
-                onclick={() => (transactionsFilter = 'expense')}
-                class="px-4 py-2 rounded-lg font-medium transition {transactionsFilter === 'expense'
+                on:click={() => (transactionFilter = 'expense')}
+                class="px-4 py-2 rounded-lg font-medium transition {transactionFilter === 'expense'
                   ? 'bg-red-600 text-white'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}"
+                  : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'}"
               >
                 Expenses
               </button>
@@ -194,11 +187,11 @@
               type="text"
               bind:value={searchQuery}
               placeholder="Search transactions..."
-              class="flex-1 px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-purple-500 focus:outline-none transition"
+              class="flex-1 px-4 py-2 border-2 border-gray-200 dark:border-gray-600 rounded-lg focus:border-purple-500 dark:focus:border-purple-400 focus:outline-none transition bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
             />
           </div>
 
-          <TransactionList filter={transactionsFilter} {searchQuery} />
+          <TransactionList filter={transactionFilter} {searchQuery} />
         </div>
       {/if}
     </main>
@@ -208,4 +201,3 @@
     <TransactionForm onClose={() => (showAddForm = false)} />
   {/if}
 {/if}
-
