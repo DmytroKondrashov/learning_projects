@@ -85,13 +85,13 @@
           </h1>
           <div class="flex gap-3">
             <button
-              on:click={handleExport}
+              onclick={handleExport}
               class="px-4 py-2 bg-white bg-opacity-20 hover:bg-opacity-30 text-white rounded-lg font-medium transition backdrop-blur-sm"
             >
               Export CSV
             </button>
             <button
-              on:click={() => (showAddForm = true)}
+              onclick={() => (showAddForm = true)}
               class="px-6 py-2 bg-white text-purple-600 rounded-lg font-semibold hover:shadow-lg transition"
             >
               + Add Transaction
@@ -102,7 +102,7 @@
         <!-- Tabs -->
         <div class="flex gap-4 mt-4">
           <button
-            on:click={() => (activeTab = 'dashboard')}
+            onclick={() => (activeTab = 'dashboard')}
             class="px-4 py-2 rounded-lg font-medium transition {activeTab === 'dashboard'
               ? 'bg-white text-purple-600'
               : 'text-gray-300 hover:text-gray-700 hover:bg-white hover:bg-opacity-10'}"
@@ -110,7 +110,7 @@
             Dashboard
           </button>
           <button
-            on:click={() => (activeTab = 'transactions')}
+            onclick={() => (activeTab = 'transactions')}
             class="px-4 py-2 rounded-lg font-medium transition {activeTab === 'transactions'
               ? 'bg-white text-purple-600'
               : 'text-gray-300 hover:text-gray-700 hover:bg-white hover:bg-opacity-10'}"
@@ -164,7 +164,7 @@
             <!-- Filter -->
             <div class="flex gap-2">
               <button
-                on:click={() => (transactionsFilter = 'all')}
+                onclick={() => (transactionsFilter = 'all')}
                 class="px-4 py-2 rounded-lg font-medium transition {transactionsFilter === 'all'
                   ? 'bg-purple-600 text-white'
                   : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}"
@@ -172,7 +172,7 @@
                 All
               </button>
               <button
-                on:click={() => (transactionsFilter = 'income')}
+                onclick={() => (transactionsFilter = 'income')}
                 class="px-4 py-2 rounded-lg font-medium transition {transactionsFilter === 'income'
                   ? 'bg-green-600 text-white'
                   : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}"
@@ -180,7 +180,7 @@
                 Income
               </button>
               <button
-                on:click={() => (transactionsFilter = 'expense')}
+                onclick={() => (transactionsFilter = 'expense')}
                 class="px-4 py-2 rounded-lg font-medium transition {transactionsFilter === 'expense'
                   ? 'bg-red-600 text-white'
                   : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}"
