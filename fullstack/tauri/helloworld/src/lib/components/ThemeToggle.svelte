@@ -30,4 +30,25 @@
       🖥️
     {/if}
   </button>
+
+  {#if showDropdown}
+    <div
+      class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 z-50"
+    >
+      {#each themes as t}
+        <button
+          onclick={() => selectTheme(t.value)}
+          class="w-full text-left px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700 transition flex items-center gap-2 {$theme === t.value
+            ? 'bg-purple-50 dark:bg-purple-900 text-purple-600 dark:text-purple-300'
+            : 'text-gray-700 dark:text-gray-300'}"
+          >
+          <span>{t.icon}</span>
+          <span class="font-medium">{t.label}</span>
+          {#if $theme === t.value}
+            <span class="ml-auto">✓</span>
+          {/if}
+        </button>
+      {/each}
+    </div>
+  {/if}
 </div>
