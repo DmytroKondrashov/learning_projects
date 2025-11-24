@@ -32,7 +32,7 @@
   }
 </script>
 
-<div class="fixed inset-0 bg-black bg-opacity-50 dark:bg-opacity-70 flex items-center justify-center z-50 p-4">
+<div class="fixed inset-0 bg-black/50 dark:bg-black/70 flex items-center justify-center z-50 p-4">
   <div class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-md p-6">
     <h2 class="text-2xl font-bold mb-6 text-gray-900 dark:text-white">Add Transaction</h2>
 

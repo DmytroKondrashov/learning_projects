@@ -69,7 +69,7 @@
 {:else}
   <div class="min-h-screen bg-gradient-to-br from-purple-500 via-pink-500 to-red-500 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-colors duration-300">
     <!-- Header -->
-    <header class="bg-white bg-opacity-10 dark:bg-gray-900 dark:bg-opacity-40 backdrop-blur-md border-b border-white border-opacity-20 dark:border-gray-700 dark:border-opacity-50">
+    <header class="bg-white/10 dark:bg-gray-900/40 backdrop-blur-md border-b border-white/20 dark:border-gray-700/50">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div class="flex items-center justify-between">
           <h1 class="text-3xl font-bold text-white flex items-center gap-2">
@@ -79,7 +79,7 @@
             <ThemeToggle />
             <button
               on:click={handleExport}
-              class="px-4 py-2 bg-white bg-opacity-20 dark:bg-gray-700 dark:bg-opacity-50 hover:bg-opacity-30 dark:hover:bg-opacity-70 text-white rounded-lg font-medium transition backdrop-blur-sm"
+              class="px-4 py-2 bg-white/20 dark:bg-gray-700/50 hover:bg-white/30 dark:hover:bg-gray-700/70 text-white rounded-lg font-medium transition backdrop-blur-sm"
             >
               Export CSV
             </button>
