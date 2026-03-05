@@ -15,4 +15,4 @@ struct Grid(Copyable):
                 str += " "
         if row != self.rows-1: 
             str += "\n"
-    return str
+        return str
