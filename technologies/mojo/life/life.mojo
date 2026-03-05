@@ -8,8 +8,8 @@ fn grid_str(rows: Int, cols: Int, grid: List[List[Int]]) -> String:
             else:
                 str += " "
         if row != rows-1: 
-            str += "/n"
-    returs str
+            str += "\n"
+    return str
 
 def main():
     num_rows = 8
@@ -24,3 +24,5 @@ def main():
         [0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0],
     ]
+    result = grid_str(num_rows, num_cols, glider)
+    print(result)
