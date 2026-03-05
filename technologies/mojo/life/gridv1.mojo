@@ -5,14 +5,17 @@ struct Grid(Copyable):
     var data: List[List[Int]]
 
     fn grid_str(self) -> String:
-    str = String()
+        # Create an empty String
+        str = String()
 
-    for row in range(self.rows):
-        for col in range(self.cols):
-            if self.data[row][col] == 1:
-                str += "*"
-            else:
-                str += " "
-        if row != self.rows-1: 
-            str += "\n"
+        # Iterate through rows 0 through rows-1
+        for row in range(self.rows):
+            # Iterate through columns 0 through cols-1
+            for col in range(self.cols):
+                if self.data[row][col] == 1:
+                    str += "*"  # If cell is populated, append an asterisk
+                else:
+                    str += " "  # If cell is not populated, append a space
+            if row != self.rows - 1:
+                str += "\n"     # Add a newline between rows, but not at the end
         return str
