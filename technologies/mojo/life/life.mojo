@@ -1,13 +1,15 @@
-fn grid_str(rows: Int, cols: Int, grid: List[List[Int]]) -> String:
+from gridv1 import Grid
+
+fn grid_str(grid: Grid) -> String:
     str = String()
 
-    for row in range(rows):
-        for col in range(cols):
-            if grid[row][col] == 1:
+    for row in range(grid.rows):
+        for col in range(grid.cols):
+            if grid.data[row][col] == 1:
                 str += "*"
             else:
                 str += " "
-        if row != rows-1: 
+        if row != grid.rows-1: 
             str += "\n"
     return str
 
@@ -24,5 +26,6 @@ def main():
         [0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0],
     ]
-    result = grid_str(num_rows, num_cols, glider)
+    start = Grid(8, 8, glider^)
+    result = grid_str(start)
     print(result)
