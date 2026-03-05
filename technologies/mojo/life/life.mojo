@@ -1,4 +1,4 @@
 def main():
-    var name: String = input("Who are you? ")
-    var greeting: String = "Hi " + name + "!"
+    name = input("Who are you? ")
+    greeting = "Hi " + name + "!"
     print(greeting)
