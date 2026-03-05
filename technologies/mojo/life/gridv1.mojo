@@ -1,5 +1,5 @@
 @fieldwise_init
-struct Grid(copyable):
+struct Grid(Copyable):
     var rows: Int
     var cols: Int
     var data: List[List[Int]]

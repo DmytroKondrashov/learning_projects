@@ -14,8 +14,6 @@ fn grid_str(grid: Grid) -> String:
     return str
 
 def main():
-    num_rows = 8
-    num_cols = 8
     glider = [
         [0, 1, 0, 0, 0, 0, 0, 0],
         [0, 0, 1, 0, 0, 0, 0, 0],
