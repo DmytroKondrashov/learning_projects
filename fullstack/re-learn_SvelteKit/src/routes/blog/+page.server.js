@@ -1,10 +1,9 @@
-import { posts } from './data.js';
+import { posts } from '../data.js';
 
-export function load() {
+export function load({ params }) {
+	const post = posts.find((post) => post.slug === params.slug);
+
 	return {
-		summaries: posts.map((post) => ({
-			slug: post.slug,
-			title: post.title
-		}))
+		post
 	};
 }
