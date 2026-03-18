@@ -47,7 +47,6 @@
 	}
 
 	button {
-		border: none;
 		background: url(./remove.svg) no-repeat 50% 50%;
 		background-size: 1rem 1rem;
 		cursor: pointer;
