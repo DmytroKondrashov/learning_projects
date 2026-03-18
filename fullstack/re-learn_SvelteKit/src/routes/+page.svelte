@@ -11,6 +11,7 @@
       <input
         name="description"
         autocomplete="off"
+        required
       />
     </label>
   </form>
