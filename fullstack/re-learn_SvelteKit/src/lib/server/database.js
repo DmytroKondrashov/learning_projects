@@ -22,4 +22,11 @@ export function createTodo(userid, description) {
   })
 }
 
+export function deleteTodo(userid, todoid) {
+  const todos = db.get(userid)
+  const index = todos.findIndex((todo) => todo.id === todoid)
 
+  if (index !== -1) {
+    todos.splice(index, 1)
+  }
+}
