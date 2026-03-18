@@ -11,3 +11,15 @@ export function getTodos(userid) {
 
 	return db.get(userid);
 }
+
+export function createTodo(userid, description) {
+  const todos = db.get(userid)
+
+  todos.push({
+    id: crypto.randomUUID(),
+    description,
+    done: false
+  })
+}
+
+
