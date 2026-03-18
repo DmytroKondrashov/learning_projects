@@ -16,3 +16,10 @@ export function load({ cookies }) {
     todos: db.getTodos(id)
 	};
 }
+
+export const actions = {
+	default: async ({ cookies, request }) => {
+		const data = await request.formData();
+		db.createTodo(cookies.get('userid'), data.get('description'));
+	}
+};
