@@ -1,37 +1,49 @@
 <script>
-  import { enhance } from '$app/forms';
-  import { fly, slide } from 'svelte/transition';
-
-	let { data, form } = $props();
+	let { data } = $props();
 </script>
 
 <div class="centered">
 	<h1>todos</h1>
 
-  {#if form?.error}
-		<p class="error">{form.error}</p>
-	{/if}
+	<label>
+		add a todo:
+		<input
+			type="text"
+			autocomplete="off"
+			onkeydown={async (e) => {
+				if (e.key !== 'Enter') return;
 
-  <form method="POST" action="?/create" use:enhance>
-    <label>
-      add a todo:
-      <input
-        name="description"
-        value={form?.description ?? ''}
-        autocomplete="off"
-        required
-      />
-    </label>
-  </form>
+				const input = e.currentTarget;
+				const description = input.value;
+				
+				// TODO handle submit
+
+				input.value = '';
+			}}
+		/>
+	</label>
 
 	<ul class="todos">
 		{#each data.todos as todo (todo.id)}
-			<li in:fly={{ y: 20 }} out:slide>
-				<form method="POST" action="?/delete" use:enhance>
-          <input type="hidden" name="id" value={todo.id} />
-          <span>{todo.description}</span>
-          <button aria-label="Mark as complete"></button>
-        </form>
+			<li>
+				<label>
+					<input
+						type="checkbox"
+						checked={todo.done}
+						onchange={async (e) => {
+							const done = e.currentTarget.checked;
+
+							// TODO handle change
+						}}
+					/>
+					<span>{todo.description}</span>
+					<button
+						aria-label="Mark as complete"
+						onclick={async (e) => {
+							// TODO handle delete
+						}}
+					></button>
+				</label>
 			</li>
 		{/each}
 	</ul>
@@ -44,10 +56,11 @@
 	}
 
 	label {
+		display: flex;
 		width: 100%;
 	}
 
-	input {
+	input[type="text"] {
 		flex: 1;
 	}
 
@@ -56,6 +69,7 @@
 	}
 
 	button {
+		border: none;
 		background: url(./remove.svg) no-repeat 50% 50%;
 		background-size: 1rem 1rem;
 		cursor: pointer;
@@ -68,9 +82,5 @@
 	button:hover {
 		opacity: 1;
 	}
-
-	.saving {
-		opacity: 0.5;
-	}
 </style>
-
+	
